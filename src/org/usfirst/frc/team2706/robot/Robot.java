@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team2706.robot;
 
-import org.usfirst.frc.team2706.robot.commands.TankDriveWithJoystick;
+import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         driveTrain = new DriveTrain();
         chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new TankDriveWithJoystick());
+        chooser.addDefault("Default Auto", new ArcadeDriveWithJoystick());
         
         SmartDashboard.putData("Auto mode", chooser);
     }
