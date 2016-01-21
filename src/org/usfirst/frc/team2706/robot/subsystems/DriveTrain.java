@@ -2,7 +2,6 @@ package org.usfirst.frc.team2706.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -12,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team2706.robot.Robot;
 import org.usfirst.frc.team2706.robot.RobotMap;
-import org.usfirst.frc.team2706.robot.commands.TankDriveWithJoystick;
+import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -34,6 +33,12 @@ public class DriveTrain extends Subsystem {
 		back_left_motor = new Talon(RobotMap.MOTOR_REAR_LEFT);
 		front_right_motor = new Talon(RobotMap.MOTOR_FRONT_RIGHT);
 		back_right_motor = new Talon(RobotMap.MOTOR_REAR_RIGHT);
+		
+		front_left_motor.setInverted(true);
+		back_left_motor.setInverted(true);
+		front_right_motor.setInverted(true);
+		back_right_motor.setInverted(true);
+		
 		drive = new RobotDrive(front_left_motor, back_left_motor,
 							   front_right_motor, back_right_motor);
 		
@@ -72,10 +77,10 @@ public class DriveTrain extends Subsystem {
 
 	/**
 	 * When no other command is running let the operator drive around
-	 * using the PS3 joystick.
+	 * using the Xbox joystick.
 	 */
 	public void initDefaultCommand() {
-		setDefaultCommand(new TankDriveWithJoystick());
+		setDefaultCommand(new ArcadeDriveWithJoystick());
 	}
 
 	/**
@@ -99,10 +104,10 @@ public class DriveTrain extends Subsystem {
 	}
 
 	/**
-	 * @param joy The ps3 style joystick to use to drive tank style.
+	 * @param joy The Xbox style joystick to use to drive arcade style.
 	 */
 	public void drive(Joystick joy) {
-		drive(-joy.getY(), -joy.getAxis(AxisType.kThrottle));
+		drive.arcadeDrive(joy);
 	}
 
 	/**

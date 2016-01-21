@@ -1,22 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.usfirst.frc.team2706.robot.commands;
 
 import org.usfirst.frc.team2706.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Have the robot drive tank style using the PS3 Joystick until interrupted.
+ * Have the robot drive arcade style using the Xbox Joystick until interrupted.
  */
-public class TankDriveWithJoystick extends Command {
+public class ArcadeDriveWithJoystick extends Command {
     
-    public TankDriveWithJoystick() {
+    public ArcadeDriveWithJoystick() {
         requires(Robot.driveTrain);
     }
 
-    // Called just before this Command runs the f iirst time
+    // Called just before this Command runs the first time
     protected void initialize() {}
 
     // Called repeatedly when this Command is scheduled to run
