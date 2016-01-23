@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -116,6 +119,46 @@ public class DriveTrain extends Subsystem {
 	public double getHeading() {
 		return gyro.getAngle();
 	}
+	
+	/**
+	 * @param invert True to invert second motor direction for rotating
+	 * 
+	 * @return The robot's drive PIDOutput
+	 */
+	public PIDOutput getDrivePIDOutput(final boolean invert) {
+		DriveTrain ref = this;
+		return new PIDOutput() {
+			@Override
+			public void pidWrite(double output) {
+				ref.drive(output, invert ? output : -output);
+				
+			}
+			
+		};
+	}
+	
+	/**
+	 * @return The robot's gyro PIDSource
+	 */
+	public PIDSource getGyroPIDSource() {
+		DriveTrain ref = this;
+		return new PIDSource() {
+
+			@Override
+			public void setPIDSourceType(PIDSourceType pidSource) {};
+
+			@Override
+			public PIDSourceType getPIDSourceType() {
+				return PIDSourceType.kDisplacement;
+			}
+
+			@Override
+			public double pidGet() {
+				return ref.getHeading();
+			}
+			
+		};
+	}
 
 	/**
 	 * Reset the robots sensors to the zero states.
@@ -133,6 +176,29 @@ public class DriveTrain extends Subsystem {
 		return (left_encoder.getDistance() + right_encoder.getDistance())/2;
 	}
 
+	/**
+	 * @return The robot's encoder PIDSource
+	 */
+	public PIDSource getEncoderPIDSource() {
+		DriveTrain ref = this;
+		return new PIDSource() {
+
+			@Override
+			public void setPIDSourceType(PIDSourceType pidSource) {};
+
+			@Override
+			public PIDSourceType getPIDSourceType() {
+				return PIDSourceType.kDisplacement;
+			}
+
+			@Override
+			public double pidGet() {
+				return ref.getDistance();
+			}
+			
+		};
+	}
+	
 	/**
 	 * @return The distance to the obstacle detected by the rangefinder.
 	 */
