@@ -31,20 +31,9 @@ public class StraightDriveWithTime extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	StraightDriveWithTime ref = this;
-    	
-    	// TimerTask to end command
-    	TimerTask interrupt = new TimerTask() {
-			@Override
-			public void run() {
-				ref.cancel();
-			}
-    	};
-    	
-    	Timer t = new Timer();
-    	
-    	// End command after time
-    	t.schedule(interrupt, time);
+    	// Creates task to stop robot after time
+    	CommandTimerTask interrupt = new CommandTimerTask(this);
+    	new Timer().schedule(interrupt, time);
     	
     	// Drive while command is running
     	Robot.driveTrain.drive(speed, speed);
@@ -67,5 +56,17 @@ public class StraightDriveWithTime extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
         end();
+    }
+    
+    class CommandTimerTask extends TimerTask {
+    	Command command;
+    	
+    	public CommandTimerTask(Command command) {
+    		super();
+    		this.command = command;
+    	}
+    	public void run() {
+    		command.cancel();
+    	}
     }
 }

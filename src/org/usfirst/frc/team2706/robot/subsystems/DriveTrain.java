@@ -29,6 +29,11 @@ public class DriveTrain extends Subsystem {
 	private Encoder left_encoder, right_encoder;
 	private AnalogInput rangefinder;
 	private AnalogGyro gyro;
+	
+	private GyroPIDSource gyroPIDSource;
+	private EncoderPIDSource encoderPIDSource;
+
+	private DrivePIDOutput drivePIDOutput;
 
 	public DriveTrain() {
 		super();
@@ -66,6 +71,11 @@ public class DriveTrain extends Subsystem {
 		// @TODO: Use RobotMap values
 		rangefinder = new AnalogInput(6);
 		gyro = new AnalogGyro(1);
+		
+		gyroPIDSource = new GyroPIDSource(this);
+		encoderPIDSource = new EncoderPIDSource(this);
+		
+		drivePIDOutput = new DrivePIDOutput(this);
 
 		// Let's show everything on the LiveWindow
 		LiveWindow.addActuator("Drive Train", "Front_Left Motor", (Talon) front_left_motor);
@@ -126,38 +136,15 @@ public class DriveTrain extends Subsystem {
 	 * @return The robot's drive PIDOutput
 	 */
 	public PIDOutput getDrivePIDOutput(final boolean invert) {
-		DriveTrain ref = this;
-		return new PIDOutput() {
-			@Override
-			public void pidWrite(double output) {
-				ref.drive(output, invert ? output : -output);
-				
-			}
-			
-		};
+		drivePIDOutput.setInverted(invert);
+		return drivePIDOutput;
 	}
 	
 	/**
 	 * @return The robot's gyro PIDSource
 	 */
 	public PIDSource getGyroPIDSource() {
-		DriveTrain ref = this;
-		return new PIDSource() {
-
-			@Override
-			public void setPIDSourceType(PIDSourceType pidSource) {};
-
-			@Override
-			public PIDSourceType getPIDSourceType() {
-				return PIDSourceType.kDisplacement;
-			}
-
-			@Override
-			public double pidGet() {
-				return ref.getHeading();
-			}
-			
-		};
+		return gyroPIDSource;
 	}
 
 	/**
@@ -180,23 +167,7 @@ public class DriveTrain extends Subsystem {
 	 * @return The robot's encoder PIDSource
 	 */
 	public PIDSource getEncoderPIDSource() {
-		DriveTrain ref = this;
-		return new PIDSource() {
-
-			@Override
-			public void setPIDSourceType(PIDSourceType pidSource) {};
-
-			@Override
-			public PIDSourceType getPIDSourceType() {
-				return PIDSourceType.kDisplacement;
-			}
-
-			@Override
-			public double pidGet() {
-				return ref.getDistance();
-			}
-			
-		};
+		return encoderPIDSource;
 	}
 	
 	/**
@@ -205,5 +176,74 @@ public class DriveTrain extends Subsystem {
 	public double getDistanceToObstacle() {
 		// Really meters in simulation since it's a rangefinder...
 		return rangefinder.getAverageVoltage();
+	}
+	
+	class GyroPIDSource implements PIDSource {
+
+		DriveTrain driveTrain;
+		
+		public GyroPIDSource(DriveTrain driveTrain) {
+			this.driveTrain = driveTrain;
+		}
+		
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			driveTrain.gyro.setPIDSourceType(pidSource);
+		};
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return driveTrain.gyro.getPIDSourceType();
+		}
+
+		@Override
+		public double pidGet() {
+			return driveTrain.getHeading();
+		}
+		
+	}
+	
+	class EncoderPIDSource implements PIDSource {
+
+		DriveTrain driveTrain;
+		
+		public EncoderPIDSource(DriveTrain driveTrain) {
+			this.driveTrain = driveTrain;
+		}
+		
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			// Let left encoder take priority
+			driveTrain.left_encoder.setPIDSourceType(pidSource);
+		};
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			// Let left encoder take priority
+			return driveTrain.left_encoder.getPIDSourceType();
+		}
+
+		@Override
+		public double pidGet() {
+			return driveTrain.getDistance();
+		}
+	}
+	class DrivePIDOutput implements PIDOutput {
+
+		DriveTrain driveTrain;
+		boolean invert;	
+		
+		public DrivePIDOutput(DriveTrain driveTrain) {
+			this.driveTrain = driveTrain;
+		}
+
+		@Override
+		public void pidWrite(double output) {
+			driveTrain.drive(output, invert ? output : -output);
+		}		
+		
+		private void setInverted(boolean invert) {
+			this.invert = invert;
+		}
 	}
 }

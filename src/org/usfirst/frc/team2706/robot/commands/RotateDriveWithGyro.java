@@ -14,7 +14,7 @@ public class RotateDriveWithGyro extends Command {
 	
 	private final double angle;
 	
-	private final PIDController PID;
+	private final PIDController pid;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -29,8 +29,8 @@ public class RotateDriveWithGyro extends Command {
         
         this.angle = angle;
         
-        // @FIXME: Random values
-        PID = new PIDController(2, 6, 1, 5, Robot.driveTrain.getGyroPIDSource(), 
+        // @TODO: Re-calibrate PID for this year
+        pid = new PIDController(0.05, 0.01, 0.01, 5.0, Robot.driveTrain.getGyroPIDSource(), 
         		Robot.driveTrain.getDrivePIDOutput(true));
     }
 
@@ -39,16 +39,16 @@ public class RotateDriveWithGyro extends Command {
     	Robot.driveTrain.reset();
     	
     	// Make input infinite
-    	PID.setContinuous();
+    	pid.setContinuous();
     	// Set output speed range
-    	PID.setOutputRange(-speed, speed);
+    	pid.setOutputRange(-speed, speed);
     	// Will accept within 5 degrees of target
-    	PID.setAbsoluteTolerance(5);
+    	pid.setAbsoluteTolerance(5);
     	
-    	PID.setSetpoint(angle);
+    	pid.setSetpoint(angle);
     	
     	// Start going to location
-    	PID.enable();
+    	pid.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -57,13 +57,13 @@ public class RotateDriveWithGyro extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	// Check if the PID is where it should be
-        return PID.onTarget();
+        return pid.onTarget();
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	// Disable PID output and stop robot to be safe
-    	PID.disable();
+    	pid.disable();
         Robot.driveTrain.drive(0, 0);
     }
 
