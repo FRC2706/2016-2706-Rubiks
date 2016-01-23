@@ -135,7 +135,7 @@ public class DriveTrain extends Subsystem {
 	 * 
 	 * @return The robot's drive PIDOutput
 	 */
-	public PIDOutput getDrivePIDOutput(final boolean invert) {
+	public PIDOutput getDrivePIDOutput(boolean invert) {
 		drivePIDOutput.setInverted(invert);
 		return drivePIDOutput;
 	}
@@ -213,13 +213,13 @@ public class DriveTrain extends Subsystem {
 		
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {
-			// Let left encoder take priority
+			// Left encoder takes priority
 			driveTrain.left_encoder.setPIDSourceType(pidSource);
 		};
 
 		@Override
 		public PIDSourceType getPIDSourceType() {
-			// Let left encoder take priority
+			// Left encoder takes priority
 			return driveTrain.left_encoder.getPIDSourceType();
 		}
 
