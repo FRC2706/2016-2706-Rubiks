@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team2706.robot.Robot;
@@ -23,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * and a gyro.
  */
 public class DriveTrain extends Subsystem {
-	private SpeedController front_left_motor, back_left_motor,
+	private Victor front_left_motor, back_left_motor,
 							front_right_motor, back_right_motor;
 	private RobotDrive drive;
 	private Encoder left_encoder, right_encoder;
@@ -37,10 +36,10 @@ public class DriveTrain extends Subsystem {
 
 	public DriveTrain() {
 		super();
-		front_left_motor = new Talon(RobotMap.MOTOR_FRONT_LEFT);
-		back_left_motor = new Talon(RobotMap.MOTOR_REAR_LEFT);
-		front_right_motor = new Talon(RobotMap.MOTOR_FRONT_RIGHT);
-		back_right_motor = new Talon(RobotMap.MOTOR_REAR_RIGHT);
+		front_left_motor = new Victor(RobotMap.MOTOR_FRONT_LEFT);
+		back_left_motor = new Victor(RobotMap.MOTOR_REAR_LEFT);
+		front_right_motor = new Victor(RobotMap.MOTOR_FRONT_RIGHT);
+		back_right_motor = new Victor(RobotMap.MOTOR_REAR_RIGHT);
 		
 		front_left_motor.setInverted(true);
 		back_left_motor.setInverted(true);
@@ -78,10 +77,10 @@ public class DriveTrain extends Subsystem {
 		drivePIDOutput = new DrivePIDOutput(this);
 
 		// Let's show everything on the LiveWindow
-		LiveWindow.addActuator("Drive Train", "Front_Left Motor", (Talon) front_left_motor);
-		LiveWindow.addActuator("Drive Train", "Back Left Motor", (Talon) back_left_motor);
-		LiveWindow.addActuator("Drive Train", "Front Right Motor", (Talon) front_right_motor);
-		LiveWindow.addActuator("Drive Train", "Back Right Motor", (Talon) back_right_motor);
+		LiveWindow.addActuator("Drive Train", "Front_Left Motor", front_left_motor);
+		LiveWindow.addActuator("Drive Train", "Back Left Motor",  back_left_motor);
+		LiveWindow.addActuator("Drive Train", "Front Right Motor",  front_right_motor);
+		LiveWindow.addActuator("Drive Train", "Back Right Motor", back_right_motor);
 		LiveWindow.addSensor("Drive Train", "Left Encoder", left_encoder);
 		LiveWindow.addSensor("Drive Train", "Right Encoder", right_encoder);
 		LiveWindow.addSensor("Drive Train", "Rangefinder", rangefinder);
