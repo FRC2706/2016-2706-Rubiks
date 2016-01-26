@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -26,6 +29,11 @@ public class DriveTrain extends Subsystem {
 	private Encoder left_encoder, right_encoder;
 	private AnalogInput rangefinder;
 	private AnalogGyro gyro;
+	
+	private GyroPIDSource gyroPIDSource;
+	private EncoderPIDSource encoderPIDSource;
+
+	private DrivePIDOutput drivePIDOutput;
 
 	public DriveTrain() {
 		super();
@@ -63,6 +71,11 @@ public class DriveTrain extends Subsystem {
 		// @TODO: Use RobotMap values
 		rangefinder = new AnalogInput(6);
 		gyro = new AnalogGyro(1);
+		
+		gyroPIDSource = new GyroPIDSource(this);
+		encoderPIDSource = new EncoderPIDSource(this);
+		
+		drivePIDOutput = new DrivePIDOutput(this);
 
 		// Let's show everything on the LiveWindow
 		LiveWindow.addActuator("Drive Train", "Front_Left Motor", (Talon) front_left_motor);
@@ -116,6 +129,23 @@ public class DriveTrain extends Subsystem {
 	public double getHeading() {
 		return gyro.getAngle();
 	}
+	
+	/**
+	 * @param invert True to invert second motor direction for rotating
+	 * 
+	 * @return The robot's drive PIDOutput
+	 */
+	public PIDOutput getDrivePIDOutput(boolean invert) {
+		drivePIDOutput.setInverted(invert);
+		return drivePIDOutput;
+	}
+	
+	/**
+	 * @return The robot's gyro PIDSource
+	 */
+	public PIDSource getGyroPIDSource() {
+		return gyroPIDSource;
+	}
 
 	/**
 	 * Reset the robots sensors to the zero states.
@@ -134,10 +164,86 @@ public class DriveTrain extends Subsystem {
 	}
 
 	/**
+	 * @return The robot's encoder PIDSource
+	 */
+	public PIDSource getEncoderPIDSource() {
+		return encoderPIDSource;
+	}
+	
+	/**
 	 * @return The distance to the obstacle detected by the rangefinder.
 	 */
 	public double getDistanceToObstacle() {
 		// Really meters in simulation since it's a rangefinder...
 		return rangefinder.getAverageVoltage();
+	}
+	
+	class GyroPIDSource implements PIDSource {
+
+		DriveTrain driveTrain;
+		
+		public GyroPIDSource(DriveTrain driveTrain) {
+			this.driveTrain = driveTrain;
+		}
+		
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			driveTrain.gyro.setPIDSourceType(pidSource);
+		};
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return driveTrain.gyro.getPIDSourceType();
+		}
+
+		@Override
+		public double pidGet() {
+			return driveTrain.getHeading();
+		}
+		
+	}
+	
+	class EncoderPIDSource implements PIDSource {
+
+		DriveTrain driveTrain;
+		
+		public EncoderPIDSource(DriveTrain driveTrain) {
+			this.driveTrain = driveTrain;
+		}
+		
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			// Left encoder takes priority
+			driveTrain.left_encoder.setPIDSourceType(pidSource);
+		};
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			// Left encoder takes priority
+			return driveTrain.left_encoder.getPIDSourceType();
+		}
+
+		@Override
+		public double pidGet() {
+			return driveTrain.getDistance();
+		}
+	}
+	class DrivePIDOutput implements PIDOutput {
+
+		DriveTrain driveTrain;
+		boolean invert;	
+		
+		public DrivePIDOutput(DriveTrain driveTrain) {
+			this.driveTrain = driveTrain;
+		}
+
+		@Override
+		public void pidWrite(double output) {
+			driveTrain.drive(output, invert ? output : -output);
+		}		
+		
+		private void setInverted(boolean invert) {
+			this.invert = invert;
+		}
 	}
 }
