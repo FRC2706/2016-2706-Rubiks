@@ -49,18 +49,17 @@ public class DriveTrain extends Subsystem {
 		drive = new RobotDrive(front_left_motor, back_left_motor,
 							   front_right_motor, back_right_motor);
 		
-		// @TODO: Use RobotMap values
-		left_encoder = new Encoder(1, 2);
-		right_encoder = new Encoder(3, 4);
+		left_encoder = new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B);
+		right_encoder = new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B);
 
 		// Encoders may measure differently in the real world and in
-		// simulation. In this example the robot moves 0.042 barleycorns
+		// simulation. In this example the robot move at some random value
 		// per tick in the real world, but the simulated encoders
 		// simulate 360 tick encoders. This if statement allows for the
 		// real robot to handle this difference in devices.
 		if (Robot.isReal()) {
-			left_encoder.setDistancePerPulse(0.042);
-			right_encoder.setDistancePerPulse(0.042);
+			left_encoder.setDistancePerPulse(RobotMap.ENCODER_LEFT_DPP);
+			right_encoder.setDistancePerPulse(RobotMap.ENCODER_RIGHT_DPP);
 		} else {
 			// Circumference in ft = 4in/12(in/ft)*PI
 			left_encoder.setDistancePerPulse((4.0/12.0*Math.PI) / 360.0);
@@ -101,8 +100,8 @@ public class DriveTrain extends Subsystem {
 	public void log() {
 		SmartDashboard.putNumber("Left Distance", left_encoder.getDistance());
 		SmartDashboard.putNumber("Right Distance", right_encoder.getDistance());
-		SmartDashboard.putNumber("Left Speed", left_encoder.getRate());
-		SmartDashboard.putNumber("Right Speed", right_encoder.getRate());
+		SmartDashboard.putNumber("Left Speed (RPM)", left_encoder.getRate());
+		SmartDashboard.putNumber("Right Speed (RPM)", right_encoder.getRate());
 		SmartDashboard.putNumber("Gyro", gyro.getAngle());
 	}
 
@@ -238,7 +237,7 @@ public class DriveTrain extends Subsystem {
 
 		@Override
 		public void pidWrite(double output) {
-			driveTrain.drive(output, invert ? output : -output);
+			driveTrain.drive(-output, -(invert ? -output : output));
 		}		
 		
 		private void setInverted(boolean invert) {

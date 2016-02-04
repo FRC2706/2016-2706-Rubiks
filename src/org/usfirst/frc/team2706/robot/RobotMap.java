@@ -18,5 +18,13 @@ public class RobotMap {
 	
 	public static final int CAN_ADDR_PNEUMATIC = 0;
 	
-	// @TODO: Get encoder channels, gyro channel, and rangefinder channel
+	public static final int ENCODER_LEFT_A = 1;
+	public static final int ENCODER_LEFT_B = 0;
+	public static final double ENCODER_LEFT_DPP = 0.0123231322;
+	
+	public static final int ENCODER_RIGHT_A = 2;
+	public static final int ENCODER_RIGHT_B = 3;
+	public static final double ENCODER_RIGHT_DPP = 0.0123145126;
+	
+	// @TODO: Get Gyro channel, and rangefinder channel11
 }
