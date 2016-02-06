@@ -4,6 +4,7 @@ import org.usfirst.frc.team2706.robot.Robot;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Have the robot drive certain amount of time
@@ -30,8 +31,14 @@ public class StraightDriveWithEncoders extends Command {
         this.distance = distance;
         
         // @TODO: Re-calibrate PID for this year
-        pid = new PIDController(0.05, 0.01, 0.01, 1/12, Robot.driveTrain.getEncoderPIDSource(), 
-        		Robot.driveTrain.getDrivePIDOutput(false));
+        pid = new PIDController(
+       		SmartDashboard.getNumber("P", 0.05), 
+       		SmartDashboard.getNumber("I", 0.01), 
+       		SmartDashboard.getNumber("D", 0.01), 
+       		SmartDashboard.getNumber("F", 0.5), 
+       		Robot.driveTrain.getEncoderPIDSource(), 
+       		Robot.driveTrain.getDrivePIDOutput(false)
+        );
     }
 
     // Called just before this Command runs the first time
@@ -43,7 +50,7 @@ public class StraightDriveWithEncoders extends Command {
     	// Set output speed range
     	pid.setOutputRange(-speed, speed);
     	// Will accept within 1 inch of target
-    	pid.setAbsoluteTolerance(1/12);
+    	pid.setAbsoluteTolerance(6.0/12);
     	
     	pid.setSetpoint(distance);
     	
