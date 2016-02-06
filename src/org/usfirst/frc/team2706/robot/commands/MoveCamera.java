@@ -21,9 +21,18 @@ public class MoveCamera extends Command {
 	@Override
 	protected void execute() {
 		// TODO Auto-generated method stub
-		target = Robot.camera.getVisionDataByTarget(TARGET);
-		cachedLocationX = (int) target.ctrX;
-		cachedLocationY = (int) target.ctrY;
+		
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				target = Robot.camera.getVisionDataByTarget(TARGET);
+				cachedLocationX = (int) target.ctrX;
+				cachedLocationY = (int) target.ctrY;
+			}
+			
+		}).start();
+
 		Robot.camera.SetServoAngles(cachedLocationX,cachedLocationY);
 	}
 
