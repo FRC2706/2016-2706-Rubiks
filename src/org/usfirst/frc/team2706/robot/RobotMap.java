@@ -17,6 +17,9 @@ public class RobotMap {
 	public static final int MOTOR_REAR_LEFT = 2;
 	
 	public static final int CAN_ADDR_PNEUMATIC = 0;
-	
+	//Motor for panning camera
+	public static final int MOTOR_CAMERA_PAN = 8;
+	//Motor for tilting camera
+	public static final int MOTOR_CAMERA_TILT = 9;
 	// @TODO: Get encoder channels, gyro channel, and rangefinder channel
 }

@@ -2,6 +2,8 @@
 package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
+import org.usfirst.frc.team2706.robot.commands.MoveCamera;
+import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -19,11 +21,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
+	public static Camera camera;
 	public static DriveTrain driveTrain;
 	public static OI oi;
 
     Command autonomousCommand;
+    MoveCamera cameraCommand;
     SendableChooser chooser;
 
     /**
@@ -34,7 +37,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         driveTrain = new DriveTrain();
         chooser = new SendableChooser();
+        camera = new Camera(Camera.CAMERA_IP);
         chooser.addDefault("Default Auto", new ArcadeDriveWithJoystick());
+        cameraCommand = new MoveCamera();
         
         SmartDashboard.putData("Auto mode", chooser);
     }
@@ -63,9 +68,10 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
         autonomousCommand = (Command) chooser.getSelected();
-    	
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+        
+        cameraCommand.start();
     }
 
     /**
@@ -82,6 +88,8 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        
+        cameraCommand.cancel();
     }
 
     /**
