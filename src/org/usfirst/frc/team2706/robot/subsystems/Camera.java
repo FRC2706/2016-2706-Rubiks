@@ -20,6 +20,8 @@ public class Camera extends Subsystem {
 	public final int changeProfilePort = 1181;
 	public final  int getVisionDataPort = 1182;
 public Camera(String ip) {
+	super();
+	
 	RPi_addr = ip;
 	panServo = new Servo(RobotMap.MOTOR_CAMERA_PAN);
 	tiltServo = new Servo(RobotMap.MOTOR_CAMERA_TILT);
@@ -112,8 +114,25 @@ public Camera(String ip) {
 		
 	}
 	
-	public void SetServoAngles(int panAngle, int tiltAngle) {
-		panServo.set(panAngle);
-		tiltServo.set(tiltAngle);
+	public void SetServoAngles(float panAngle, float tiltAngle) {
+		// pan and tilt can be from -1 to 1, servos can only be 0 and 1
+		
+		//this code checks if it is all good on the camera side
+		if(panAngle <= 0 && panAngle >= -0.05 || panAngle >= 0 && panAngle <= 0.05) 
+			return;
+		//Pan servo movement
+		if(panAngle < 0) {
+			panServo.set(-panAngle / 2);
+		}
+		else if(panAngle > 0) {
+			panServo.set((panAngle / 2) + 0.5);
+		}
+		//Tilt servo movement
+		if(tiltAngle < 0) {
+			panServo.set(-tiltAngle / 2);
+		}
+		else if(tiltAngle > 0) {
+			panServo.set((tiltAngle / 2) + 0.5);
+		}
 	}
 }

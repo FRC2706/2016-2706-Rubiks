@@ -71,7 +71,7 @@ public class Robot extends IterativeRobot {
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
         
-        cameraCommand.start();
+        
     }
 
     /**
@@ -88,7 +88,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-        
+        cameraCommand.start();
         cameraCommand.cancel();
     }
 
