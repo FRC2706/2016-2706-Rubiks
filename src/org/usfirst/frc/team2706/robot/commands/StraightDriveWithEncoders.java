@@ -15,7 +15,10 @@ public class StraightDriveWithEncoders extends Command {
 	
 	private final double distance;
 	
-	private final PIDController pid;
+	private final PIDController leftPID;
+	private final PIDController rightPID;
+	
+	private final double P=0, I=0, D=0, F=0;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -31,13 +34,14 @@ public class StraightDriveWithEncoders extends Command {
         this.distance = distance;
         
         // @TODO: Re-calibrate PID for this year
-        pid = new PIDController(
-       		SmartDashboard.getNumber("P", 0.05), 
-       		SmartDashboard.getNumber("I", 0.01), 
-       		SmartDashboard.getNumber("D", 0.01), 
-       		SmartDashboard.getNumber("F", 0.5), 
-       		Robot.driveTrain.getEncoderPIDSource(), 
-       		Robot.driveTrain.getDrivePIDOutput(false)
+        leftPID = new PIDController(0,0,0,	 
+       		Robot.driveTrain.getEncoderPIDSource(true), 
+       		Robot.driveTrain.getDrivePIDOutput(false, true)
+        );
+        
+        rightPID = new PIDController(0,0,0,	 
+           	Robot.driveTrain.getEncoderPIDSource(false), 
+           	Robot.driveTrain.getDrivePIDOutput(true, false)
         );
     }
 
@@ -45,17 +49,37 @@ public class StraightDriveWithEncoders extends Command {
     protected void initialize() {
     	Robot.driveTrain.reset();
     	
-    	// Make input infinite
-    	pid.setContinuous();
-    	// Set output speed range
-    	pid.setOutputRange(-speed, speed);
-    	// Will accept within 1 inch of target
-    	pid.setAbsoluteTolerance(6.0/12);
+    	leftPID.setPID(       	
+    		SmartDashboard.getNumber("P", P), 
+           	SmartDashboard.getNumber("I", I), 
+          	SmartDashboard.getNumber("D", D), 
+          	SmartDashboard.getNumber("F", F)
+    	);
+    	rightPID.setPID(       	
+        	SmartDashboard.getNumber("P", P), 
+        	SmartDashboard.getNumber("I", I), 
+        	SmartDashboard.getNumber("D", D), 
+        	SmartDashboard.getNumber("F", F)
+        );    	
     	
-    	pid.setSetpoint(distance);
+    	// Make input infinite
+    	leftPID.setContinuous();
+    	rightPID.setContinuous();
+    	
+    	// Set output speed range
+    	leftPID.setOutputRange(-speed, speed);
+    	rightPID.setOutputRange(-speed, speed);
+    	
+    	// Will accept within 1 inch of target
+    	leftPID.setAbsoluteTolerance(6.0/12);
+    	rightPID.setAbsoluteTolerance(6.0/12);
+    	
+    	leftPID.setSetpoint(distance);
+    	rightPID.setSetpoint(distance);
     	
     	// Start going to location
-    	pid.enable();
+    	leftPID.enable();
+    	rightPID.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -64,13 +88,14 @@ public class StraightDriveWithEncoders extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	// Check if the PID is where it should be
-        return pid.onTarget();
+        return leftPID.onTarget() && rightPID.onTarget();
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	// Disable PID output and stop robot to be safe
-    	pid.disable();
+    	leftPID.disable();
+    	rightPID.disable();
         Robot.driveTrain.drive(0, 0);
     }
 

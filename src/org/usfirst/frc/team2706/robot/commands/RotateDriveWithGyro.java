@@ -14,7 +14,8 @@ public class RotateDriveWithGyro extends Command {
 	
 	private final double angle;
 	
-	private final PIDController pid;
+	private final PIDController leftPID;
+	private final PIDController rightPID;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -30,8 +31,11 @@ public class RotateDriveWithGyro extends Command {
         this.angle = angle;
         
         // @TODO: Re-calibrate PID for this year
-        pid = new PIDController(0.05, 0.01, 0.01, 5.0, Robot.driveTrain.getGyroPIDSource(), 
-        		Robot.driveTrain.getDrivePIDOutput(true));
+        leftPID = new PIDController(0.05, 0.01, 0.01, 5.0, Robot.driveTrain.getGyroPIDSource(false), 
+        		Robot.driveTrain.getDrivePIDOutput(false, true));
+        
+        rightPID = new PIDController(0.05, 0.01, 0.01, 5.0, Robot.driveTrain.getGyroPIDSource(false), 
+        		Robot.driveTrain.getDrivePIDOutput(true, false));
     }
 
     // Called just before this Command runs the first time
@@ -39,16 +43,23 @@ public class RotateDriveWithGyro extends Command {
     	Robot.driveTrain.reset();
     	
     	// Make input infinite
-    	pid.setContinuous();
-    	// Set output speed range
-    	pid.setOutputRange(-speed, speed);
-    	// Will accept within 5 degrees of target
-    	pid.setAbsoluteTolerance(5);
+    	leftPID.setContinuous();
+    	rightPID.setContinuous();
     	
-    	pid.setSetpoint(angle);
+    	// Set output speed range
+    	leftPID.setOutputRange(-speed, speed);
+    	rightPID.setOutputRange(-speed, speed);
+    	
+    	// Will accept within 5 degrees of target
+    	leftPID.setAbsoluteTolerance(5);
+    	rightPID.setAbsoluteTolerance(5);
+    	
+    	leftPID.setSetpoint(angle);
+    	rightPID.setSetpoint(angle);
     	
     	// Start going to location
-    	pid.enable();
+    	leftPID.enable();
+    	rightPID.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -57,13 +68,15 @@ public class RotateDriveWithGyro extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	// Check if the PID is where it should be
-        return pid.onTarget();
+        return leftPID.onTarget() && rightPID.onTarget();
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	// Disable PID output and stop robot to be safe
-    	pid.disable();
+    	leftPID.disable();
+    	rightPID.disable();
+    	
         Robot.driveTrain.drive(0, 0);
     }
 

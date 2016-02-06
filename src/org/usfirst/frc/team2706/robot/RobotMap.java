@@ -18,12 +18,13 @@ public class RobotMap {
 	
 	public static final int CAN_ADDR_PNEUMATIC = 0;
 	
-	public static final int ENCODER_LEFT_A = 1;
-	public static final int ENCODER_LEFT_B = 0;
+	// XXX: Encoders got flipped
+	public static final int ENCODER_LEFT_A = 2;
+	public static final int ENCODER_LEFT_B = 3;
 	public static final double ENCODER_LEFT_DPP = 1.0/1960;
 	
-	public static final int ENCODER_RIGHT_A = 2;
-	public static final int ENCODER_RIGHT_B = 3;
+	public static final int ENCODER_RIGHT_A = 1;
+	public static final int ENCODER_RIGHT_B = 0;
 	public static final double ENCODER_RIGHT_DPP = 1.0/1960;
 	
 	// @TODO: Get Gyro channel, and rangefinder channel11

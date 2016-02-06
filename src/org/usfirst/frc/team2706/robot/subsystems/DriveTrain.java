@@ -30,9 +30,9 @@ public class DriveTrain extends Subsystem {
 	private AnalogGyro gyro;
 	
 	private GyroPIDSource gyroPIDSource;
-	private EncoderPIDSource encoderPIDSource;
 
-	private DrivePIDOutput drivePIDOutput;
+	private DrivePIDOutput leftDrivePIDOutput;
+	private DrivePIDOutput rightDrivePIDOutput;
 
 	public DriveTrain() {
 		super();
@@ -71,9 +71,9 @@ public class DriveTrain extends Subsystem {
 		gyro = new AnalogGyro(1);
 		
 		gyroPIDSource = new GyroPIDSource(this);
-		encoderPIDSource = new EncoderPIDSource(this);
 		
-		drivePIDOutput = new DrivePIDOutput(this);
+		leftDrivePIDOutput = new DrivePIDOutput(new RobotDrive(front_left_motor, back_left_motor));
+		rightDrivePIDOutput = new DrivePIDOutput(new RobotDrive(front_right_motor, back_right_motor));
 
 		// Let's show everything on the LiveWindow
 		LiveWindow.addActuator("Drive Train", "Front_Left Motor", front_left_motor);
@@ -133,15 +133,22 @@ public class DriveTrain extends Subsystem {
 	 * 
 	 * @return The robot's drive PIDOutput
 	 */
-	public PIDOutput getDrivePIDOutput(boolean invert) {
-		drivePIDOutput.setInverted(invert);
-		return drivePIDOutput;
+	public PIDOutput getDrivePIDOutput(boolean invert, boolean left) {
+		if(left) {
+			leftDrivePIDOutput.invert(invert);
+			return leftDrivePIDOutput;
+		}
+		else {
+			rightDrivePIDOutput.invert(invert);
+			return rightDrivePIDOutput;
+		}
 	}
 	
 	/**
 	 * @return The robot's gyro PIDSource
 	 */
-	public PIDSource getGyroPIDSource() {
+	public PIDSource getGyroPIDSource(boolean invert) {
+		gyroPIDSource.invert(invert);
 		return gyroPIDSource;
 	}
 
@@ -164,8 +171,13 @@ public class DriveTrain extends Subsystem {
 	/**
 	 * @return The robot's encoder PIDSource
 	 */
-	public PIDSource getEncoderPIDSource() {
-		return encoderPIDSource;
+	public PIDSource getEncoderPIDSource(boolean left) {
+		if(left) {
+			return left_encoder;
+		}
+		else {
+			return right_encoder;
+		}
 	}
 	
 	/**
@@ -178,7 +190,8 @@ public class DriveTrain extends Subsystem {
 	
 	class GyroPIDSource implements PIDSource {
 
-		DriveTrain driveTrain;
+		private final DriveTrain driveTrain;
+		private boolean invert;
 		
 		public GyroPIDSource(DriveTrain driveTrain) {
 			this.driveTrain = driveTrain;
@@ -196,52 +209,33 @@ public class DriveTrain extends Subsystem {
 
 		@Override
 		public double pidGet() {
-			return driveTrain.getHeading();
+			return invert ? driveTrain.getHeading() : -driveTrain.getHeading();
 		}
 		
-	}
-	
-	class EncoderPIDSource implements PIDSource {
-
-		DriveTrain driveTrain;
 		
-		public EncoderPIDSource(DriveTrain driveTrain) {
-			this.driveTrain = driveTrain;
-		}
-		
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			// Left encoder takes priority
-			driveTrain.left_encoder.setPIDSourceType(pidSource);
-		};
-
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			// Left encoder takes priority
-			return driveTrain.left_encoder.getPIDSourceType();
-		}
-
-		@Override
-		public double pidGet() {
-			return driveTrain.getDistance();
-		}
-	}
-	class DrivePIDOutput implements PIDOutput {
-
-		DriveTrain driveTrain;
-		boolean invert;	
-		
-		public DrivePIDOutput(DriveTrain driveTrain) {
-			this.driveTrain = driveTrain;
-		}
-
-		@Override
-		public void pidWrite(double output) {
-			driveTrain.drive(-output, -(invert ? -output : output));
-		}		
-		
-		private void setInverted(boolean invert) {
+		public void invert(boolean invert) {
 			this.invert = invert;
 		}
+	}
+	
+	class DrivePIDOutput implements PIDOutput {
+
+		private final RobotDrive drive;	
+		
+		boolean invert = false;
+		
+		public DrivePIDOutput(RobotDrive drive) {
+			this.drive = drive;
+		}
+
+		public void invert(boolean invert) {
+			this.invert = invert;
+		}
+		
+		@Override
+		public void pidWrite(double output) {
+			// XXX: Motors must be opposite to avoid fighting
+			drive.tankDrive(invert ? output : -output, invert ? -output : output);
+		}		
 	}
 }
