@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2706.robot.commands;
 
+import java.util.Random;
+
 import org.usfirst.frc.team2706.robot.Robot;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
 
@@ -26,9 +28,14 @@ public class MoveCamera extends Command {
 
 			@Override
 			public void run() {
+				try {
 				target = Robot.camera.getVisionDataByTarget(TARGET);
 				cachedLocationX = (int) target.ctrX;
 				cachedLocationY = (int) target.ctrY;
+				System.out.println("Network call finished, current location is: " + cachedLocationX + "," + cachedLocationY);
+				} catch(NullPointerException e) {
+					System.out.println("Data retrieval failed, resorting to last known values");
+				}
 			}
 			
 		}).start();
@@ -38,7 +45,7 @@ public class MoveCamera extends Command {
 
 	@Override
 	protected void initialize() {
-
+System.out.println("Camera Initialized");
 	}
 
 	@Override

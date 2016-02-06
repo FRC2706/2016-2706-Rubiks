@@ -67,7 +67,7 @@ public Camera(String ip) {
 
 //				System.out.println("ParticleReport:\n" + pr);
 			} catch (java.io.EOFException e) {
-				System.out.println("TrackerBox2: Communication Error");
+				System.out.println("Camera: Communication Error");
 			}
 			
 			sock.close();
@@ -75,12 +75,13 @@ public Camera(String ip) {
 			System.out.println("Host unknown: "+RPi_addr);
 			return null;
 		} catch (java.net.ConnectException e) {
-			System.out.println("TrackerBox Raspberry Pi is either not connected, or is not at address " + RPi_addr);
+			System.out.println("Camera initialization failed at: " + RPi_addr);
 			return null;
 		} catch( IOException e) {
 			e.printStackTrace();
 			return null;
 		}
+		System.out.println("Network call successful, returning not null data...");
 		return prList;
 	}
 
