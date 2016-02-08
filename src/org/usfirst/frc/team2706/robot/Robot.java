@@ -3,6 +3,7 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2706.robot.subsystems.Platform;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,10 +20,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
+	
 	public static DriveTrain driveTrain;
+	public static Platform motors;
 	public static OI oi;
 
+	Command Shoot;
+	
     Command autonomousCommand;
     SendableChooser chooser;
 
@@ -104,5 +108,6 @@ public class Robot extends IterativeRobot {
 	 */
     private void log() {
         driveTrain.log();
+        
     }
 }

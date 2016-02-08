@@ -18,5 +18,10 @@ public class RobotMap {
 	
 	public static final int CAN_ADDR_PNEUMATIC = 0;
 	
+	// @TODO: Get channel of motors and pneumatics that shoot
+	// Using drive motors now
+	public static final int MOTOR_PLATFORM_LEFT = 3;
+	public static final int MOTOR_PLATFORM_RIGHT = 0;
+	
 	// @TODO: Get encoder channels, gyro channel, and rangefinder channel
 }

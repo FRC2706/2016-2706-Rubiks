@@ -1,8 +1,13 @@
 package org.usfirst.frc.team2706.robot;
 
+
+import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
+import org.usfirst.frc.team2706.robot.commands.ShootBall;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -11,9 +16,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 @SuppressWarnings("unused")
 public class OI {
     //// CREATING BUTTONS
-    // One type of button is a joystick button which is any button on a joystick.
-    // You create one by telling it which joystick it's on and which button
-    // number it is.
+	// One type of button is a joystick button which is any button on a joystick.
+	// You create one by telling it which joystick it's on and which button
+	// number it is.
     // Joystick stick = new Joystick(port);
     // Button button = new JoystickButton(stick, buttonNumber);
     
@@ -40,10 +45,23 @@ public class OI {
 	// @TODO: Arcade drive joystick (Backwards)
 	Joystick stick = new Joystick(0);
 	
+	
+	
+	// button to shoot ball
+	Button buttonShoot = new JoystickButton(stick, 1);
+	
+	
+
 	// buttonUp = new JoystickButton(stick, 5);
 	
     public Joystick getJoystick() {
         return stick;
+    }
+    
+    public OI() {
+    	// When button is held the motors start spinning up and shoot the ball
+    	// @TODO edit the speed of the motors
+    	buttonShoot.whenPressed(new ShootBall(0.5));
     }
 }
 
