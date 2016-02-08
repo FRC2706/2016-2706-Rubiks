@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class MoveCamera extends Command {
 	float boat; // must be a float or else it sinks
 	public static final int TARGET = -1;
-	private float cachedLocationX = 0.5f;
-	private float cachedLocationY = 1;
+	private float cachedLocationX = Camera.DEFAULT_PAN;
+	private float cachedLocationY = Camera.DEFAULT_TILT;
 	private Camera.TargetObject target;
 	public MoveCamera() {
 	     requires(Robot.camera);

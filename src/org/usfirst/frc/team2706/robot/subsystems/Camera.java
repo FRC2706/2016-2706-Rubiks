@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 
 public class Camera extends Subsystem {
-	public static final String CAMERA_IP = "192.168.1.10";
+	public static final String CAMERA_IP = "10.27.6.231";
+	public static final float DEFAULT_PAN = 0.5f;
+	public static final float DEFAULT_TILT = 1;
 	public Servo panServo; 
 	public Servo tiltServo;
 	public  String RPi_addr;
@@ -27,21 +29,22 @@ public Camera(String ip) {
 	tiltServo = new Servo(RobotMap.MOTOR_CAMERA_TILT);
 }
 	public class TargetObject {
-		  public float boundingArea;     // % of cam [0, 1.0]
+		  public float boundingArea = -1;     // % of cam [0, 1.0]
 		  //center of target
-		  public float ctrX;             // [-1.0, 1.0]
-		  public float ctrY;             // [-1.0, 1.0]
+		  public float ctrX = DEFAULT_PAN;             // [-1.0, 1.0]
+		  public float ctrY = DEFAULT_TILT;             // [-1.0, 1.0]
 		  // the aspect ratio of the target we found. This can be used directly as a poor-man's measure of skew.
-		  public float aspectRatio;
-		public String toString() {
+		  public float aspectRatio = -1;
+/*		public String toString() {
 			return ctrX + "," + ctrY + "," + boundingArea + "," + aspectRatio;
-		}
+		}*/
 	}
 	
 	@SuppressWarnings("deprecation")
 	public  ArrayList<TargetObject> getVisionData() {
 		ArrayList<TargetObject> prList = new ArrayList<>(); 
 		try{
+			System.out.println("testing");
 			Socket sock = new Socket(RPi_addr, getVisionDataPort);
 			
 			OutputStream outToServer = sock.getOutputStream();
@@ -56,14 +59,18 @@ public Camera(String ip) {
 			try {
 				rawData = in.readLine();
 //				System.out.println("I got back: " + rawData);
+				if(rawData.length() == 0) {
+					prList.add(new TargetObject());
+				}
 				String[] targets = rawData.split(":");
 				for(String target : targets) {
 					TargetObject pr = new TargetObject();
 					String[] targetData = rawData.split(",");
 					pr.ctrX = Float.parseFloat(targetData[0]);
 					pr.ctrY	= Float.parseFloat(targetData[1]);
-					pr.boundingArea = Float.parseFloat(targetData[2]);
-					pr.aspectRatio = Float.parseFloat(targetData[3]);
+					pr.aspectRatio = Float.parseFloat(targetData[2]);
+					pr.boundingArea = Float.parseFloat(targetData[3]);
+					System.out.println("Network call finished, current location is: " + pr.ctrX + "," + pr.ctrY + ", and aspectRatio and boundingArea is: " + pr.aspectRatio + "," + pr.boundingArea);	
 					prList.add(pr);
 				}
 
