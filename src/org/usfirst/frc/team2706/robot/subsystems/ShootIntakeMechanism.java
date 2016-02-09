@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class ShootIntakeMechanism extends Subsystem {
 	
-	// @TODO find out whether it is supposed to be at 0
+	
 	private Compressor compress;
 	private Solenoid pneu;
 	
@@ -51,28 +51,29 @@ public class ShootIntakeMechanism extends Subsystem {
 		right_encoder = new Encoder(3, 4);
 		
 		// @TODO potentially add whether the ball is in or not
-		LiveWindow.addActuator("Shooting Mechanism", "Left Motor", (Talon) left_motor);
-		LiveWindow.addActuator("Shooting Mechanism", "Right Motor", (Talon)right_motor);
-		LiveWindow.addActuator("Shooting Mechanism", "Left Encoder", left_encoder);
-		LiveWindow.addActuator("Shooting Mechanism", "Right Encoder", right_encoder);
+		LiveWindow.addActuator("ShootIntakeMechanism", "Left Motor", (Talon) left_motor);
+		LiveWindow.addActuator("ShootIntakeMechanism", "Right Motor", (Talon)right_motor);
+		LiveWindow.addActuator("ShootIntakeMechanism", "Left Encoder", left_encoder);
+		LiveWindow.addActuator("ShootIntakeMechanism", "Right Encoder", right_encoder);
 		// @TODO is this the right way to set up the Live window for the pneumatics?
-		LiveWindow.addActuator("Shooting Mechanism", "Pneumatic Punch", pneu);
-		LiveWindow.addActuator("Shooting Mechanism", "Compressor", compress);
+		LiveWindow.addActuator("ShootIntakeMechanism", "Pneumatic Punch", pneu);
+		LiveWindow.addActuator("ShootIntakeMechanism", "Compressor", compress);
 		
 	}
 	
 	// assuming that one would want to only shoot the ball at max speed
 	public void shoot(double speed) {
 		left_motor.set(speed);
-		right_motor.set(speed);
-		
+		right_motor.set(speed);	
 	}
 	
 	// pneumatic punch that hits the ball after the motors are on
 	public void pneumaticPunch() {
 		pneu.set(true);
 	}
-	
+	public void endPneumaticPunch() {
+		pneu.set(false);
+	}
 	// Speed is reversed for intakes at max speed
 	public void pickupBall(double speed) {
 		// make sure pneumatic is reset 
