@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -17,10 +18,10 @@ public class Camera extends Subsystem {
 	public static final float DEFAULT_PAN = 0.5f;
 	public static final float DEFAULT_TILT = 1;
 	public Servo panServo; 
+	public boolean PRINT_STUFF = false;
 	public Servo tiltServo;
 	public  String RPi_addr;
-	public final int changeProfilePort = 1181;
-	public final  int getVisionDataPort = 1182;
+	public final  int visionDataPort = 1182;
 public Camera(String ip) {
 	super();
 	
@@ -28,70 +29,88 @@ public Camera(String ip) {
 	panServo = new Servo(RobotMap.MOTOR_CAMERA_PAN);
 	tiltServo = new Servo(RobotMap.MOTOR_CAMERA_TILT);
 }
-	public class TargetObject {
-		  public float boundingArea = -1;     // % of cam [0, 1.0]
-		  //center of target
-		  public float ctrX = DEFAULT_PAN;             // [-1.0, 1.0]
-		  public float ctrY = DEFAULT_TILT;             // [-1.0, 1.0]
-		  // the aspect ratio of the target we found. This can be used directly as a poor-man's measure of skew.
-		  public float aspectRatio = -1;
-/*		public String toString() {
-			return ctrX + "," + ctrY + "," + boundingArea + "," + aspectRatio;
-		}*/
-	}
+public class TargetObject {
+	  public float boundingArea = -1;     // % of cam [0, 1.0]
+	  //center of target
+	  public float ctrX = -1;             // [-1.0, 1.0]
+	  public float ctrY = -1;             // [-1.0, 1.0]
+	  // the aspect ratio of the target we found. This can be used directly as a poor-man's measure of skew.
+	  public float aspectRatio = -1;
+
+		public String toString() {
+			return "position: (" + ctrX + ", " + ctrY + "), boundingArea: " + boundingArea + ", aspectRatio: " + aspectRatio;
+		}
+}
 	
 	@SuppressWarnings("deprecation")
 	public  ArrayList<TargetObject> getVisionData() {
-		ArrayList<TargetObject> prList = new ArrayList<>(); 
-		try{
-			System.out.println("testing");
-			Socket sock = new Socket(RPi_addr, getVisionDataPort);
-			
-			OutputStream outToServer = sock.getOutputStream();
-			
-			DataOutputStream out = new DataOutputStream(outToServer);
-			
-//			System.out.println("Sending request to TrackerBox2 for vision data");
-			out.writeUTF( " " ); // basically send an empty message
-			
-			String rawData = "";
-			DataInputStream in = new DataInputStream(sock.getInputStream());
-			try {
-				rawData = in.readLine();
-//				System.out.println("I got back: " + rawData);
-				if(rawData.length() == 0) {
-					prList.add(new TargetObject());
-				}
-				String[] targets = rawData.split(":");
-				for(String target : targets) {
-					TargetObject pr = new TargetObject();
-					String[] targetData = rawData.split(",");
-					pr.ctrX = Float.parseFloat(targetData[0]);
-					pr.ctrY	= Float.parseFloat(targetData[1]);
-					pr.aspectRatio = Float.parseFloat(targetData[2]);
-					pr.boundingArea = Float.parseFloat(targetData[3]);
-					System.out.println("Network call finished, current location is: " + pr.ctrX + "," + pr.ctrY + ", and aspectRatio and boundingArea is: " + pr.aspectRatio + "," + pr.boundingArea);	
-					prList.add(pr);
+			ArrayList<TargetObject> prList = new ArrayList<>();
+
+			if(PRINT_STUFF)
+				System.out.println("Setting up Sockets");
+
+			try (
+				Socket sock = new Socket(RPi_addr, visionDataPort);
+
+				PrintWriter outToServer = new PrintWriter(sock.getOutputStream(), true);
+
+				// BufferedReader inFromServer = new BufferedReader( new InputStreamReader(sock.getInputStream()));
+			) {
+				if(PRINT_STUFF)
+					System.out.println("Sending request to TrackerBox2 for vision data");
+				outToServer.println(""); // basically send an empty message
+				outToServer.flush();
+
+				byte[] rawBytes = new byte[2048];
+				try {
+					// rawData = inFromServer.read();
+					if( sock.getInputStream().read(rawBytes) < 0 ) {
+						System.out.println("Something went wrong reading response from TrackerBox2");
+						return null;
+					}
+
+					String rawData = new String(rawBytes);
+					if(PRINT_STUFF)
+						System.out.println("I got back: " + rawData);
+
+					if(rawData.length() == 0) {
+						prList.add(new TargetObject());
+					}
+					String[] targets = rawData.split(":");
+					for(String target : targets) {
+						String[] targetData = target.split(",");
+
+						TargetObject pr = new TargetObject();
+						pr.ctrX = Float.parseFloat(targetData[0]);
+						pr.ctrY	= Float.parseFloat(targetData[1]);
+						pr.aspectRatio = Float.parseFloat(targetData[2]);
+						pr.boundingArea = Float.parseFloat(targetData[3]);
+
+						if(PRINT_STUFF)
+							System.out.println("Target found at: " + pr.ctrX + "," + pr.ctrY + ", and aspectRatio and boundingArea is: " + pr.aspectRatio + "," + pr.boundingArea);
+
+						prList.add(pr);
+					}
+
+				} catch (java.io.EOFException e) {
+					System.out.println("Camera: Communication Error");
 				}
 
-//				System.out.println("ParticleReport:\n" + pr);
-			} catch (java.io.EOFException e) {
-				System.out.println("Camera: Communication Error");
+				sock.close();
+			} catch ( UnknownHostException e) {
+				System.out.println("Host unknown: "+RPi_addr);
+				return null;
+			} catch (java.net.ConnectException e) {
+				System.out.println("Camera initialization failed at: " + RPi_addr);
+				return null;
+			} catch( IOException e) {
+				e.printStackTrace();
+				return null;
 			}
-			
-			sock.close();
-		} catch ( UnknownHostException e) {
-			System.out.println("Host unknown: "+RPi_addr);
-			return null;
-		} catch (java.net.ConnectException e) {
-			System.out.println("Camera initialization failed at: " + RPi_addr);
-			return null;
-		} catch( IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		System.out.println("Network call successful, returning not null data...");
-		return prList;
+			if(PRINT_STUFF)
+				System.out.println("Network call successful, returning not null data...");
+
+			return prList;
 	}
 
 
