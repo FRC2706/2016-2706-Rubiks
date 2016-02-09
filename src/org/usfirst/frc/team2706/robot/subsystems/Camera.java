@@ -16,8 +16,8 @@ public class Camera extends Subsystem {
 	public static final String CAMERA_IP = "10.27.6.231";
 	public static final float DEFAULT_PAN = 0.5f;
 	public static final float DEFAULT_TILT = 1;
-	public Servo panServo; 
-	public Servo tiltServo;
+	public Servo turnXAxis; 
+	public Servo turnYAxis;
 	public  String RPi_addr;
 	public final int changeProfilePort = 1181;
 	public final  int getVisionDataPort = 1182;
@@ -25,7 +25,7 @@ public Camera(String ip) {
 	super();
 	
 	RPi_addr = ip;
-	panServo = new Servo(RobotMap.MOTOR_CAMERA_PAN);
+	turnXAxis = new Servo(RobotMap.MOTOR_CAMERA_PAN);
 	tiltServo = new Servo(RobotMap.MOTOR_CAMERA_TILT);
 }
 	public class TargetObject {
@@ -120,26 +120,39 @@ public Camera(String ip) {
 		// TODO Auto-generated method stub
 		
 	}
-	
+	public float savedXaxis = DEFAULT_PAN;
+	public float savedYaxis = DEFAULT_TILT;
+	public boolean inDeadZoneX = false;
+	public boolean inDeadZoneY = false;
 	public void SetServoAngles(float panAngle, float tiltAngle) {
 		// pan and tilt can be from -1 to 1, servos can only be 0 and 1
 		
 		//this code checks if it is all good on the camera side
-		if(panAngle <= 0 && panAngle >= -0.05 || panAngle >= 0 && panAngle <= 0.05) 
-			return;
-		//Pan servo movement
-		if(panAngle < 0) {
-			panServo.set(-panAngle / 2);
+		if(panAngle <= DEFAULT_PAN && panAngle >= DEFAULT_PAN -0.05 || panAngle >= DEFAULT_PAN && panAngle <= DEFAULT_PAN + 0.05) {
+			inDeadZoneX = true;
 		}
-		else if(panAngle > 0) {
-			panServo.set((panAngle / 2) + 0.5);
+		if(tiltAngle <= DEFAULT_TILT && tiltAngle >= DEFAULT_TILT -0.05 || tiltAngle >= DEFAULT_TILT && tiltAngle <= DEFAULT_TILT + 0.05) {
+			inDeadZoneY = true;
+		}
+		//Pan servo movement
+		if(panAngle < 0 && !inDeadZoneX) {
+			turnXAxis.set((-panAngle / 2) + savedXaxis);
+			savedXaxis = (-panAngle / 2) + savedXaxis;
+		}
+		else if(panAngle > 0 && !inDeadZoneX) {
+			turnXAxis.set((panAngle / 2) + 0.25 + savedXaxis);
+			savedXaxis = ((panAngle / 2) + 0.25f + savedXaxis);
 		}
 		//Tilt servo movement
-		if(tiltAngle < 0) {
-			panServo.set(-tiltAngle / 2);
+		if(tiltAngle < 0 && !inDeadZoneY) {
+			turnYAxis.set(-tiltAngle / 2 + savedYaxis);
+			savedYaxis = (-tiltAngle / 2 + savedYaxis);
 		}
-		else if(tiltAngle > 0) {
-			panServo.set((tiltAngle / 2) + 0.5);
+		else if(tiltAngle > 0 && !inDeadZoneY) {
+			turnYAxis.set((tiltAngle / 2) + 0.25 + savedYaxis);
+			savedYaxis = ((tiltAngle / 2) + 0.25f + savedYaxis);
+		
+
 		}
 	}
 }
