@@ -1,6 +1,6 @@
 package org.usfirst.frc.team2706.robot.commands;
 
-
+// @TODO should program run on a timer
 import java.util.TimerTask;
 
 import org.usfirst.frc.team2706.robot.Robot;
@@ -9,11 +9,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ShootBall extends Command {
 
 	
-	private final double speed;
+	private double speed;
 	
 	public ShootBall(double speed) {
 		super();
-		
 		
 		// requires, etc. code
 		this.speed = speed;
@@ -24,7 +23,7 @@ public class ShootBall extends Command {
 	}
 	
 	public void execute() {
-		Robot.motors.shoot(speed);
+		Robot.platformMotors.shoot(speed);
 	}
 	
 	protected boolean isFinished() {
@@ -42,7 +41,9 @@ public class ShootBall extends Command {
 
 	@Override
 	protected void end() {
-		// TODO Auto-generated method stub
+		// shut off motors
+		Robot.platformMotors.shoot(0);
 		
+		// @TODO does the pneumatic thing have to be reset?
 	}
 }

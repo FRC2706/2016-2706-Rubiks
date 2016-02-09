@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2706.robot;
 
 
+import org.usfirst.frc.team2706.robot.commands.IntakeBall;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
 import org.usfirst.frc.team2706.robot.commands.ShootBall;
 
@@ -49,6 +50,7 @@ public class OI {
 	
 	// button to shoot ball
 	Button buttonShoot = new JoystickButton(stick, 1);
+	Button buttonIntake = new JoystickButton(stick, 2);
 	
 	
 
@@ -62,6 +64,7 @@ public class OI {
     	// When button is held the motors start spinning up and shoot the ball
     	// @TODO edit the speed of the motors
     	buttonShoot.whenPressed(new ShootBall(0.5));
+    	buttonIntake.whenPressed(new IntakeBall(0.5));
     }
 }
 
