@@ -1,11 +1,12 @@
 package org.usfirst.frc.team2706.robot.commands;
 
-// @TODO should program run on a timer
-import java.util.TimerTask;
-
 import org.usfirst.frc.team2706.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
+/*
+ * Starts turning on the motors, then once the user is ready
+ * they can press the button to shoot the ball
+ */
 public class ShootBallMotors extends Command {
 
 	private double speed;
@@ -44,7 +45,5 @@ public class ShootBallMotors extends Command {
 	protected void end() {
 		// shut off motors
 		Robot.platformMotors.shoot(0);
-		
-		// @TODO does the pneumatic thing have to be reset?
 	}
 }

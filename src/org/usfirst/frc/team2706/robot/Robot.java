@@ -3,8 +3,10 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
+import org.usfirst.frc.team2706.robot.commands.ShootBall;
 import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2706.robot.subsystems.PneumaticShoot;
 import org.usfirst.frc.team2706.robot.subsystems.ShootIntakeMechanism;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -25,6 +27,7 @@ public class Robot extends IterativeRobot {
 	
 	public static DriveTrain driveTrain;
 	public static ShootIntakeMechanism platformMotors;
+	public static PneumaticShoot pneumaticShoot;
 	public static OI oi;
 
     Command autonomousCommand;
@@ -42,8 +45,9 @@ public class Robot extends IterativeRobot {
         chooser.addDefault("Default Auto", new ArcadeDriveWithJoystick());
         
         // add this except with the 
-        chooser.addObject("shootball", new ShootBallMotors(0.5));
+        chooser.addObject("shoot ball motors", new ShootBallMotors(0.5));
         chooser.addObject("intakeball", new IntakeBall(0.5));
+        chooser.addObject("shoot ball pneumatic", new ShootBall());
         
         SmartDashboard.putData("Auto mode", chooser);
         

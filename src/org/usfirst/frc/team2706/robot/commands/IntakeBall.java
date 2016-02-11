@@ -8,7 +8,7 @@ public class IntakeBall extends Command {
 	private final double speed;
 	
 	/*
-	 * Motors should be rotating in
+	 * Make sure that the motors are turning in
 	 */
 	public IntakeBall(double speed) {
 		super();
@@ -18,7 +18,6 @@ public class IntakeBall extends Command {
 	
 	@Override
 	protected void initialize() {
-		// TODO Auto-generated method stub
 		
 	}
 

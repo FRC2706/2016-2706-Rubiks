@@ -19,8 +19,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class ShootIntakeMechanism extends Subsystem {
 	
 	
-	private Compressor compress;
-	private Solenoid pneu;
+	
 	
 	private SpeedController left_motor, right_motor;
 	
@@ -37,10 +36,6 @@ public class ShootIntakeMechanism extends Subsystem {
 		left_motor = new Talon(RobotMap.MOTOR_PLATFORM_LEFT);
 		right_motor = new Talon(RobotMap.MOTOR_PLATFORM_RIGHT);
 		
-		compress = new Compressor(RobotMap.COMPRESSOR_SHOOT);
-		pneu = new Solenoid(RobotMap.SOLENOID_SHOOT);
-		compress.start();
-		compress.setClosedLoopControl(true);
 		
 		// @TODO check whether this should be true or false
 		left_motor.setInverted(false);
@@ -55,9 +50,7 @@ public class ShootIntakeMechanism extends Subsystem {
 		LiveWindow.addActuator("ShootIntakeMechanism", "Right Motor", (Talon)right_motor);
 		LiveWindow.addActuator("ShootIntakeMechanism", "Left Encoder", left_encoder);
 		LiveWindow.addActuator("ShootIntakeMechanism", "Right Encoder", right_encoder);
-		// @TODO is this the right way to set up the Live window for the pneumatics?
-		LiveWindow.addActuator("ShootIntakeMechanism", "Pneumatic Punch", pneu);
-		LiveWindow.addActuator("ShootIntakeMechanism", "Compressor", compress);
+		
 		
 	}
 	
@@ -67,17 +60,9 @@ public class ShootIntakeMechanism extends Subsystem {
 		right_motor.set(speed);	
 	}
 	
-	// pneumatic punch that hits the ball after the motors are on
-	public void pneumaticPunch() {
-		pneu.set(true);
-	}
-	public void endPneumaticPunch() {
-		pneu.set(false);
-	}
+	
 	// Speed is reversed for intakes at max speed
 	public void pickupBall(double speed) {
-		// make sure pneumatic is reset 
-		pneu.set(false);
 		// set motors to intake
 		left_motor.set(speed);
 		right_motor.set(speed);

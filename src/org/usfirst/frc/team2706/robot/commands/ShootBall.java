@@ -11,28 +11,36 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ShootBall extends Command {
 
+	float time;
+	
+	public ShootBall() {
+		super();
+		
+	}
+	
 	@Override
 	protected void initialize() {
-		// TODO Auto-generated method stub
-		
+		// take the current time and run the method for 500 milliseconds
+		time = System.currentTimeMillis();
 	}
 
 	@Override
 	protected void execute() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
+		if(time + 500 < System.currentTimeMillis())
+			return true;
+		
 		return false;
 	}
 
 	@Override
 	protected void end() {
 		// turns the pneumatics off
-		Robot.platformMotors.endPneumaticPunch();
+		Robot.pneumaticShoot.endPneumatic();
 		
 	}
 

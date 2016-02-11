@@ -3,6 +3,7 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
+import org.usfirst.frc.team2706.robot.commands.ShootBall;
 import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -65,7 +66,7 @@ public class OI {
     	// When button is held the motors start spinning up and shoot the ball
     	// @TODO edit the speed of the motors
     	buttonShoot.whenPressed(new ShootBall());
-    	Button buttonShootMotors(new ShootBallMotors(0.5));
+    	buttonShootMotors.whenPressed(new ShootBallMotors(0.5));
     	buttonIntake.whenPressed(new IntakeBall(0.5));
     }
 }
