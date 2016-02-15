@@ -18,7 +18,7 @@ public class StraightDriveWithEncoders extends Command {
 	private final PIDController leftPID;
 	private final PIDController rightPID;
 	
-	private final double P=0, I=0, D=0, F=0;
+	private final double P=1.0, I=0.0625, D=0, F=0;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -49,6 +49,7 @@ public class StraightDriveWithEncoders extends Command {
     protected void initialize() {
     	Robot.driveTrain.reset();
     	
+    	// Set the PID values using Smartdashboard
     	leftPID.setPID(       	
     		SmartDashboard.getNumber("P", P), 
            	SmartDashboard.getNumber("I", I), 
@@ -70,23 +71,32 @@ public class StraightDriveWithEncoders extends Command {
     	leftPID.setOutputRange(-speed, speed);
     	rightPID.setOutputRange(-speed, speed);
     	
-    	// Will accept within 1 inch of target
-    	leftPID.setAbsoluteTolerance(6.0/12);
-    	rightPID.setAbsoluteTolerance(6.0/12);
+
     	
     	leftPID.setSetpoint(distance);
     	rightPID.setSetpoint(distance);
     	
+    	// Will accept within 1 inch of target
+    	leftPID.setAbsoluteTolerance(6.0/12);
+    	rightPID.setAbsoluteTolerance(6.0/12);
+    	
+
+    	
     	// Start going to location
     	leftPID.enable();
     	rightPID.enable();
+    	System.out.println("init");
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {}
-
+    protected void execute() {    	
+    	SmartDashboard.putNumber("error", leftPID.getError());
+    }
+int i;
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	SmartDashboard.putBoolean("onTarget", leftPID.onTarget() && rightPID.onTarget());
+    	SmartDashboard.putNumber("isFinished", i++);
     	// Check if the PID is where it should be
         return leftPID.onTarget() && rightPID.onTarget();
     }

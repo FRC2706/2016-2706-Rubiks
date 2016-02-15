@@ -41,10 +41,10 @@ public class DriveTrain extends Subsystem {
 		front_right_motor = new Victor(RobotMap.MOTOR_FRONT_RIGHT);
 		back_right_motor = new Victor(RobotMap.MOTOR_REAR_RIGHT);
 		
-		front_left_motor.setInverted(true);
-		back_left_motor.setInverted(true);
-		front_right_motor.setInverted(true);
-		back_right_motor.setInverted(true);
+		front_left_motor.setInverted(RobotMap.MOTOR_FRONT_LEFT_INVERTED);
+		back_left_motor.setInverted(RobotMap.MOTOR_REAR_LEFT_INVERTED);
+		front_right_motor.setInverted(RobotMap.MOTOR_FRONT_RIGHT_INVERTED);
+		back_right_motor.setInverted(RobotMap.MOTOR_REAR_RIGHT_INVERTED);
 		
 		drive = new RobotDrive(front_left_motor, back_left_motor,
 							   front_right_motor, back_right_motor);
@@ -118,7 +118,8 @@ public class DriveTrain extends Subsystem {
 	 * @param joy The Xbox style joystick to use to drive arcade style.
 	 */
 	public void drive(Joystick joy) {
-		drive.arcadeDrive(joy);
+		drive.arcadeDrive(RobotMap.INVERT_JOYSTICK_Y ? -joy.getY() : joy.getY(), 
+				RobotMap.INVERT_JOYSTICK_X ? -joy.getX() : joy.getX(), true);
 	}
 
 	/**
