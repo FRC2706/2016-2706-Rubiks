@@ -75,11 +75,16 @@ public class DriveTrain extends Subsystem {
 		rangefinder = new AnalogInput(6);
 		gyro = new AHRS(SPI.Port.kMXP);
 		
+		while(gyro.isCalibrating()) {
+			;
+		}
+		
 		gyroPIDSource = new GyroPIDSource(this);
 		encoderPIDSource = new EncoderPIDSource(this);
 		
 		drivePIDOutput = new DrivePIDOutput(this);
-
+		reset();
+		
 		// Let's show everything on the LiveWindow
 		LiveWindow.addActuator("Drive Train", "Front_Left Motor", (Talon) front_left_motor);
 		LiveWindow.addActuator("Drive Train", "Back Left Motor", (Talon) back_left_motor);
