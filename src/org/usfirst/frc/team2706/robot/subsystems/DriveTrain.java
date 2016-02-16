@@ -159,6 +159,9 @@ public class DriveTrain extends Subsystem {
 	 * Reset the robots sensors to the zero states.
 	 */
 	public void reset() {
+		// This may be redundant
+		gyro.zeroYaw();
+	//	gyro.resetDisplacement();
 		gyro.reset();
 		left_encoder.reset();
 		right_encoder.reset();
