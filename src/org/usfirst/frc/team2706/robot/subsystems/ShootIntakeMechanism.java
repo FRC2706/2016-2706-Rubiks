@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2706.robot.subsystems;
 
 import org.usfirst.frc.team2706.robot.RobotMap;
+import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Encoder;
@@ -13,8 +14,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 
 /*
- * Platform motors and pneumatics ( should pneumatics be a separate file )
- * that intakes and then shoot the ball
+ * Platform motors that can intake and shoot the ball
  */
 public class ShootIntakeMechanism extends Subsystem {
 	
@@ -27,8 +27,7 @@ public class ShootIntakeMechanism extends Subsystem {
 	
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+		setDefaultCommand(new ShootBallMotors(0.5));
 	}
 	
 	public ShootIntakeMechanism() {
@@ -41,7 +40,7 @@ public class ShootIntakeMechanism extends Subsystem {
 		left_motor.setInverted(false);
 		right_motor.setInverted(false);
 		
-		// @TODO check where the encoder is supposed to be
+		// @TODO check where the encoder is supposed to be positioned
 		left_encoder = new Encoder(1, 2);
 		right_encoder = new Encoder(3, 4);
 		
@@ -50,8 +49,6 @@ public class ShootIntakeMechanism extends Subsystem {
 		LiveWindow.addActuator("ShootIntakeMechanism", "Right Motor", (Talon)right_motor);
 		LiveWindow.addActuator("ShootIntakeMechanism", "Left Encoder", left_encoder);
 		LiveWindow.addActuator("ShootIntakeMechanism", "Right Encoder", right_encoder);
-		
-		
 	}
 	
 	// assuming that one would want to only shoot the ball at max speed
@@ -60,6 +57,9 @@ public class ShootIntakeMechanism extends Subsystem {
 		right_motor.set(speed);	
 	}
 	
+	public float getMotorSpeed() {
+		return (float) left_motor.get();
+	}
 	
 	// Speed is reversed for intakes at max speed
 	public void pickupBall(double speed) {

@@ -1,12 +1,18 @@
 package org.usfirst.frc.team2706.robot.subsystems;
 
 import org.usfirst.frc.team2706.robot.RobotMap;
+import org.usfirst.frc.team2706.robot.commands.ShootBallPneumatics;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+
+/*
+ * Subsystem that turns on and off the pneumatic mechanism
+ * that pushes the ball forward to be shot out by the motors
+ */
 public class PneumaticShoot extends Subsystem {
 
 	private Compressor compress;
@@ -19,7 +25,7 @@ public class PneumaticShoot extends Subsystem {
 		compress.start();
 		compress.setClosedLoopControl(true);
 		
-		// @TODO is this the right way to set up the Live window for the pneumatics?
+		// TODO is this the right way to set up the Live window for the pneumatics?
 		LiveWindow.addActuator("ShootIntakeMechanism", "Pneumatic Punch", pneu);
 		LiveWindow.addActuator("ShootIntakeMechanism", "Compressor", compress);
 	}
@@ -34,8 +40,7 @@ public class PneumaticShoot extends Subsystem {
 	
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+		setDefaultCommand(new ShootBallPneumatics());
 	}
 
 }

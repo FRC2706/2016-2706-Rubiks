@@ -29,5 +29,8 @@ public class RobotMap {
 	public static final int SOLENOID_SHOOT = 0;
 	public static final int COMPRESSOR_SHOOT = 0;
 	
+	// pneumatic platform mover
+	public static final int SOLENOID_PLATFORM = 0;
+	public static final int COMPRESSOR_PLATFORM = 0;
 	// @TODO: Get encoder channels, gyro channel, and rangefinder channel
 }

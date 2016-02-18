@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2706.robot.commands;
 
 import org.usfirst.frc.team2706.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 
@@ -28,22 +27,23 @@ public class ShootBallPneumatics extends Command {
 
 	@Override
 	protected void execute() {
-		
+		Robot.pneumaticShoot.pneumaticPunch();
 	}
 
 	@Override
 	protected boolean isFinished() {
-		if(time + 500 < System.currentTimeMillis())
+		// if 0.5 seconds has gone by, end the command
+		if(time + 500 < System.currentTimeMillis()) {
 			return true;
+		}
 		
-		return false;
+		return isTimedOut();
 	}
 
 	@Override
 	protected void end() {
 		// turns the pneumatics off
 		Robot.pneumaticShoot.endPneumatic();
-		
 	}
 
 	@Override
