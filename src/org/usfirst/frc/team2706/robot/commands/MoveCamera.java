@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class MoveCamera extends Command {
 	float boat; // must be a float or else it sinks
-	int count = 0;
+	private long savedTimeMilis;
+	private boolean startedWaiting = false;
 	public static final int TARGET = -1;
 	private float cachedLocationX = Camera.DEFAULT_PAN;
 	private float cachedLocationY = Camera.DEFAULT_TILT;
@@ -23,14 +24,23 @@ public class MoveCamera extends Command {
 
 	@Override
 	protected void execute() {
-		//Robot.camera.FreeLook();
+		//
 		// TODO Auto-generated method stub
 
 		try {
 			target = Robot.camera.getVisionDataByTarget(TARGET);
 			Camera.cachedTarget = target;
-			if (target == null)
-				return;
+			if (target == null) {
+				if(startedWaiting == false) {
+					savedTimeMilis = System.currentTimeMillis();
+					startedWaiting = true;
+				}
+				if(System.currentTimeMillis() - savedTimeMilis > 5000) {
+					Robot.camera.FreeLook();
+				}
+			return;	
+			}
+			startedWaiting = false;
 			if(cachedLocationX != target.ctrX && cachedLocationY != target.ctrY) {
 			cachedLocationX =  target.ctrX;
 			cachedLocationY =  target.ctrY;

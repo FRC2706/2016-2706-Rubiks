@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class Camera extends Subsystem {
 	public static final String CAMERA_IP = "10.27.6.240";
 	public static final float DEFAULT_PAN = 0.5f;
 	public static final float DEFAULT_TILT = 1;
-	public static final float SEARCH_SPEED = 0.005f;
+	public static final float SEARCH_SPEED = 0.01f;
 	public static final float SEARCH_TILT_BOTTOM = 0.9f;
 	public static final float SEARCH_TILT_TOP = 0.4f;
 	public static final float SEARCH_TILT_INCREMENT = 0.1f;
@@ -74,6 +75,11 @@ public class TargetObject implements Comparable<TargetObject> {
 			System.out.println("Setting up Sockets");
 
 		Socket sock = new Socket();
+		try {
+			sock.setSoTimeout(5);
+		} catch (SocketException e1) {
+			e1.printStackTrace();
+		}
 		try {
 			sock.connect(new InetSocketAddress(RPi_addr, visionDataPort), 20);
 		} catch (Exception e) {
@@ -210,7 +216,7 @@ public class TargetObject implements Comparable<TargetObject> {
 		//}*/
 		//Tilt servo movement
 		if(!inDeadZoneY) {
-			double newVal = (tiltAngle >= 0.0 ? tiltAngle * tiltAngle : -1 * tiltAngle * tiltAngle) /7.5 ;
+			double newVal = (tiltAngle >= 0.0 ? tiltAngle * tiltAngle : -1 * tiltAngle * tiltAngle) / 7.5;
 			System.out.println(newVal);
 			
 			turnYAxis.set(turnYAxis.getPosition() + newVal);
@@ -256,5 +262,8 @@ public class TargetObject implements Comparable<TargetObject> {
 			turningRight = true;
 			turnYAxis.set(turnYAxis.getPosition() - SEARCH_TILT_INCREMENT);
 		}
+	}
+	public float RobotTurnDegrees() {
+		return (float)turnXAxis.getPosition() / (1f / 180f) - 90f;
 	}
 }
