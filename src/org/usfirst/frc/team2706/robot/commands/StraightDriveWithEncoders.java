@@ -15,8 +15,12 @@ public class StraightDriveWithEncoders extends Command {
 	
 	private final double distance;
 	
+	private final int minDoneCycles;
+	
 	private final PIDController leftPID;
 	private final PIDController rightPID;
+	
+	private int doneCount;
 	
 	private final double P=1.0, I=0.0625, D=0, F=0;
 	
@@ -24,16 +28,18 @@ public class StraightDriveWithEncoders extends Command {
 	 * Drive at a specific speed for a certain amount of time
 	 * 
 	 * @param speed Speed in range [-1,1]
-	 * @param angle The angle to rotate to
+	 * @param distance The encoder distance to travel
+	 * @param minDoneCycles The amount of cycles when the robot is within its target range to end the comman
 	 */
-    public StraightDriveWithEncoders(double speed, double distance) {
+    public StraightDriveWithEncoders(double speed, double distance, int minDoneCycles) {
         requires(Robot.driveTrain);
 
         this.speed = speed;
         
         this.distance = distance;
         
-        // @TODO: Re-calibrate PID for this year
+        this.minDoneCycles = minDoneCycles;
+
         leftPID = new PIDController(0,0,0,	 
        		Robot.driveTrain.getEncoderPIDSource(true), 
        		Robot.driveTrain.getDrivePIDOutput(false, true)
@@ -76,29 +82,29 @@ public class StraightDriveWithEncoders extends Command {
     	leftPID.setSetpoint(distance);
     	rightPID.setSetpoint(distance);
     	
-    	// Will accept within 1 inch of target
-    	leftPID.setAbsoluteTolerance(6.0/12);
-    	rightPID.setAbsoluteTolerance(6.0/12);
     	
-
+    	// Will accept within 1 inch of target
+    	leftPID.setAbsoluteTolerance(1.0/12);
+    	rightPID.setAbsoluteTolerance(1.0/12);
     	
     	// Start going to location
     	leftPID.enable();
     	rightPID.enable();
-    	System.out.println("init");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {    	
-    	SmartDashboard.putNumber("error", leftPID.getError());
+    	// TODO: Use WPI onTarget()
+    	onTarget();
     }
-int i;
+    
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	SmartDashboard.putBoolean("onTarget", leftPID.onTarget() && rightPID.onTarget());
-    	SmartDashboard.putNumber("isFinished", i++);
-    	// Check if the PID is where it should be
-        return leftPID.onTarget() && rightPID.onTarget();
+    	if(this.doneCount > this.minDoneCycles)
+    		return true;
+    	else
+    		return false;
+
     }
 
     // Called once after isFinished returns true
@@ -113,6 +119,22 @@ int i;
     // subsystems is scheduled to run
     protected void interrupted() {
         end();
+    }
+    
+    private boolean onTarget() {
+    	if(leftPID.getError() < 1.0/12 && rightPID.getError() < 1.0/12) {
+    		doneCount++;
+    		return true;
+    	}
+    	else {
+    		doneCount = 0;
+    		return false;
+    	}
+    		
+    }
+    
+    public int getDoneCount() {
+    	return doneCount;
     }
 }
 

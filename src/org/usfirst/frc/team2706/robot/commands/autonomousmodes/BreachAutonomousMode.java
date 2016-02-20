@@ -7,6 +7,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BreachAutonomousMode extends CommandGroup {
 	
 	public BreachAutonomousMode() {
-		this.addSequential(new StraightDriveWithEncoders(1, 5));
+		this.addSequential(new StraightDriveWithEncoders(1, 5, 100));
 	}
 }

@@ -274,11 +274,11 @@ public class RobotMap {
 		// XXX: Encoders got flipped
 		public static final int ENCODER_LEFT_A = 2;
 		public static final int ENCODER_LEFT_B = 3;
-		public static final double ENCODER_LEFT_DPP = 1.0 / 1960;
+		public static final double ENCODER_LEFT_DPP = 1.0 / -1304;
 
 		public static final int ENCODER_RIGHT_A = 1;
 		public static final int ENCODER_RIGHT_B = 0;
-		public static final double ENCODER_RIGHT_DPP = 1.0 / 1960;
+		public static final double ENCODER_RIGHT_DPP = 1.0 / -1309;
 
 		public static final boolean INVERT_JOYSTICK_X = false;
 		public static final boolean INVERT_JOYSTICK_Y = false;

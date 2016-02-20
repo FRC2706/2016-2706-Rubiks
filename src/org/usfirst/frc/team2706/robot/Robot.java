@@ -43,7 +43,7 @@ public class Robot extends IterativeRobot {
         
         chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
         chooser.addObject("RotateDriveWithGyro at 0.5 speed for 180 degrees", new RotateDriveWithGyro(0.5, 180));
-        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 5 feet", new StraightDriveWithEncoders(0.5, 5));
+        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.5, 10, 100));
         
         chooser.addObject("Breach outerworks (Drive 5')", new BreachAutonomousMode());
         
