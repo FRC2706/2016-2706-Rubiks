@@ -7,6 +7,7 @@ import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -21,10 +22,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+
 	public static Camera camera;
 	public static DriveTrain driveTrain;
 	public static OI oi;
-
+/*	public Talon talon1;
+	public Talon talon2;*/
     Command autonomousCommand;
     MoveCamera cameraCommand;
     SendableChooser chooser;
@@ -83,19 +86,22 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+/*    	talon1 = new Talon(4);
+    	talon2 = new Talon(5);*/
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
         cameraCommand.start();
-        cameraCommand.cancel();
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+/*    	talon1.set(1);
+    	talon2.set(-1);*/
         Scheduler.getInstance().run();
         log();
     }

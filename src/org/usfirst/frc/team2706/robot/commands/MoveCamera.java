@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class MoveCamera extends Command {
 	float boat; // must be a float or else it sinks
+	int count = 0;
 	public static final int TARGET = -1;
 	private float cachedLocationX = Camera.DEFAULT_PAN;
 	private float cachedLocationY = Camera.DEFAULT_TILT;
@@ -22,42 +23,47 @@ public class MoveCamera extends Command {
 
 	@Override
 	protected void execute() {
+		//Robot.camera.FreeLook();
 		// TODO Auto-generated method stub
-		
-		new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				try {
-				target = Robot.camera.getVisionDataByTarget(TARGET);
-				cachedLocationX =  target.ctrX;
-				cachedLocationY =  target.ctrY;
-				System.out.println("Network call finished, current location is: " + cachedLocationX + "," + cachedLocationY);
-				} catch(NullPointerException e) {
-					System.out.println("Data retrieval failed, resorting to last known values");
-				}
-			}
+		try {
+			target = Robot.camera.getVisionDataByTarget(TARGET);
+			Camera.cachedTarget = target;
+			if (target == null)
+				return;
+			if(cachedLocationX != target.ctrX && cachedLocationY != target.ctrY) {
+			cachedLocationX =  target.ctrX;
+			cachedLocationY =  target.ctrY;
 			
-		}).start();
+			Robot.camera.SetServoAngles(cachedLocationX,cachedLocationY);
+			System.out.println("Network call finished, current location is: " + cachedLocationX + "," + cachedLocationY);
+			} 
+		}catch(NullPointerException e) {
+				System.out.println("Data retrieval failed, resorting to last known values");
+			}
+	
+		}
 
-		Robot.camera.SetServoAngles(cachedLocationX,cachedLocationY);
-	}
+	
+		
+
+	
 
 	@Override
 	protected void initialize() {
 System.out.println("Camera Initialized");
-	}
-
-	@Override
-	protected void interrupted() {
-		end();
-
+Robot.camera.RawSetServoAxis(Camera.DEFAULT_PAN,Camera.DEFAULT_TILT);
 	}
 
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	@Override
+	protected void interrupted() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
