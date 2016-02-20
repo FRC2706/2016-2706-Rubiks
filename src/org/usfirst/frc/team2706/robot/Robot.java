@@ -2,8 +2,9 @@
 package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
+import org.usfirst.frc.team2706.robot.commands.ChangePlatformPosition;
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
-import org.usfirst.frc.team2706.robot.commands.ShootBall;
+import org.usfirst.frc.team2706.robot.commands.ShootBallPneumatics;
 import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2706.robot.subsystems.PneumaticShoot;
@@ -47,8 +48,8 @@ public class Robot extends IterativeRobot {
         // add this except with the 
         chooser.addObject("shoot ball motors", new ShootBallMotors(0.5));
         chooser.addObject("intakeball", new IntakeBall(0.5));
-        chooser.addObject("shoot ball pneumatic", new ShootBall());
-        
+        chooser.addObject("shoot ball pneumatic", new ShootBallPneumatics());
+        chooser.addObject("change platform position", new ChangePlatformPosition());
         SmartDashboard.putData("Auto mode", chooser);
         
     }

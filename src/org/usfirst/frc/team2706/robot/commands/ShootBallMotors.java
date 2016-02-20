@@ -1,11 +1,14 @@
+
 package org.usfirst.frc.team2706.robot.commands;
 
 import org.usfirst.frc.team2706.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /*
- * Starts turning on the motors, then once the user is ready
- * they can press the button to shoot the ball
+ * When the button is pressed the motors that shoot the
+ * ball start spinning, then the user can press the buttom
+ * to shoot the ball. If the button is pressed again, the 
+ * motors stop spinning.
  */
 public class ShootBallMotors extends Command {
 
@@ -29,7 +32,8 @@ public class ShootBallMotors extends Command {
 	}
 	
 	protected boolean isFinished() {
-		// @TODO return whether or not the ball has been shot out
+		// TODO return whether or not the ball has been shot out
+		// or when the person presses the button
 		return false;
 	}
 
@@ -37,7 +41,7 @@ public class ShootBallMotors extends Command {
 
 	@Override
 	protected void interrupted() {
-		// TODO Auto-generated method stub
+		// TODO method should be interrupted if the button is pressed again
 		end();
 	}
 

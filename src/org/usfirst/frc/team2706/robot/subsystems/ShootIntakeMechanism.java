@@ -2,6 +2,7 @@ package org.usfirst.frc.team2706.robot.subsystems;
 
 import org.usfirst.frc.team2706.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -46,8 +47,8 @@ public class ShootIntakeMechanism extends Subsystem {
 		right_encoder = new Encoder(3, 4);
 		
 		// @TODO potentially add whether the ball is in or not
-		LiveWindow.addActuator("ShootIntakeMechanism", "Left Motor", (Talon) left_motor);
-		LiveWindow.addActuator("ShootIntakeMechanism", "Right Motor", (Talon)right_motor);
+		LiveWindow.addActuator("ShootIntakeMechanism", "Left Motor", (CANTalon) left_motor);
+		LiveWindow.addActuator("ShootIntakeMechanism", "Right Motor", (CANTalon)right_motor);
 		LiveWindow.addActuator("ShootIntakeMechanism", "Left Encoder", left_encoder);
 		LiveWindow.addActuator("ShootIntakeMechanism", "Right Encoder", right_encoder);
 		
@@ -59,7 +60,9 @@ public class ShootIntakeMechanism extends Subsystem {
 		left_motor.set(speed);
 		right_motor.set(speed);	
 	}
-	
+	public float getMotorSpeed() {
+		return (float) left_motor.get();
+	}
 	
 	// Speed is reversed for intakes at max speed
 	public void pickupBall(double speed) {

@@ -2,20 +2,18 @@ package org.usfirst.frc.team2706.robot;
 
 
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
-import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
-import org.usfirst.frc.team2706.robot.commands.ShootBall;
+import org.usfirst.frc.team2706.robot.commands.ShootBallPneumatics;
 import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class OI {
     //// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a joystick.
@@ -45,7 +43,7 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 	
 	// @TODO: Arcade drive joystick (Backwards)
-	Joystick stick = new Joystick(0);
+	Joystick stick = new Joystick(1);
 	
 	
 	
@@ -65,9 +63,13 @@ public class OI {
     public OI() {
     	// When button is held the motors start spinning up and shoot the ball
     	// @TODO edit the speed of the motors
-    	buttonShoot.whenPressed(new ShootBall());
-    	buttonShootMotors.whenPressed(new ShootBallMotors(0.5));
+    	buttonShoot.whenPressed(new ShootBallPneumatics());
     	buttonIntake.whenPressed(new IntakeBall(0.5));
+    	/*if(Robot.platformMotors.getMotorSpeed() >= 0.0f)
+    	{
+    		buttonShootMotors.whenPressed(new ShootBallMotors(0.5));
+    	}
+    	*/
     }
 }
 

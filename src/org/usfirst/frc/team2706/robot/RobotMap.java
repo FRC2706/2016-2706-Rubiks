@@ -21,13 +21,16 @@ public class RobotMap {
 	
 	// @TODO: Get channel of motors and pneumatics that shoot
 	// Using drive motors now
-	public static final int MOTOR_PLATFORM_LEFT = 3;
-	public static final int MOTOR_PLATFORM_RIGHT = 0;
+	public static final int MOTOR_PLATFORM_LEFT = 4;
+	public static final int MOTOR_PLATFORM_RIGHT = 5;
 	
 	// Pneumatic and compressor for shooting
 	// @TODO find out the port number of all the ports
 	public static final int SOLENOID_SHOOT = 0;
 	public static final int COMPRESSOR_SHOOT = 0;
 	
+	// pneumatic platform mover
+	public static final int SOLENOID_PLATFORM = 0;
+	public static final int COMPRESSOR_PLATFORM = 0;
 	// @TODO: Get encoder channels, gyro channel, and rangefinder channel
 }
