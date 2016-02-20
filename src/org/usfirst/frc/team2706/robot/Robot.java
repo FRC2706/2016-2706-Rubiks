@@ -4,8 +4,11 @@ package org.usfirst.frc.team2706.robot;
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.MoveCamera;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
+import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
+import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
+import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
+import org.usfirst.frc.team2706.robot.commands.autonomousmodes.BreachAutonomousMode;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,8 +29,6 @@ public class Robot extends IterativeRobot {
 	public static Camera camera;
 	public static DriveTrain driveTrain;
 	public static OI oi;
-/*	public Talon talon1;
-	public Talon talon2;*/
     Command autonomousCommand;
     MoveCamera cameraCommand;
     SendableChooser chooser;
@@ -38,12 +39,16 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
-        driveTrain = new DriveTrain();
+        driveTrain = new DriveTrain();      
         chooser = new SendableChooser();
         camera = new Camera(Camera.CAMERA_IP);
-        chooser.addDefault("Default Auto", new ArcadeDriveWithJoystick());
-        cameraCommand = new MoveCamera();
         
+        cameraCommand = new MoveCamera();
+        chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
+        chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
+        chooser.addObject("RotateDriveWithGyro at 0.5 speed for 180 degrees", new RotateDriveWithGyro(0.5, 180));
+        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.5, 10, 100));       
+        chooser.addObject("Breach outerworks (Drive 5')", new BreachAutonomousMode());
         SmartDashboard.putData("Auto mode", chooser);
     }
 	

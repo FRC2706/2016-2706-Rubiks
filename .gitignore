@@ -1,1 +1,6 @@
 /bin/
+
+/build/
+/dist/
+sysProps.xml
+.settings/org.eclipse.ltk.core.refactoring.prefs
