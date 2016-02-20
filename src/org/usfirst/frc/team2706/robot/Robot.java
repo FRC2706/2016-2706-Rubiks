@@ -2,6 +2,10 @@
 package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
+import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
+import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
+import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
+import org.usfirst.frc.team2706.robot.commands.autonomousmodes.BreachAutonomousMode;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -33,8 +37,15 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		oi = new OI();
         driveTrain = new DriveTrain();
+        
         chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new ArcadeDriveWithJoystick());
+        chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
+        
+        chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
+        chooser.addObject("RotateDriveWithGyro at 0.5 speed for 180 degrees", new RotateDriveWithGyro(0.5, 180));
+        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.5, 10, 100));
+        
+        chooser.addObject("Breach outerworks (Drive 5')", new BreachAutonomousMode());
         
         SmartDashboard.putData("Auto mode", chooser);
     }

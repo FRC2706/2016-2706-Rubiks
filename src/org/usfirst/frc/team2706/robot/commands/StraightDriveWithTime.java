@@ -34,13 +34,13 @@ public class StraightDriveWithTime extends Command {
     	// Creates task to stop robot after time
     	CommandTimerTask interrupt = new CommandTimerTask(this);
     	new Timer().schedule(interrupt, time);
-    	
-    	// Drive while command is running
-    	Robot.driveTrain.drive(speed, speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {}
+    protected void execute() {
+    	// Drive while command is running
+    	Robot.driveTrain.drive(speed, speed);
+    }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
