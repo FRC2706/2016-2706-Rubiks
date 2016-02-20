@@ -47,7 +47,7 @@ public class StraightDriveWithEncoders extends Command {
         
         rightPID = new PIDController(0,0,0,	 
            	Robot.driveTrain.getEncoderPIDSource(false), 
-           	Robot.driveTrain.getDrivePIDOutput(true, false)
+           	Robot.driveTrain.getDrivePIDOutput(false, false)
         );
     }
 

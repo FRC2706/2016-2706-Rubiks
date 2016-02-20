@@ -17,6 +17,8 @@ public class RotateDriveWithGyro extends Command {
 	private final PIDController leftPID;
 	private final PIDController rightPID;
 	
+	private final double P=1.0, I=0.0625, D=0, F=0;
+	
 	/**
 	 * Drive at a specific speed for a certain amount of time
 	 * 
@@ -30,12 +32,11 @@ public class RotateDriveWithGyro extends Command {
         
         this.angle = angle;
         
-        // @TODO: Re-calibrate PID for this year
-        leftPID = new PIDController(0.05, 0.01, 0.01, 5.0, Robot.driveTrain.getGyroPIDSource(false), 
+        leftPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
         		Robot.driveTrain.getDrivePIDOutput(false, true));
         
-        rightPID = new PIDController(0.05, 0.01, 0.01, 5.0, Robot.driveTrain.getGyroPIDSource(false), 
-        		Robot.driveTrain.getDrivePIDOutput(true, false));
+        rightPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
+        		Robot.driveTrain.getDrivePIDOutput(false, false));
     }
 
     // Called just before this Command runs the first time

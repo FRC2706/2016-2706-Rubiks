@@ -79,8 +79,8 @@ public class DriveTrain extends Subsystem {
 		
 		gyroPIDSource = new GyroPIDSource(this);
 		
-		leftDrivePIDOutput = new DrivePIDOutput(new RobotDrive(front_left_motor, back_left_motor));
-		rightDrivePIDOutput = new DrivePIDOutput(new RobotDrive(front_right_motor, back_right_motor));
+		leftDrivePIDOutput = new DrivePIDOutput(front_left_motor, back_left_motor, true);
+		rightDrivePIDOutput = new DrivePIDOutput(front_right_motor, back_right_motor, false);
 
 		reset();
 		
@@ -233,12 +233,17 @@ public class DriveTrain extends Subsystem {
 	
 	class DrivePIDOutput implements PIDOutput {
 
-		private final RobotDrive drive;	
+		private final Victor front;
+		private final Victor rear;
 		
 		boolean invert = false;
 		
-		public DrivePIDOutput(RobotDrive drive) {
-			this.drive = drive;
+		private final boolean left;
+		
+		public DrivePIDOutput(Victor front, Victor rear, boolean left) {
+			this.front = front;
+			this.rear = rear;
+			this.left = left;
 		}
 
 		public void invert(boolean invert) {
@@ -248,7 +253,24 @@ public class DriveTrain extends Subsystem {
 		@Override
 		public void pidWrite(double output) {
 			// XXX: Motors must be opposite to avoid fighting
-			drive.tankDrive(invert ? output : -output, invert ? -output : output);
+			if(left)
+				if(invert) {
+					front.set(output);
+					rear.set(output);
+				}
+				else {
+					front.set(-output);
+					rear.set(-output);
+				}
+			else
+				if(invert) {
+					front.set(-output);
+					rear.set(-output);
+				}
+				else {
+					front.set(output);
+					rear.set(output);
+				}
 		}		
 	}
 }
