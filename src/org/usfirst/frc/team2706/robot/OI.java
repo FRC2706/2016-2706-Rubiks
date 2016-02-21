@@ -1,11 +1,11 @@
 package org.usfirst.frc.team2706.robot;
 
 
+import org.usfirst.frc.team2706.robot.commands.ChangePlatformPosition;
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
 import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
 import org.usfirst.frc.team2706.robot.commands.ShootBallPneumatics;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -48,13 +48,13 @@ public class OI {
 	Joystick stick = new Joystick(0);
 	
 	
-	
+	// TODO get the actual map of the buttons
 	// button to shoot ball
 	Button buttonShoot = new JoystickButton(stick, 1);
 	Button buttonShootMotors = new JoystickButton(stick, 2);
 	Button buttonIntake = new JoystickButton(stick, 3);
 	
-	
+	Button buttonPlatformPosition = new JoystickButton(stick, 4);
 
 	// buttonUp = new JoystickButton(stick, 5);
 	
@@ -63,16 +63,26 @@ public class OI {
     }
     
     public OI() {
-    	// When button is held the motors start spinning up and shoot the ball
-    	// @TODO edit the speed of the motors
-    	buttonShoot.whenPressed(new ShootBallPneumatics());
-    	buttonIntake.whenPressed(new IntakeBall(0.5));
     	
-    	// check if the motors are spinning, if not don't run command
-    	// TODO check if platform is down or up before shooting
-    	if(Robot.platformMotors.getMotorSpeed() != 0.0) {
-    		buttonShootMotors.whenPressed(new ShootBallMotors(0.5));
+    	// Command that changes the position of the platform. When the button is pressed the 
+    	// command takes the reverse of what position the platform was in last
+    	buttonPlatformPosition.whenPressed(new ChangePlatformPosition(!Robot.platform.getPlatformPosition()));
+    	
+    	
+    	if(Robot.platform.getPlatformPosition()) {
+        	// When button is held the motors start spinning up and then the user
+        	// can chose to shoot the ball
+        	// TODO edit the speed of the motors
+        	buttonShoot.whenPressed(new ShootBallMotors(0.5));
+        	buttonIntake.whenPressed(new IntakeBall(0.5));
+        	
+        	// check if the motors are spinning, if not don't run command that shoots the ball
+        	if(Robot.platformMotors.getMotorSpeed() != 0.0) {
+        		buttonShootMotors.whenPressed(new ShootBallPneumatics());
+        	}
+        	
     	}
+    	
     }
 }
 

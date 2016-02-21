@@ -6,6 +6,7 @@ import org.usfirst.frc.team2706.robot.commands.IntakeBall;
 import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
 import org.usfirst.frc.team2706.robot.commands.ShootBallPneumatics;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2706.robot.subsystems.PlatformUpDown;
 import org.usfirst.frc.team2706.robot.subsystems.PneumaticShoot;
 import org.usfirst.frc.team2706.robot.subsystems.ShootIntakeMechanism;
 
@@ -26,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	
 	public static DriveTrain driveTrain;
+	public static PlatformUpDown platform;
 	public static ShootIntakeMechanism platformMotors;
 	public static PneumaticShoot pneumaticShoot;
 	public static OI oi;

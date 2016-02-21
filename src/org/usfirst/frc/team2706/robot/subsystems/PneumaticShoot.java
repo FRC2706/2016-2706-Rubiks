@@ -26,7 +26,7 @@ public class PneumaticShoot extends Subsystem {
 		compress.setClosedLoopControl(true);
 		
 		// TODO is this the right way to set up the Live window for the pneumatics?
-		LiveWindow.addActuator("ShootIntakeMechanism", "Pneumatic Punch", pneu);
+		LiveWindow.addActuator("ShootIntakeMechanism", "PneumaticPunch", pneu);
 		LiveWindow.addActuator("ShootIntakeMechanism", "Compressor", compress);
 	}
 	
