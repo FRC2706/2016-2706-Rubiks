@@ -1,6 +1,8 @@
 package org.usfirst.frc.team2706.robot.commands;
 
 import org.usfirst.frc.team2706.robot.Robot;
+
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
 
@@ -10,10 +12,11 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ShootBallPneumatics extends Command {
 
+	private Solenoid solenoids;
 	float time;
-	
 	public ShootBallPneumatics() {
 		super();
+		solenoids = new Solenoid(1);
 		
 	}
 	

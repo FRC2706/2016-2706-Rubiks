@@ -1,8 +1,12 @@
 package org.usfirst.frc.team2706.robot.subsystems;
 
+import org.usfirst.frc.team2706.robot.Robot;
+import org.usfirst.frc.team2706.robot.RobotMap;
+import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
+
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -10,12 +14,8 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc.team2706.robot.Robot;
-import org.usfirst.frc.team2706.robot.RobotMap;
-import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**

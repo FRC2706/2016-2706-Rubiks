@@ -3,7 +3,6 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
 import org.usfirst.frc.team2706.robot.commands.ShootBallPneumatics;
-import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
