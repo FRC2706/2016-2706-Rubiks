@@ -1,70 +1,73 @@
 package org.usfirst.frc.team2706.robot.subsystems;
 
 import org.usfirst.frc.team2706.robot.RobotMap;
-import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
+import org.usfirst.frc.team2706.robot.commands.IntakeBall;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-
 
 /*
- * Platform motors that can intake and shoot the ball
+ * Subsystem that controls the motors and pneumatics that
+ * are on the platform
  */
 public class ShootIntakeMechanism extends Subsystem {
-	
-	
-	
-	
+
+	// Speed controllers for motors that intake and shoot the ball
 	private SpeedController left_motor, right_motor;
 	
-	private Encoder left_encoder, right_encoder;
-	
-	@Override
-	protected void initDefaultCommand() {
-		setDefaultCommand(new ShootBallMotors(0.5));
-	}
+	// Controllers for the pneumatics that output the ball
+	private Compressor c;
+	private Solenoid sol;
 	
 	public ShootIntakeMechanism() {
 		super();
+		
 		left_motor = new Talon(RobotMap.MOTOR_PLATFORM_LEFT);
 		right_motor = new Talon(RobotMap.MOTOR_PLATFORM_RIGHT);
 		
-		
-		// @TODO check whether this should be true or false
 		left_motor.setInverted(false);
 		right_motor.setInverted(false);
 		
-		// @TODO check where the encoder is supposed to be positioned
-		left_encoder = new Encoder(1, 2);
-		right_encoder = new Encoder(3, 4);
+		c = new Compressor(RobotMap.COMPRESSOR_SHOOT);
+		sol = new Solenoid(RobotMap.SOLENOID_SHOOT);
 		
-		// @TODO potentially add whether the ball is in or not
-		LiveWindow.addActuator("ShootIntakeMechanism", "Left Motor", (Talon) left_motor);
-		LiveWindow.addActuator("ShootIntakeMechanism", "Right Motor", (Talon)right_motor);
-		LiveWindow.addActuator("ShootIntakeMechanism", "Left Encoder", left_encoder);
-		LiveWindow.addActuator("ShootIntakeMechanism", "Right Encoder", right_encoder);
+		// Starts the compressor and allows it to run automatically
+		c.start();
+		c.setClosedLoopControl(true);
 	}
 	
-	// assuming that one would want to only shoot the ball at max speed
-	public void shoot(double speed) {
-		left_motor.set(speed);
-		right_motor.set(speed);	
-	}
-	
-	public float getMotorSpeed() {
-		return (float) left_motor.get();
-	}
-	
-	// Speed is reversed for intakes at max speed
-	public void pickupBall(double speed) {
-		// set motors to intake
+	/*
+	 * Method that turns the platform motors
+	 * 
+	 * @param speed sets the speed at which the motors are turning
+	 */
+	public void platformMotors(double speed) {
 		left_motor.set(speed);
 		right_motor.set(speed);
 	}
+	
+	/*
+	 * Method that turns the pneumatic either on or off
+	 * 
+	 *  @param position true = shoot, false means holding
+	 */
+	public void platformPneumatics(boolean position) {
+		sol.set(position);
+	}
+	
+	/*
+	 * Method that returns the speed of the motors
+	 */
+	public double getMotorSpeed() {
+		return left_motor.get();
+	}
+	
+	@Override
+	protected void initDefaultCommand() {
+		setDefaultCommand(new IntakeBall(-0.5));
+	}
+
 }

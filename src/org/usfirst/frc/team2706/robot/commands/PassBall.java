@@ -4,18 +4,16 @@ import org.usfirst.frc.team2706.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-
 /*
- * Command that when run constantly turns the motors, until
- * Interrupted, to intake a ball
+ * Command that when run, constantly turns the motors outward,
+ * until interrupted, for passing purposes
  */
-public class IntakeBall extends Command {
+public class PassBall extends Command {
 
-	// Sets the speed at which the motors turn
 	double speed;
 	
 	
-	public IntakeBall(double speed) {
+	public PassBall(double speed) {
 		super();
 		requires(Robot.shootIntakeMechanism);
 		
@@ -34,12 +32,12 @@ public class IntakeBall extends Command {
 
 	@Override
 	protected boolean isFinished() {
+		// program never ends while the button is held
 		return false;
 	}
 
 	@Override
 	protected void end() {
-		// reset the motor speed to 0
 		Robot.shootIntakeMechanism.platformMotors(0);
 	}
 

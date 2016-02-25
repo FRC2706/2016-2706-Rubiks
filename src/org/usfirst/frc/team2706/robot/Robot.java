@@ -2,12 +2,12 @@
 package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
+import org.usfirst.frc.team2706.robot.commands.ChangePlatformPosition;
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
-import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
-import org.usfirst.frc.team2706.robot.commands.ShootBallPneumatics;
+import org.usfirst.frc.team2706.robot.commands.PassBall;
+import org.usfirst.frc.team2706.robot.commands.ShootBall;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team2706.robot.subsystems.PlatformUpDown;
-import org.usfirst.frc.team2706.robot.subsystems.PneumaticShoot;
+import org.usfirst.frc.team2706.robot.subsystems.PlatformMechanism;
 import org.usfirst.frc.team2706.robot.subsystems.ShootIntakeMechanism;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -27,9 +27,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	
 	public static DriveTrain driveTrain;
-	public static PlatformUpDown platform;
-	public static ShootIntakeMechanism platformMotors;
-	public static PneumaticShoot pneumaticShoot;
+	public static PlatformMechanism platformMechanism;
+	public static ShootIntakeMechanism shootIntakeMechanism;
 	public static OI oi;
 
     Command autonomousCommand;
@@ -42,13 +41,17 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		oi = new OI();
         driveTrain = new DriveTrain();
-        platformMotors = new ShootIntakeMechanism();
+        shootIntakeMechanism = new ShootIntakeMechanism();
+        platformMechanism = new PlatformMechanism();
+        
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new ArcadeDriveWithJoystick());
         
-        chooser.addObject("shoot ball motors", new ShootBallMotors(0.5));
-        chooser.addObject("intakeball", new IntakeBall(0.5));
-        chooser.addObject("shoot ball pneumatic", new ShootBallPneumatics());
+        chooser.addDefault("Change Platform Position", new ChangePlatformPosition(true));
+        chooser.addDefault("Intake Ball", new IntakeBall(-0.5));
+        chooser.addDefault("PassBall", new PassBall(0.5));
+        chooser.addDefault("Shoot Ball", new ShootBall(1));
+        
         
         SmartDashboard.putData("Auto mode", chooser);
         

@@ -6,30 +6,31 @@ import org.usfirst.frc.team2706.robot.commands.ChangePlatformPosition;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-
 
 /*
- * Subsystem that allows the robot to change the position of the 
- * platform that holds the ball; and intakes, and shoots the ball
+ * Subsytem that controls the pneumatics and compressor that 
+ * move the platform up and down.
  */
-public class PlatformUpDown extends Subsystem {
-	
+public class PlatformMechanism extends Subsystem {
+
 	private Compressor c;
 	private Solenoid sol;
 	
-	public PlatformUpDown() {
+	
+	public PlatformMechanism() {
+		super();
+		
 		c = new Compressor(RobotMap.COMPRESSOR_PLATFORM);
 		sol = new Solenoid(RobotMap.SOLENOID_PLATFORM);
 		
 		c.start();
 		c.setClosedLoopControl(true);
-		
-		LiveWindow.addActuator("PlatformUpDown", "compressor", c);
-		LiveWindow.addActuator("PlatformUpDown", "pneumatic", sol);
 	}
 	
-	// Allows one to change the position without specifying the position one wants
+	/*
+	 * Method that changes the position that the platform is in,
+	 * eg. if it was up, then it will go down
+	 */
 	public void changePosition() {
 		if(sol.get() == true)
 			sol.set(false);
@@ -37,14 +38,12 @@ public class PlatformUpDown extends Subsystem {
 			sol.set(true);
 	}
 	
-	// Allows one to enter which position they want the platform to be in
+	/*
+	 * Changes the position of the platform based on user input
+	 */
 	public void changePosition(boolean position) {
 		if(sol.get() != position)
 			sol.set(position);
-	}
-	
-	public boolean getPlatformPosition() {
-		return sol.get();
 	}
 	
 	@Override

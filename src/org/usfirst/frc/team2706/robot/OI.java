@@ -3,9 +3,10 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ChangePlatformPosition;
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
+import org.usfirst.frc.team2706.robot.commands.PassBall;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
-import org.usfirst.frc.team2706.robot.commands.ShootBallMotors;
-import org.usfirst.frc.team2706.robot.commands.ShootBallPneumatics;
+import org.usfirst.frc.team2706.robot.commands.ShootBall;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -44,44 +45,35 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
-	// @TODO: Arcade drive joystick (Backwards)
+	// TODO: Arcade drive joystick (Backwards)
 	Joystick stick = new Joystick(0);
 	
 	
 	// TODO get the actual map of the buttons
-	// button to shoot ball
+	// button to do with the platform motors
 	Button buttonShoot = new JoystickButton(stick, 1);
-	Button buttonShootMotors = new JoystickButton(stick, 2);
+	Button buttonPass = new JoystickButton(stick, 2);
 	Button buttonIntake = new JoystickButton(stick, 3);
 	
-	Button buttonPlatformPosition = new JoystickButton(stick, 4);
-
-	// buttonUp = new JoystickButton(stick, 5);
+	// buttons to change the platform position
+	Button buttonPlatformUp = new JoystickButton(stick, 4);
+	Button buttonPlatformDown = new JoystickButton(stick, 5);
+	
 	
     public Joystick getJoystick() {
         return stick;
     }
     
     public OI() {
+    	// While the buttons are held constantly run the command
+    	buttonShoot.whileHeld(new ShootBall(0.5));
+    	buttonPass.whileHeld(new PassBall(0.5));
+    	buttonIntake.whileHeld(new IntakeBall(0.5));
     	
-    	// Command that changes the position of the platform. When the button is pressed the 
-    	// command takes the reverse of what position the platform was in last
-    	buttonPlatformPosition.whenPressed(new ChangePlatformPosition(!Robot.platform.getPlatformPosition()));
-    	
-    	
-    	if(Robot.platform.getPlatformPosition()) {
-        	// When button is held the motors start spinning up and then the user
-        	// can chose to shoot the ball
-        	// TODO edit the speed of the motors
-        	buttonShoot.whenPressed(new ShootBallMotors(0.5));
-        	buttonIntake.whenPressed(new IntakeBall(0.5));
-        	
-        	// check if the motors are spinning, if not don't run command that shoots the ball
-        	if(Robot.platformMotors.getMotorSpeed() != 0.0) {
-        		buttonShootMotors.whenPressed(new ShootBallPneumatics());
-        	}
-        	
-    	}
+    	// Depending on which button is pressed down the platform changes
+    	// to that position
+    	buttonPlatformUp.whenPressed(new ChangePlatformPosition(true));
+    	buttonPlatformDown.whenPressed(new ChangePlatformPosition(false));
     	
     }
 }
