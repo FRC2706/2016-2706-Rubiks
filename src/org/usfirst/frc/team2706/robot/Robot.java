@@ -9,6 +9,8 @@ import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.autonomousmodes.BreachAutonomousMode;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -27,6 +29,7 @@ public class Robot extends IterativeRobot {
 
 	public static Camera camera;
 	public static DriveTrain driveTrain;
+	public static DoubleSolenoid solenoid;
 	public static OI oi;
     Command autonomousCommand;
     MoveCamera cameraCommand;
@@ -41,11 +44,13 @@ public class Robot extends IterativeRobot {
         driveTrain = new DriveTrain();      
         chooser = new SendableChooser();
         camera = new Camera(Camera.CAMERA_IP);
+        // TODO: Use RobotMap value
+        solenoid = new DoubleSolenoid(0, 1);
         
         cameraCommand = new MoveCamera();
         chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
         chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
-        chooser.addObject("RotateDriveWithGyro at 0.5 speed for 180 degrees", new RotateDriveWithGyro(0.5, 180));
+        chooser.addObject("RotateDriveWithGyro at 0.5 speed for 180 degrees", new RotateDriveWithGyro(0.85, 180, 100));
         chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.25, 10, 100));
         chooser.addObject("Breach outerworks (Drive 5')", new BreachAutonomousMode());
         SmartDashboard.putData("Auto mode", chooser);
@@ -57,7 +62,7 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
-
+    	if(!cameraCommand.isCanceled()) cameraCommand.cancel();
     }
 	
 	public void disabledPeriodic() {
@@ -98,6 +103,7 @@ public class Robot extends IterativeRobot {
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
         cameraCommand.start();
+        cameraCommand.cancel(); // Uncomment/comment to disable/enable camera movement
     }
 
     /**

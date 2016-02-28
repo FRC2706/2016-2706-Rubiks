@@ -216,7 +216,7 @@ public class DriveTrain extends Subsystem {
 
 		@Override
 		public double pidGet() {
-			return invert ? driveTrain.getHeading() : -driveTrain.getHeading();
+			return invert ? -driveTrain.getHeading() : driveTrain.getHeading();
 		}
 		
 		
