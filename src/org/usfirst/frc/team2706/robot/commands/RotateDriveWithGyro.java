@@ -36,7 +36,7 @@ public class RotateDriveWithGyro extends Command {
         		Robot.driveTrain.getDrivePIDOutput(false, true));
         
         rightPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
-        		Robot.driveTrain.getDrivePIDOutput(false, false));
+        		Robot.driveTrain.getDrivePIDOutput(true, false));
     }
 
     // Called just before this Command runs the first time

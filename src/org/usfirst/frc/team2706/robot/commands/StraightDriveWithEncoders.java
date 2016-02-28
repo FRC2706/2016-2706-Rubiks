@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Have the robot drive certain amount of time
+ * Have the robot drive certain distance
  */
 public class StraightDriveWithEncoders extends Command {
     

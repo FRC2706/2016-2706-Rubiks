@@ -34,9 +34,6 @@ public class DriveTrain extends Subsystem {
 	
 	private GyroPIDSource gyroPIDSource;
 
-	private DrivePIDOutput leftDrivePIDOutput;
-	private DrivePIDOutput rightDrivePIDOutput;
-
 	public DriveTrain() {
 		super();
 		front_left_motor = new Victor(RobotMap.MOTOR_FRONT_LEFT);
@@ -79,13 +76,10 @@ public class DriveTrain extends Subsystem {
 		
 		gyroPIDSource = new GyroPIDSource(this);
 		
-		leftDrivePIDOutput = new DrivePIDOutput(front_left_motor, back_left_motor, true);
-		rightDrivePIDOutput = new DrivePIDOutput(front_right_motor, back_right_motor, false);
-
 		reset();
 		
 		// Let's show everything on the LiveWindow
-		LiveWindow.addActuator("Drive Train", "Front_Left Motor", front_left_motor);
+		LiveWindow.addActuator("Drive Train", "Front Left Motor", front_left_motor);
 		LiveWindow.addActuator("Drive Train", "Back Left Motor",  back_left_motor);
 		LiveWindow.addActuator("Drive Train", "Front Right Motor",  front_right_motor);
 		LiveWindow.addActuator("Drive Train", "Back Right Motor", back_right_motor);
@@ -145,12 +139,12 @@ public class DriveTrain extends Subsystem {
 	 */
 	public PIDOutput getDrivePIDOutput(boolean invert, boolean left) {
 		if(left) {
-			leftDrivePIDOutput.invert(invert);
-			return leftDrivePIDOutput;
+			DrivePIDOutput out = new DrivePIDOutput(front_left_motor, back_left_motor, left, invert);
+			return out;
 		}
 		else {
-			rightDrivePIDOutput.invert(invert);
-			return rightDrivePIDOutput;
+			DrivePIDOutput out = new DrivePIDOutput(front_right_motor, back_right_motor, left, invert);
+			return out;
 		}
 	}
 	
@@ -236,17 +230,14 @@ public class DriveTrain extends Subsystem {
 		private final Victor front;
 		private final Victor rear;
 		
-		boolean invert = false;
+		private final boolean invert;
 		
 		private final boolean left;
 		
-		public DrivePIDOutput(Victor front, Victor rear, boolean left) {
+		public DrivePIDOutput(Victor front, Victor rear, boolean left, boolean invert) {
 			this.front = front;
 			this.rear = rear;
 			this.left = left;
-		}
-
-		public void invert(boolean invert) {
 			this.invert = invert;
 		}
 		
