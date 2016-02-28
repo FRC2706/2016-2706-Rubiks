@@ -2,9 +2,11 @@
 package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
+import org.usfirst.frc.team2706.robot.commands.CameraFreeLook;
 import org.usfirst.frc.team2706.robot.commands.MoveCamera;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
+import org.usfirst.frc.team2706.robot.commands.SearchForTarget;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.autonomousmodes.BreachAutonomousMode;
@@ -30,9 +32,7 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain driveTrain;
 	public static OI oi;
     Command autonomousCommand;
-    MoveCamera cameraCommand;
     SendableChooser chooser;
-
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -42,8 +42,6 @@ public class Robot extends IterativeRobot {
         driveTrain = new DriveTrain();      
         chooser = new SendableChooser();
         camera = new Camera(Camera.CAMERA_IP);
-        
-        cameraCommand = new MoveCamera();
         chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
         chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
         chooser.addObject("RotateDriveWithGyro at 0.5 speed for 180 degrees", new RotateDriveWithGyro(0.5, 180));
@@ -91,8 +89,6 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-/*    	talon1 = new Talon(4);
-    	talon2 = new Talon(5);*/
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove

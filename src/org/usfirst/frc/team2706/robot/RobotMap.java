@@ -22,6 +22,8 @@ public class RobotMap {
 	 * to the nested class version of the constant.  Finally, go to the last part
 	 * of the static block and set the RobotMap constant to the local variable.
 	 * 
+	 * TL;DR (TODO)
+	 * 
 	 * That's it, you're done!
 	 */
 	

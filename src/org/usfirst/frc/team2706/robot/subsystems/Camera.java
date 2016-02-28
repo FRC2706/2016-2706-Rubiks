@@ -9,6 +9,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,12 +25,10 @@ public class Camera extends Subsystem {
 	public static final String CAMERA_IP = "10.27.6.240";
 	public static final float DEFAULT_PAN = 0.5f;
 	public static final float DEFAULT_TILT = 1;
-	public static final float SEARCH_SPEED = 0.01f;
-	public static final float SEARCH_TILT_BOTTOM = 0.9f;
-	public static final float SEARCH_TILT_TOP = 0.4f;
-	public static final float SEARCH_TILT_INCREMENT = 0.1f;
-	public static final float SEARCH_PAN_RIGHT = 1;
-	public static final float SEARCH_PAN_LEFT = 0;
+	public static final float MAX_TILT = 0;
+	public static final float MAX_PAN_LEFT = 0;
+	public static final float MAX_PAN_RIGHT = 1;
+	float boat; // must be a float or else it sinks
 	public boolean PRINT_STUFF = true;
 	public Servo turnXAxis; 
 	public Servo turnYAxis;
@@ -192,40 +191,7 @@ public class TargetObject implements Comparable<TargetObject> {
 		else
 			return pr.get(target);
 	}
-	public void SetServoAngles(float panAngle, float tiltAngle) {
-		 boolean inDeadZoneX = false;
-		 boolean inDeadZoneY = false;
-		// pan and tilt can be from -1 to 1, servos can only be 0 and 1
-		
-		//this code checks if it is all good on the camera side
-/*		if((panAngle <= 0.1) && (panAngle >=  -0.1)) {
-			inDeadZoneX = true;
-		}
-		if((tiltAngle <= 0.1) && (tiltAngle >= -0.1 )) {
-			inDeadZoneY = true;
-		}*/
-		//Pan servo movement
-		if(!inDeadZoneX) {
-			double newVal = (panAngle >= 0.0 ? panAngle * panAngle : -1 * panAngle * panAngle) / 7.5;
-			System.out.println(newVal);
-			turnXAxis.set(turnXAxis.getPosition() - newVal);
-		}
-		
-/*		else if(panAngle > 0 && !inDeadZoneX) {
-			turnXAxis.set(turnXAxis.getPosition() - 0.02);
-		//}*/
-		//Tilt servo movement
-		if(!inDeadZoneY) {
-			double newVal = (tiltAngle >= 0.0 ? tiltAngle * tiltAngle : -1 * tiltAngle * tiltAngle) / 7.5;
-			System.out.println(newVal);
-			
-			turnYAxis.set(turnYAxis.getPosition() + newVal);
-		}
-	//	}
-/*		else if(tiltAngle > 0 && !inDeadZoneY) {
-			turnYAxis.set(turnYAxis.getPosition() + 0.02);
-		}*/
-	}
+	
 	public void RawSetServoAxis(float panAxis, float tiltAxis) {
 	turnXAxis.set(panAxis);
 	turnYAxis.set(tiltAxis);
@@ -242,28 +208,47 @@ public class TargetObject implements Comparable<TargetObject> {
 	public float GetCtrY() {
 		return (float)turnYAxis.getPosition();
 	}
-	private boolean turningRight;
+
 	//Call this every tick to continue it
-	public void FreeLook() {
-		if(turningRight) {
-		turnXAxis.set(turnXAxis.getPosition() + SEARCH_SPEED);
-		}
-		else {
-			turnXAxis.set(turnXAxis.getPosition() - SEARCH_SPEED);
-		}
-		if(turnYAxis.getPosition() <= SEARCH_TILT_TOP) {
-			turnYAxis.set(SEARCH_TILT_BOTTOM);
-		}
-		if(turnXAxis.getPosition() >= SEARCH_PAN_RIGHT) {
-			turningRight = false;
-			turnYAxis.set(turnYAxis.getPosition() - SEARCH_TILT_INCREMENT);
-		}
-		else if(turnXAxis.getPosition() <= SEARCH_PAN_LEFT) {
-			turningRight = true;
-			turnYAxis.set(turnYAxis.getPosition() - SEARCH_TILT_INCREMENT);
-		}
-	}
+	
 	public float RobotTurnDegrees() {
 		return (float)turnXAxis.getPosition() / (1f / 180f) - 90f;
 	}
+	public void ResetCamera() {
+		turnXAxis.set(DEFAULT_PAN);
+		turnYAxis.set(DEFAULT_TILT);
+	}
+	public void SetRawX(float Xvalue) {
+		turnXAxis.set(Xvalue);
+	}
+	public void SetRawY(float Yvalue) {
+		turnYAxis.set(Yvalue);
+	}
+	public void ProtectedSetServoAngles(float panValue, float tiltValue) {
+		if(turnXAxis.getPosition() > MAX_PAN_RIGHT && panValue > 0 || turnXAxis.getPosition() < MAX_PAN_LEFT && panValue < 1) {
+
+		}
+		else {
+			turnXAxis.set(turnXAxis.getPosition() - panValue);
+			System.out.println(60);
+		}
+		if(turnYAxis.getPosition() <= MAX_TILT && tiltValue < 0) {
+
+		}
+		else {
+			turnYAxis.set(turnYAxis.getPosition() + tiltValue);
+		System.out.println(69);
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
