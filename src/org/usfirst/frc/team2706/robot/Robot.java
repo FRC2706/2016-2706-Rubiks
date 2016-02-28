@@ -2,12 +2,13 @@
 package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
+import org.usfirst.frc.team2706.robot.commands.MoveCamera;
+import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.autonomousmodes.BreachAutonomousMode;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -24,10 +25,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	public static Camera camera;
 	public static DriveTrain driveTrain;
 	public static OI oi;
-
     Command autonomousCommand;
+    MoveCamera cameraCommand;
     SendableChooser chooser;
 
     /**
@@ -36,17 +38,16 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
-        driveTrain = new DriveTrain();
-        
+        driveTrain = new DriveTrain();      
         chooser = new SendableChooser();
-        chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
+        camera = new Camera(Camera.CAMERA_IP);
         
+        cameraCommand = new MoveCamera();
+        chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
         chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
         chooser.addObject("RotateDriveWithGyro at 0.5 speed for 180 degrees", new RotateDriveWithGyro(0.5, 180));
         chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.25, 10, 100));
-        
         chooser.addObject("Breach outerworks (Drive 5')", new BreachAutonomousMode());
-        
         SmartDashboard.putData("Auto mode", chooser);
     }
 	
@@ -74,9 +75,10 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
         autonomousCommand = (Command) chooser.getSelected();
-    	
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+        
+        
     }
 
     /**
@@ -88,17 +90,22 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+/*    	talon1 = new Talon(4);
+    	talon2 = new Talon(5);*/
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        cameraCommand.start();
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+/*    	talon1.set(1);
+    	talon2.set(-1);*/
         Scheduler.getInstance().run();
         log();
     }

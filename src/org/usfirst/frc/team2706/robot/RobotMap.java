@@ -44,6 +44,11 @@ public class RobotMap {
 	
 	public static final int CAN_ADDR_PNEUMATIC;
 
+	// Motor for panning camera
+	public static final int MOTOR_CAMERA_PAN;
+	// Motor for tilting camera
+	public static final int MOTOR_CAMERA_TILT;
+	
 	// XXX: Encoders got flipped
 	public static final int ENCODER_LEFT_A;
 	public static final int ENCODER_LEFT_B;
@@ -71,9 +76,12 @@ public class RobotMap {
 		
 		int motorRearRight = 0;
 		boolean motorRearRightInverted = false;
-
+		
 		int canAddrPneumatic = 0;
 
+		int motorCameraPan = 0;
+		int motorCameraTilt = 0;
+		
 		int encoderLeftA = 0;
 		int encoderLeftB = 0;
 		double encoderLeftDPP = 0.0;
@@ -119,6 +127,8 @@ public class RobotMap {
 				motorRearRight = CompetitionRobotMap.MOTOR_REAR_RIGHT;
 				motorRearRightInverted = CompetitionRobotMap.MOTOR_REAR_RIGHT_INVERTED;
 				canAddrPneumatic = CompetitionRobotMap.CAN_ADDR_PNEUMATIC;
+				motorCameraPan = CompetitionRobotMap.MOTOR_CAMERA_PAN;
+				motorCameraTilt = CompetitionRobotMap.MOTOR_CAMERA_TILT;
 				encoderLeftA = CompetitionRobotMap.ENCODER_LEFT_A;
 				encoderLeftB = CompetitionRobotMap.ENCODER_LEFT_B;
 				encoderLeftDPP = CompetitionRobotMap.ENCODER_LEFT_DPP;
@@ -139,6 +149,8 @@ public class RobotMap {
 				motorRearRight = PracticeRobotMap.MOTOR_REAR_RIGHT;
 				motorRearRightInverted = PracticeRobotMap.MOTOR_REAR_RIGHT_INVERTED;
 				canAddrPneumatic = PracticeRobotMap.CAN_ADDR_PNEUMATIC;
+				motorCameraPan = PracticeRobotMap.MOTOR_CAMERA_PAN;
+				motorCameraTilt = PracticeRobotMap.MOTOR_CAMERA_TILT;
 				encoderLeftA = PracticeRobotMap.ENCODER_LEFT_A;
 				encoderLeftB = PracticeRobotMap.ENCODER_LEFT_B;
 				encoderLeftDPP = PracticeRobotMap.ENCODER_LEFT_DPP;
@@ -159,6 +171,8 @@ public class RobotMap {
 				motorRearRight = SimulationRobotMap.MOTOR_REAR_RIGHT;
 				motorRearRightInverted = SimulationRobotMap.MOTOR_REAR_RIGHT_INVERTED;
 				canAddrPneumatic = SimulationRobotMap.CAN_ADDR_PNEUMATIC;
+				motorCameraPan = SimulationRobotMap.MOTOR_CAMERA_PAN;
+				motorCameraTilt = SimulationRobotMap.MOTOR_CAMERA_TILT;
 				encoderLeftA = SimulationRobotMap.ENCODER_LEFT_A;
 				encoderLeftB = SimulationRobotMap.ENCODER_LEFT_B;
 				encoderLeftDPP = SimulationRobotMap.ENCODER_LEFT_DPP;
@@ -178,6 +192,8 @@ public class RobotMap {
 				motorRearRight = CompetitionRobotMap.MOTOR_REAR_RIGHT;
 				motorRearRightInverted = CompetitionRobotMap.MOTOR_REAR_RIGHT_INVERTED;
 				canAddrPneumatic = CompetitionRobotMap.CAN_ADDR_PNEUMATIC;
+				motorCameraPan = CompetitionRobotMap.MOTOR_CAMERA_PAN;
+				motorCameraTilt = CompetitionRobotMap.MOTOR_CAMERA_TILT;
 				encoderLeftA = CompetitionRobotMap.ENCODER_LEFT_A;
 				encoderLeftB = CompetitionRobotMap.ENCODER_LEFT_B;
 				encoderLeftDPP = CompetitionRobotMap.ENCODER_LEFT_DPP;
@@ -205,6 +221,9 @@ public class RobotMap {
 		MOTOR_REAR_RIGHT_INVERTED = motorRearRightInverted;
 		
 		CAN_ADDR_PNEUMATIC = canAddrPneumatic;
+		
+		MOTOR_CAMERA_PAN = motorCameraPan;
+		MOTOR_CAMERA_TILT = motorCameraTilt;
 		
 		ENCODER_LEFT_A = encoderLeftA;
 		ENCODER_LEFT_B = encoderLeftB;
@@ -236,6 +255,11 @@ public class RobotMap {
 		public static final boolean MOTOR_REAR_RIGHT_INVERTED = true;
 		
 		public static final int CAN_ADDR_PNEUMATIC = 0;
+		
+		// Motor for panning camera
+		public static final int MOTOR_CAMERA_PAN = 8;
+		// Motor for tilting camera
+		public static final int MOTOR_CAMERA_TILT = 9;
 
 		// XXX: Encoders got flipped
 		public static final int ENCODER_LEFT_A = 2;
@@ -270,6 +294,11 @@ public class RobotMap {
 		public static final boolean MOTOR_REAR_RIGHT_INVERTED = true;
 
 		public static final int CAN_ADDR_PNEUMATIC = 0;
+		
+		// Motor for panning camera
+		public static final int MOTOR_CAMERA_PAN = 8;
+		// Motor for tilting camera
+		public static final int MOTOR_CAMERA_TILT = 9;
 
 		// XXX: Encoders got flipped
 		public static final int ENCODER_LEFT_A = 2;
@@ -304,6 +333,11 @@ public class RobotMap {
 		public static final boolean MOTOR_REAR_RIGHT_INVERTED = false;
 
 		public static final int CAN_ADDR_PNEUMATIC = 0;
+		
+		// Motor for panning camera
+		public static final int MOTOR_CAMERA_PAN = 8;
+		// Motor for tilting camera
+		public static final int MOTOR_CAMERA_TILT = 9;
 
 		// XXX: Encoders got flipped
 		public static final int ENCODER_LEFT_A = 2;
