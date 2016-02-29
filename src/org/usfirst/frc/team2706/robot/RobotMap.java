@@ -280,19 +280,19 @@ public class RobotMap {
 
 	private class PracticeRobotMap extends RobotMap {
 		// Left gearbox
-		public static final int MOTOR_FRONT_LEFT = 3;
+		public static final int MOTOR_FRONT_LEFT = 2;
 		public static final boolean MOTOR_FRONT_LEFT_INVERTED = true;
 		
 		// Right gearbox
-		public static final int MOTOR_FRONT_RIGHT = 0;
+		public static final int MOTOR_FRONT_RIGHT = 5;
 		public static final boolean MOTOR_FRONT_RIGHT_INVERTED = true;
 		
 		// Right gearbox
-		public static final int MOTOR_REAR_LEFT = 2;
+		public static final int MOTOR_REAR_LEFT = 3;
 		public static final boolean MOTOR_REAR_LEFT_INVERTED = true;
 		
 		// Left gearbox
-		public static final int MOTOR_REAR_RIGHT = 1;
+		public static final int MOTOR_REAR_RIGHT = 6;
 		public static final boolean MOTOR_REAR_RIGHT_INVERTED = true;
 
 		public static final int CAN_ADDR_PNEUMATIC = 0;

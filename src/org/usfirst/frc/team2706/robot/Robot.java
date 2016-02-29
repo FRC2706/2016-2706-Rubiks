@@ -32,7 +32,9 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain driveTrain;
 	public static OI oi;
     Command autonomousCommand;
+    CameraFreeLook cameraCommand;
     SendableChooser chooser;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -42,6 +44,7 @@ public class Robot extends IterativeRobot {
         driveTrain = new DriveTrain();      
         chooser = new SendableChooser();
         camera = new Camera(Camera.CAMERA_IP);
+        cameraCommand = new CameraFreeLook();
         chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
         chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
         chooser.addObject("RotateDriveWithGyro at 0.5 speed for 180 degrees", new RotateDriveWithGyro(0.5, 180));
@@ -56,7 +59,7 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
-
+if(cameraCommand.isCanceled()) cameraCommand.cancel();
     }
 	
 	public void disabledPeriodic() {
@@ -76,8 +79,6 @@ public class Robot extends IterativeRobot {
         autonomousCommand = (Command) chooser.getSelected();
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
-        
-        
     }
 
     /**
@@ -94,15 +95,14 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-        cameraCommand.start();
+    	cameraCommand.start();
+    	cameraCommand.cancel();
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-/*    	talon1.set(1);
-    	talon2.set(-1);*/
         Scheduler.getInstance().run();
         log();
     }

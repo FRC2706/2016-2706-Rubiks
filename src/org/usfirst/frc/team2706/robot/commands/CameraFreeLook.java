@@ -3,6 +3,7 @@ package org.usfirst.frc.team2706.robot.commands;
 import org.usfirst.frc.team2706.robot.Robot;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 //Movement of Driver
 public class CameraFreeLook extends Command {
@@ -17,7 +18,9 @@ public class CameraFreeLook extends Command {
 
 	@Override
 	protected void execute() {
-		TurnOnGamepad(GamePadX,GamePadY);
+		GamePadX = (float) Robot.oi.getJoystick().getRawAxis(4);
+		GamePadY = (float) Robot.oi.getJoystick().getRawAxis(5);
+		TurnOnGamepad(-GamePadX,GamePadY);
 	}
 
 	@Override
@@ -37,8 +40,8 @@ public class CameraFreeLook extends Command {
 		return false;
 	}
 	public void TurnOnGamepad(float RawGamepadX, float RawGamepadY) {
-				float val1 = (float) ((float)((int)(RawGamepadX * 100)) / 100);
-				float val2 = (float) ((float)((int)(RawGamepadY * 100)) / 100);
+				float val1 = (float) ((float)((int)(RawGamepadX * 10)) / 10);
+				float val2 = (float) ((float)((int)(RawGamepadY * 10)) / 10);
 				val1 *= val1;
 				val2 *= val2;
 				if(RawGamepadX > 0) {
@@ -49,6 +52,7 @@ public class CameraFreeLook extends Command {
 				}
 				val1 /= 10;
 				val2 /= 10;
+				
 				Robot.camera.ProtectedSetServoAngles(val1,val2);
 			}
 }

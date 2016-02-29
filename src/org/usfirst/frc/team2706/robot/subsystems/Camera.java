@@ -165,6 +165,7 @@ public class TargetObject implements Comparable<TargetObject> {
 /*	public float savedXaxis = DEFAULT_PAN;
 	public float savedYaxis = DEFAULT_TILT;*/
 	public  TargetObject getVisionDataByTarget(int target) { // put in -1 for center target, -2 for right and -3 for left
+		System.out.println("Finding");
 		ArrayList<TargetObject> pr = getVisionData();
 		Collections.sort((List<TargetObject>) pr);
 		// pr should now be sorted
@@ -230,14 +231,12 @@ public class TargetObject implements Comparable<TargetObject> {
 		}
 		else {
 			turnXAxis.set(turnXAxis.getPosition() - panValue);
-			System.out.println(60);
 		}
 		if(turnYAxis.getPosition() <= MAX_TILT && tiltValue < 0) {
 
 		}
 		else {
 			turnYAxis.set(turnYAxis.getPosition() + tiltValue);
-		System.out.println(69);
 		}
 	}
 }
