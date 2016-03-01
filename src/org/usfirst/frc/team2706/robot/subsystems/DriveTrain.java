@@ -34,9 +34,6 @@ public class DriveTrain extends Subsystem {
 	
 	private GyroPIDSource gyroPIDSource;
 
-	private DrivePIDOutput leftDrivePIDOutput;
-	private DrivePIDOutput rightDrivePIDOutput;
-
 	public DriveTrain() {
 		super();
 		front_left_motor = new Victor(RobotMap.MOTOR_FRONT_LEFT);
@@ -79,13 +76,10 @@ public class DriveTrain extends Subsystem {
 		
 		gyroPIDSource = new GyroPIDSource(this);
 		
-		leftDrivePIDOutput = new DrivePIDOutput(new RobotDrive(front_left_motor, back_left_motor));
-		rightDrivePIDOutput = new DrivePIDOutput(new RobotDrive(front_right_motor, back_right_motor));
-
 		reset();
 		
 		// Let's show everything on the LiveWindow
-		LiveWindow.addActuator("Drive Train", "Front_Left Motor", front_left_motor);
+		LiveWindow.addActuator("Drive Train", "Front Left Motor", front_left_motor);
 		LiveWindow.addActuator("Drive Train", "Back Left Motor",  back_left_motor);
 		LiveWindow.addActuator("Drive Train", "Front Right Motor",  front_right_motor);
 		LiveWindow.addActuator("Drive Train", "Back Right Motor", back_right_motor);
@@ -145,12 +139,12 @@ public class DriveTrain extends Subsystem {
 	 */
 	public PIDOutput getDrivePIDOutput(boolean invert, boolean left) {
 		if(left) {
-			leftDrivePIDOutput.invert(invert);
-			return leftDrivePIDOutput;
+			DrivePIDOutput out = new DrivePIDOutput(front_left_motor, back_left_motor, left, invert);
+			return out;
 		}
 		else {
-			rightDrivePIDOutput.invert(invert);
-			return rightDrivePIDOutput;
+			DrivePIDOutput out = new DrivePIDOutput(front_right_motor, back_right_motor, left, invert);
+			return out;
 		}
 	}
 	
@@ -222,7 +216,7 @@ public class DriveTrain extends Subsystem {
 
 		@Override
 		public double pidGet() {
-			return invert ? driveTrain.getHeading() : -driveTrain.getHeading();
+			return invert ? -driveTrain.getHeading() : driveTrain.getHeading();
 		}
 		
 		
@@ -233,22 +227,41 @@ public class DriveTrain extends Subsystem {
 	
 	class DrivePIDOutput implements PIDOutput {
 
-		private final RobotDrive drive;	
+		private final Victor front;
+		private final Victor rear;
 		
-		boolean invert = false;
+		private final boolean invert;
 		
-		public DrivePIDOutput(RobotDrive drive) {
-			this.drive = drive;
-		}
-
-		public void invert(boolean invert) {
+		private final boolean left;
+		
+		public DrivePIDOutput(Victor front, Victor rear, boolean left, boolean invert) {
+			this.front = front;
+			this.rear = rear;
+			this.left = left;
 			this.invert = invert;
 		}
 		
 		@Override
 		public void pidWrite(double output) {
 			// XXX: Motors must be opposite to avoid fighting
-			drive.tankDrive(invert ? output : -output, invert ? -output : output);
+			if(left)
+				if(invert) {
+					front.set(output);
+					rear.set(output);
+				}
+				else {
+					front.set(-output);
+					rear.set(-output);
+				}
+			else
+				if(invert) {
+					front.set(-output);
+					rear.set(-output);
+				}
+				else {
+					front.set(output);
+					rear.set(output);
+				}
 		}		
 	}
 }

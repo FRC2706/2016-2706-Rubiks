@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Have the robot drive certain amount of time
+ * Have the robot drive certain distance
  */
 public class StraightDriveWithEncoders extends Command {
     
@@ -47,7 +47,7 @@ public class StraightDriveWithEncoders extends Command {
         
         rightPID = new PIDController(0,0,0,	 
            	Robot.driveTrain.getEncoderPIDSource(false), 
-           	Robot.driveTrain.getDrivePIDOutput(true, false)
+           	Robot.driveTrain.getDrivePIDOutput(false, false)
         );
     }
 
