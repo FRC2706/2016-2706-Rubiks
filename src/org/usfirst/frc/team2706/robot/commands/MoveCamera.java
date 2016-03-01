@@ -3,12 +3,11 @@ package org.usfirst.frc.team2706.robot.commands;
 import org.usfirst.frc.team2706.robot.Robot;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class MoveCamera extends Command {
-	float boat; // must be a float or else it sinks
-	private long savedTimeMilis;
-	private boolean startedWaiting = false;
+	
 	public static final int TARGET = -1;
 	private float cachedLocationX = Camera.DEFAULT_PAN;
 	private float cachedLocationY = Camera.DEFAULT_TILT;
@@ -24,31 +23,22 @@ public class MoveCamera extends Command {
 
 	@Override
 	protected void execute() {
-		//
-		// TODO Auto-generated method stub
-
 		try {
 			target = Robot.camera.getVisionDataByTarget(TARGET);
 			Camera.cachedTarget = target;
 			if (target == null) {
-				if(startedWaiting == false) {
-					savedTimeMilis = System.currentTimeMillis();
-					startedWaiting = true;
-				}
-				if(System.currentTimeMillis() - savedTimeMilis > 5000) {
-					Robot.camera.FreeLook();
-				}
-			return;	
+				return;
 			}
-			startedWaiting = false;
 			if(cachedLocationX != target.ctrX && cachedLocationY != target.ctrY) {
 			cachedLocationX =  target.ctrX;
 			cachedLocationY =  target.ctrY;
 			
-			Robot.camera.SetServoAngles(cachedLocationX,cachedLocationY);
-			System.out.println("Network call finished, current location is: " + cachedLocationX + "," + cachedLocationY);
+			SetServoAngles(cachedLocationX,cachedLocationY);
+			if(Robot.camera.PRINT_STUFF)
+				System.out.println("Network call finished, current location is: " + cachedLocationX + "," + cachedLocationY);
 			} 
 		}catch(NullPointerException e) {
+			if(Robot.camera.PRINT_STUFF)
 				System.out.println("Data retrieval failed, resorting to last known values");
 			}
 	
@@ -61,8 +51,8 @@ public class MoveCamera extends Command {
 
 	@Override
 	protected void initialize() {
-System.out.println("Camera Initialized");
-Robot.camera.RawSetServoAxis(Camera.DEFAULT_PAN,Camera.DEFAULT_TILT);
+		System.out.println("Camera Initialized");
+		Robot.camera.RawSetServoAxis(Camera.DEFAULT_PAN,Camera.DEFAULT_TILT);
 	}
 
 	@Override
@@ -75,5 +65,9 @@ Robot.camera.RawSetServoAxis(Camera.DEFAULT_PAN,Camera.DEFAULT_TILT);
 		// TODO Auto-generated method stub
 		
 	}
-
+	public void SetServoAngles(float panAngle, float tiltAngle) {
+		double newPanVal = (panAngle >= 0.0 ? panAngle * panAngle : -1 * panAngle * panAngle) / 7.5;
+		double newTiltVal = (tiltAngle >= 0.0 ? tiltAngle * tiltAngle : -1 * tiltAngle * tiltAngle) / 7.5;
+		Robot.camera.ProtectedSetServoAngles((float)newPanVal,(float)newTiltVal);
+	}
 }
