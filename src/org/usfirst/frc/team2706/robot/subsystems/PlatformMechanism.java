@@ -4,6 +4,7 @@ import org.usfirst.frc.team2706.robot.RobotMap;
 import org.usfirst.frc.team2706.robot.commands.ChangePlatformPosition;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -14,36 +15,33 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class PlatformMechanism extends Subsystem {
 
 	private Compressor c;
-	private Solenoid sol;
+	private DoubleSolenoid sol;
+	private DoubleSolenoid floating;
 	
 	
 	public PlatformMechanism() {
 		super();
 		
 		c = new Compressor(RobotMap.COMPRESSOR_PLATFORM);
-		sol = new Solenoid(RobotMap.SOLENOID_PLATFORM);
+		sol = new DoubleSolenoid(RobotMap.SOLENOID_PLATFORM0A, RobotMap.SOLENOID_PLATFORM0B);
+		floating = new DoubleSolenoid(RobotMap.SOLENOID_PLATFORM1A, RobotMap.SOLENOID_PLATFORM1B);
 		
 		c.start();
 		c.setClosedLoopControl(true);
 	}
 	
 	/*
-	 * Method that changes the position that the platform is in,
-	 * eg. if it was up, then it will go down
-	 */
-	public void changePosition() {
-		if(sol.get() == true)
-			sol.set(false);
-		else if(sol.get() == false)
-			sol.set(true);
-	}
-	
-	/*
 	 * Changes the position of the platform based on user input
 	 */
 	public void changePosition(boolean position) {
-		if(sol.get() != position)
-			sol.set(position);
+		if(position)
+			sol.set(DoubleSolenoid.Value.kForward);
+		else if(!position)
+			sol.set(DoubleSolenoid.Value.kReverse);
+	}
+	
+	public void changeFinished() {
+		sol.set(DoubleSolenoid.Value.kOff);
 	}
 	
 	@Override

@@ -40,10 +40,6 @@ public class ShootBall extends Command {
 	@Override
 	protected void execute() {
 		Robot.shootIntakeMechanism.platformMotors(speed);
-		
-		if(time + 200 < System.currentTimeMillis()) {
-			Robot.shootIntakeMechanism.platformPneumatics(true);
-		}
 	}
 
 	@Override
@@ -56,7 +52,6 @@ public class ShootBall extends Command {
 	@Override
 	protected void end() {
 		Robot.shootIntakeMechanism.platformMotors(0);
-		Robot.shootIntakeMechanism.platformPneumatics(false);
 	}
 
 	@Override

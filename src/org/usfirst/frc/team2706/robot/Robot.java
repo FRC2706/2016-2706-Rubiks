@@ -8,6 +8,7 @@ import org.usfirst.frc.team2706.robot.commands.PassBall;
 import org.usfirst.frc.team2706.robot.commands.ShootBall;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2706.robot.subsystems.PlatformMechanism;
+import org.usfirst.frc.team2706.robot.subsystems.PneumaticMechanism;
 import org.usfirst.frc.team2706.robot.subsystems.ShootIntakeMechanism;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -28,6 +29,7 @@ public class Robot extends IterativeRobot {
 	
 	public static DriveTrain driveTrain;
 	public static PlatformMechanism platformMechanism;
+	public static PneumaticMechanism pneumaticMechanism;
 	public static ShootIntakeMechanism shootIntakeMechanism;
 	public static OI oi;
 
@@ -43,6 +45,7 @@ public class Robot extends IterativeRobot {
         driveTrain = new DriveTrain();
         shootIntakeMechanism = new ShootIntakeMechanism();
         platformMechanism = new PlatformMechanism();
+        pneumaticMechanism = new PneumaticMechanism();
         
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new ArcadeDriveWithJoystick());

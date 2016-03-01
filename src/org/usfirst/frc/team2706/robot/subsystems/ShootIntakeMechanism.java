@@ -17,10 +17,7 @@ public class ShootIntakeMechanism extends Subsystem {
 
 	// Speed controllers for motors that intake and shoot the ball
 	private SpeedController left_motor, right_motor;
-	
-	// Controllers for the pneumatics that output the ball
-	private Compressor c;
-	private Solenoid sol;
+
 	
 	public ShootIntakeMechanism() {
 		super();
@@ -30,13 +27,7 @@ public class ShootIntakeMechanism extends Subsystem {
 		
 		left_motor.setInverted(false);
 		right_motor.setInverted(false);
-		
-		c = new Compressor(RobotMap.COMPRESSOR_SHOOT);
-		sol = new Solenoid(RobotMap.SOLENOID_SHOOT);
-		
-		// Starts the compressor and allows it to run automatically
-		c.start();
-		c.setClosedLoopControl(true);
+	
 	}
 	
 	/*
@@ -47,15 +38,6 @@ public class ShootIntakeMechanism extends Subsystem {
 	public void platformMotors(double speed) {
 		left_motor.set(speed);
 		right_motor.set(speed);
-	}
-	
-	/*
-	 * Method that turns the pneumatic either on or off
-	 * 
-	 *  @param position true = shoot, false means holding
-	 */
-	public void platformPneumatics(boolean position) {
-		sol.set(position);
 	}
 	
 	/*

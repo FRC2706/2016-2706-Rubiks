@@ -21,7 +21,7 @@ public class PneumaticShootBall extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.pneumaticMechanism.platformPneumaticsForward();
+		Robot.pneumaticMechanism.platformPneumatics(true);
 	}
 
 	@Override
@@ -33,6 +33,8 @@ public class PneumaticShootBall extends Command {
 
 	@Override
 	protected void end() {
+		// TODO make sure this code reverses the shooter
+		Robot.pneumaticMechanism.platformPneumatics(false);
 		Robot.pneumaticMechanism.platformPneumaticsEnd();
 	}
 

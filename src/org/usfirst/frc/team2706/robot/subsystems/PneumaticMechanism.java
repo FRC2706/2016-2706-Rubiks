@@ -16,7 +16,7 @@ public class PneumaticMechanism extends Subsystem {
 	public PneumaticMechanism() {
 		super();
 		
-		sol = new DoubleSolenoid(RobotMap.SOLENOID_SHOOT1, RobotMap.SOLENOID_SHOOT2);
+		sol = new DoubleSolenoid(RobotMap.SOLENOID_SHOOT0, RobotMap.SOLENOID_SHOOT1);
 		c = new Compressor(RobotMap.COMPRESSOR_SHOOT);
 		
 		c.start();
@@ -24,18 +24,16 @@ public class PneumaticMechanism extends Subsystem {
 	}
 	
 	/*
-	 * Method that turns the pneumatic either on or off
+	 * Method that turns the pneumatic that push the ball out either on or off
 	 * 
 	 *  @param position true = shoot, false means holding
 	 */
-	public void platformPneumaticsForward() {
-		sol.set(DoubleSolenoid.Value.kForward);
+	public void platformPneumatics(boolean position) {
+		if(position)
+			sol.set(DoubleSolenoid.Value.kForward);
+		else if(!position)
+			sol.set(DoubleSolenoid.Value.kReverse);
 	}
-	
-	public void platformPneumaticsReverse() {
-		sol.set(DoubleSolenoid.Value.kReverse);
-	}
-	
 	
 	@Override
 	protected void initDefaultCommand() {
