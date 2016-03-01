@@ -241,19 +241,19 @@ public class RobotMap {
 
 	private class CompetitionRobotMap extends RobotMap {
 		// Left gearbox
-		public static final int MOTOR_FRONT_LEFT = 3;
+		public static final int MOTOR_FRONT_LEFT = 2;
 		public static final boolean MOTOR_FRONT_LEFT_INVERTED = true;
 		
 		// Right gearbox
-		public static final int MOTOR_FRONT_RIGHT = 0;
+		public static final int MOTOR_FRONT_RIGHT = 5;
 		public static final boolean MOTOR_FRONT_RIGHT_INVERTED = true;
 		
 		// Right gearbox
-		public static final int MOTOR_REAR_LEFT = 2;
+		public static final int MOTOR_REAR_LEFT = 3;
 		public static final boolean MOTOR_REAR_LEFT_INVERTED = true;
 		
 		// Left gearbox
-		public static final int MOTOR_REAR_RIGHT = 1;
+		public static final int MOTOR_REAR_RIGHT = 6;
 		public static final boolean MOTOR_REAR_RIGHT_INVERTED = true;
 		
 		public static final int CAN_ADDR_PNEUMATIC = 0;
@@ -264,13 +264,13 @@ public class RobotMap {
 		public static final int MOTOR_CAMERA_TILT = 9;
 
 		// XXX: Encoders got flipped
-		public static final int ENCODER_LEFT_A = 2;
-		public static final int ENCODER_LEFT_B = 3;
-		public static final double ENCODER_LEFT_DPP = 1.0 / 1960;
+		public static final int ENCODER_LEFT_A = 3;
+		public static final int ENCODER_LEFT_B = 2;
+		public static final double ENCODER_LEFT_DPP = 1.0 / 1075;
 
-		public static final int ENCODER_RIGHT_A = 1;
-		public static final int ENCODER_RIGHT_B = 0;
-		public static final double ENCODER_RIGHT_DPP = 1.0 / 1960;
+		public static final int ENCODER_RIGHT_A = 5;
+		public static final int ENCODER_RIGHT_B = 6;
+		public static final double ENCODER_RIGHT_DPP = 1.0 / 1075;
 		
 		public static final boolean INVERT_JOYSTICK_X = false;
 		public static final boolean INVERT_JOYSTICK_Y = false;
@@ -303,13 +303,13 @@ public class RobotMap {
 		public static final int MOTOR_CAMERA_TILT = 9;
 
 		// XXX: Encoders got flipped
-		public static final int ENCODER_LEFT_A = 2;
-		public static final int ENCODER_LEFT_B = 3;
-		public static final double ENCODER_LEFT_DPP = 1.0 / -1304;
+		public static final int ENCODER_LEFT_A = 3;
+		public static final int ENCODER_LEFT_B = 2;
+		public static final double ENCODER_LEFT_DPP = 1.0 / 1075;
 
-		public static final int ENCODER_RIGHT_A = 1;
-		public static final int ENCODER_RIGHT_B = 0;
-		public static final double ENCODER_RIGHT_DPP = 1.0 / -1309;
+		public static final int ENCODER_RIGHT_A = 5;
+		public static final int ENCODER_RIGHT_B = 6;
+		public static final double ENCODER_RIGHT_DPP = 1.0 / 1075;
 
 		public static final boolean INVERT_JOYSTICK_X = false;
 		public static final boolean INVERT_JOYSTICK_Y = false;

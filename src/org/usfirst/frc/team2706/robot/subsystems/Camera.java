@@ -1,9 +1,6 @@
 package org.usfirst.frc.team2706.robot.subsystems;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -12,10 +9,8 @@ import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import org.usfirst.frc.team2706.robot.Robot;
 import org.usfirst.frc.team2706.robot.RobotMap;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -82,6 +77,11 @@ public class TargetObject implements Comparable<TargetObject> {
 		try {
 			sock.connect(new InetSocketAddress(RPi_addr, visionDataPort), 20);
 		} catch (Exception e) {
+			try {
+				sock.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			return null;
 		}
 
@@ -95,8 +95,6 @@ public class TargetObject implements Comparable<TargetObject> {
 
 			byte[] rawBytes = new byte[2048];
 			try {
-				// rawData = inFromServer.read();
-				int n;
 				if( sock.getInputStream().read(rawBytes) < 0 ) {
 					System.out.println("Something went wrong reading response from TrackerBox2: ");
 					return null;
