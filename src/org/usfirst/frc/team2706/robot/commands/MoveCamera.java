@@ -3,7 +3,6 @@ package org.usfirst.frc.team2706.robot.commands;
 import org.usfirst.frc.team2706.robot.Robot;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class MoveCamera extends Command {
