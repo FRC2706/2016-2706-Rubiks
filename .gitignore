@@ -1,3 +1,11 @@
 /bin/
+<<<<<<< HEAD
 /build/
 /dist/
+=======
+
+/build/
+/dist/
+sysProps.xml
+.settings/org.eclipse.ltk.core.refactoring.prefs
+>>>>>>> refs/remotes/origin/master

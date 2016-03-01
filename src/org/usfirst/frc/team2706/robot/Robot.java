@@ -2,15 +2,31 @@
 package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
+<<<<<<< HEAD
 import org.usfirst.frc.team2706.robot.commands.ChangePlatformPosition;
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
 import org.usfirst.frc.team2706.robot.commands.PassBall;
 import org.usfirst.frc.team2706.robot.commands.ShootBall;
+=======
+import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
+import org.usfirst.frc.team2706.robot.commands.RotateDriveWithCamera;
+import org.usfirst.frc.team2706.robot.subsystems.Camera;
+import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
+import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
+import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithCameraAutonomous;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithGyroAutonomous;
+import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
+import org.usfirst.frc.team2706.robot.commands.plays.TurnToTargetWithCameraPlay;
+import org.usfirst.frc.team2706.robot.commands.plays.TurnToTargetWithGyroPlay;
+import org.usfirst.frc.team2706.robot.commands.plays.WaitThenRotateDriveWithCamera;
+>>>>>>> refs/remotes/origin/master
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2706.robot.subsystems.PlatformMechanism;
 import org.usfirst.frc.team2706.robot.subsystems.PneumaticMechanism;
 import org.usfirst.frc.team2706.robot.subsystems.ShootIntakeMechanism;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -26,14 +42,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+<<<<<<< HEAD
 	
 	public static DriveTrain driveTrain;
 	public static PlatformMechanism platformMechanism;
 	public static PneumaticMechanism pneumaticMechanism;
 	public static ShootIntakeMechanism shootIntakeMechanism;
-	public static OI oi;
+=======
 
+	public static Camera camera;
+	public static DriveTrain driveTrain;
+	public static DoubleSolenoid solenoid;
+>>>>>>> refs/remotes/origin/master
+	public static OI oi;
     Command autonomousCommand;
+    AutomaticCameraControl cameraCommand;
     SendableChooser chooser;
 
     /**
@@ -42,13 +65,34 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
+<<<<<<< HEAD
         driveTrain = new DriveTrain();
         shootIntakeMechanism = new ShootIntakeMechanism();
         platformMechanism = new PlatformMechanism();
         pneumaticMechanism = new PneumaticMechanism();
         
+=======
+        driveTrain = new DriveTrain();      
+>>>>>>> refs/remotes/origin/master
         chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new ArcadeDriveWithJoystick());
+        camera = new Camera(Camera.CAMERA_IP);
+
+        cameraCommand = new AutomaticCameraControl();
+        // TODO: Use RobotMap value
+        solenoid = new DoubleSolenoid(0, 1);
+        
+        chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
+        chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
+        chooser.addObject("RotateDriveWithGyro at 0.85 speed for 180 degrees", new RotateDriveWithGyro(0.85, 180, 100));
+        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.5, 10, 100));
+        chooser.addObject("RotateDriveWithCamera at 0.75 speed", new RotateDriveWithCamera(0.75, 100));
+        chooser.addObject("BreachPlay", new BreachPlay());
+        chooser.addObject("TurnToTargetWithGyroPlay", new TurnToTargetWithGyroPlay());
+        chooser.addObject("TurnToTargetWithCameraPlay", new TurnToTargetWithCameraPlay());
+        chooser.addObject("BreachTurnShootWithGyroAutonomous", new BreachTurnShootWithGyroAutonomous());
+        chooser.addObject("BreachTurnShootWithCameraAutonomous", new BreachTurnShootWithCameraAutonomous());
+        
+        chooser.addObject("WaitThenRotateDriveWithCamera", new WaitThenRotateDriveWithCamera(0.75, 5000));
         
         chooser.addDefault("Change Platform Position", new ChangePlatformPosition(true));
         chooser.addDefault("Intake Ball", new IntakeBall(-0.5));
@@ -66,7 +110,7 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
-
+    	if(!cameraCommand.isCanceled()) cameraCommand.cancel();
     }
 	
 	public void disabledPeriodic() {
@@ -84,9 +128,9 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
         autonomousCommand = (Command) chooser.getSelected();
-    	
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+        cameraCommand.start();
     }
 
     /**
@@ -103,6 +147,8 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        cameraCommand.start();
+        cameraCommand.cancel(); // Uncomment/comment to disable/enable camera movement
     }
 
     /**

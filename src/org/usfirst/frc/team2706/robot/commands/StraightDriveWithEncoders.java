@@ -4,15 +4,16 @@ import org.usfirst.frc.team2706.robot.Robot;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Have the robot drive certain amount of time
+ * Have the robot drive certain distance
  */
-public class RotateDriveWithGyro extends Command {
+public class StraightDriveWithEncoders extends Command {
     
 	private final double speed;
 	
-	private final double angle;
+	private final double distance;
 	
 	private final int minDoneCycles;
 	
@@ -21,35 +22,52 @@ public class RotateDriveWithGyro extends Command {
 	
 	private int doneCount;
 	
-	private final double P=0.25, I=0.03125, D=0, F=0;
+	private final double P=1.0, I=0.0625, D=0, F=0;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
 	 * 
 	 * @param speed Speed in range [-1,1]
-	 * @param angle The angle to rotate to
+	 * @param distance The encoder distance to travel
+	 * @param minDoneCycles The amount of cycles when the robot is within its target range to end the comman
 	 */
-    public RotateDriveWithGyro(double speed, double angle, int minDoneCycles) {
+    public StraightDriveWithEncoders(double speed, double distance, int minDoneCycles) {
         requires(Robot.driveTrain);
 
         this.speed = speed;
         
-        this.angle = angle;
-
-        this.minDoneCycles = minDoneCycles;
-        leftPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
-        		Robot.driveTrain.getDrivePIDOutput(false, true));
+        this.distance = distance;
         
-        rightPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
-        		Robot.driveTrain.getDrivePIDOutput(true, false));
+        this.minDoneCycles = minDoneCycles;
+
+        leftPID = new PIDController(0,0,0,	 
+       		Robot.driveTrain.getEncoderPIDSource(true), 
+       		Robot.driveTrain.getDrivePIDOutput(false, true)
+        );
+        
+        rightPID = new PIDController(0,0,0,	 
+           	Robot.driveTrain.getEncoderPIDSource(false), 
+           	Robot.driveTrain.getDrivePIDOutput(false, false)
+        );
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.driveTrain.reset();
     	
-    	leftPID.setInputRange(0.0, 360.0);
-    	rightPID.setInputRange(0.0, 360.0);
+    	// Set the PID values using Smartdashboard
+    	leftPID.setPID(       	
+    		SmartDashboard.getNumber("P", P), 
+           	SmartDashboard.getNumber("I", I), 
+          	SmartDashboard.getNumber("D", D), 
+          	SmartDashboard.getNumber("F", F)
+    	);
+    	rightPID.setPID(       	
+        	SmartDashboard.getNumber("P", P), 
+        	SmartDashboard.getNumber("I", I), 
+        	SmartDashboard.getNumber("D", D), 
+        	SmartDashboard.getNumber("F", F)
+        );    	
     	
     	// Make input infinite
     	leftPID.setContinuous();
@@ -59,12 +77,15 @@ public class RotateDriveWithGyro extends Command {
     	leftPID.setOutputRange(-speed, speed);
     	rightPID.setOutputRange(-speed, speed);
     	
-    	// Will accept within 1 degrees of target
-    	leftPID.setAbsoluteTolerance(1);
-    	rightPID.setAbsoluteTolerance(1);
+
     	
-    	leftPID.setSetpoint(angle);
-    	rightPID.setSetpoint(angle);
+    	leftPID.setSetpoint(distance);
+    	rightPID.setSetpoint(distance);
+    	
+    	
+    	// Will accept within 1 inch of target
+    	leftPID.setAbsoluteTolerance(1.0/12);
+    	rightPID.setAbsoluteTolerance(1.0/12);
     	
     	// Start going to location
     	leftPID.enable();
@@ -72,18 +93,18 @@ public class RotateDriveWithGyro extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    protected void execute() {    	
     	// TODO: Use WPI onTarget()
     	onTarget();
     }
-
+    
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	if(this.doneCount > this.minDoneCycles)
     		return true;
     	else
     		return false;
-    	
+
     }
 
     // Called once after isFinished returns true
@@ -91,7 +112,6 @@ public class RotateDriveWithGyro extends Command {
     	// Disable PID output and stop robot to be safe
     	leftPID.disable();
     	rightPID.disable();
-    	
         Robot.driveTrain.drive(0, 0);
     }
 
@@ -102,7 +122,7 @@ public class RotateDriveWithGyro extends Command {
     }
     
     private boolean onTarget() {
-    	if(leftPID.getError() < 1.0 && rightPID.getError() < 1.0) {
+    	if(leftPID.getError() < 1.0/12 && rightPID.getError() < 1.0/12) {
     		doneCount++;
     		return true;
     	}
@@ -117,3 +137,4 @@ public class RotateDriveWithGyro extends Command {
     	return doneCount;
     }
 }
+

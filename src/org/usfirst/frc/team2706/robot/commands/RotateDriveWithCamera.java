@@ -8,11 +8,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Have the robot drive certain amount of time
  */
-public class RotateDriveWithGyro extends Command {
+public class RotateDriveWithCamera extends Command {
     
 	private final double speed;
-	
-	private final double angle;
 	
 	private final int minDoneCycles;
 	
@@ -24,23 +22,21 @@ public class RotateDriveWithGyro extends Command {
 	private final double P=0.25, I=0.03125, D=0, F=0;
 	
 	/**
-	 * Drive at a specific speed for a certain amount of time
+	 * Turn to the target
 	 * 
 	 * @param speed Speed in range [-1,1]
-	 * @param angle The angle to rotate to
 	 */
-    public RotateDriveWithGyro(double speed, double angle, int minDoneCycles) {
+    public RotateDriveWithCamera(double speed, int minDoneCycles) {
         requires(Robot.driveTrain);
+        requires(Robot.camera);
 
         this.speed = speed;
-        
-        this.angle = angle;
 
         this.minDoneCycles = minDoneCycles;
-        leftPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
+        leftPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(false), 
         		Robot.driveTrain.getDrivePIDOutput(false, true));
         
-        rightPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
+        rightPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(false), 
         		Robot.driveTrain.getDrivePIDOutput(true, false));
     }
 
@@ -48,8 +44,15 @@ public class RotateDriveWithGyro extends Command {
     protected void initialize() {
     	Robot.driveTrain.reset();
     	
-    	leftPID.setInputRange(0.0, 360.0);
-    	rightPID.setInputRange(0.0, 360.0);
+    	// Use gyro if there is no target
+    	if(!Robot.camera.HasTarget()) {
+    		new RotateDriveWithGyro(0.85, 45, 100).start();
+    		this.cancel();
+    		return;
+    	}
+    	
+    	leftPID.setInputRange(-90.0, 90.0);
+    	rightPID.setInputRange(-90.0, 90.0);
     	
     	// Make input infinite
     	leftPID.setContinuous();
@@ -59,12 +62,13 @@ public class RotateDriveWithGyro extends Command {
     	leftPID.setOutputRange(-speed, speed);
     	rightPID.setOutputRange(-speed, speed);
     	
-    	// Will accept within 1 degrees of target
-    	leftPID.setAbsoluteTolerance(1);
-    	rightPID.setAbsoluteTolerance(1);
+    	// Will accept within 5 degrees of target
+    	leftPID.setAbsoluteTolerance(5);
+    	rightPID.setAbsoluteTolerance(5);
     	
-    	leftPID.setSetpoint(angle);
-    	rightPID.setSetpoint(angle);
+    	// Have camera centered (on target)
+    	leftPID.setSetpoint(0);
+    	rightPID.setSetpoint(0);
     	
     	// Start going to location
     	leftPID.enable();
@@ -102,7 +106,7 @@ public class RotateDriveWithGyro extends Command {
     }
     
     private boolean onTarget() {
-    	if(leftPID.getError() < 1.0 && rightPID.getError() < 1.0) {
+    	if(leftPID.getError() < 5.0 && rightPID.getError() < 5.0) {
     		doneCount++;
     		return true;
     	}
