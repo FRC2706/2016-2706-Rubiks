@@ -21,8 +21,6 @@ public class ShootIntakeMechanism extends Subsystem {
 	
 	private SpeedController left_motor, right_motor;
 	
-	private Encoder left_encoder, right_encoder;
-	
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
@@ -40,14 +38,14 @@ public class ShootIntakeMechanism extends Subsystem {
 		right_motor.setInverted(false);
 		
 		// @TODO check where the encoder is supposed to be
-		left_encoder = new Encoder(1, 2);
-		right_encoder = new Encoder(3, 4);
+		//left_encoder = new Encoder(1, 2);
+		//right_encoder = new Encoder(3, 4);
 		
 		// @TODO potentially add whether the ball is in or not
-		LiveWindow.addActuator("ShootIntakeMechanism", "Left Motor", (CANTalon) left_motor);
-		LiveWindow.addActuator("ShootIntakeMechanism", "Right Motor", (CANTalon)right_motor);
-		LiveWindow.addActuator("ShootIntakeMechanism", "Left Encoder", left_encoder);
-		LiveWindow.addActuator("ShootIntakeMechanism", "Right Encoder", right_encoder);
+		//LiveWindow.addActuator("ShootIntakeMechanism", "Left Motor", (CANTalon) left_motor);
+		//LiveWindow.addActuator("ShootIntakeMechanism", "Right Motor", (CANTalon)right_motor);
+		//LiveWindow.addActuator("ShootIntakeMechanism", "Left Encoder", left_encoder);
+		//LiveWindow.addActuator("ShootIntakeMechanism", "Right Encoder", right_encoder);
 		
 		
 	}

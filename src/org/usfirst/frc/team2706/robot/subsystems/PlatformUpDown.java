@@ -17,6 +17,7 @@ public class PlatformUpDown extends Subsystem {
 	public PlatformUpDown() {
 		c = new Compressor(RobotMap.COMPRESSOR_PLATFORM);
 		sol = new Solenoid(RobotMap.SOLENOID_PLATFORM);
+		c.
 	}
 	
 	public void changePosition() {

@@ -42,9 +42,9 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 	
 	// @TODO: Arcade drive joystick (Backwards)
-	Joystick stick = new Joystick(1);
-	
-	
+	Joystick stick = new Joystick(0);
+	Joystick Operator = new Joystick(1);
+	 
 	
 	// button to shoot ball
 	Button buttonShoot = new JoystickButton(stick, 1);
@@ -64,11 +64,7 @@ public class OI {
     	// @TODO edit the speed of the motors
     	buttonShoot.whenPressed(new ShootBallPneumatics());
     	buttonIntake.whenPressed(new IntakeBall(0.5));
-    	/*if(Robot.platformMotors.getMotorSpeed() >= 0.0f)
-    	{
-    		buttonShootMotors.whenPressed(new ShootBallMotors(0.5));
-    	}
-    	*/
+    	
+    	
     }
 }
-
