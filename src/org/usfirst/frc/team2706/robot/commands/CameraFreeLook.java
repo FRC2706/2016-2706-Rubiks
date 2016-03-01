@@ -1,9 +1,7 @@
 package org.usfirst.frc.team2706.robot.commands;
 
 import org.usfirst.frc.team2706.robot.Robot;
-import org.usfirst.frc.team2706.robot.subsystems.Camera;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 //Movement of Driver
 public class CameraFreeLook extends Command {
