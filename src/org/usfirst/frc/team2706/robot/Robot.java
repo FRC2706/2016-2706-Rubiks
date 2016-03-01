@@ -3,11 +3,17 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
+import org.usfirst.frc.team2706.robot.commands.RotateDriveWithCamera;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
-import org.usfirst.frc.team2706.robot.commands.autonomousmodes.BreachAutonomousMode;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithCameraAutonomous;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithGyroAutonomous;
+import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
+import org.usfirst.frc.team2706.robot.commands.plays.TurnToTargetWithCameraPlay;
+import org.usfirst.frc.team2706.robot.commands.plays.TurnToTargetWithGyroPlay;
+import org.usfirst.frc.team2706.robot.commands.plays.WaitThenRotateDriveWithCamera;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -48,11 +54,20 @@ public class Robot extends IterativeRobot {
         cameraCommand = new AutomaticCameraControl();
         // TODO: Use RobotMap value
         solenoid = new DoubleSolenoid(0, 1);
+        
         chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
         chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
-        chooser.addObject("RotateDriveWithGyro at 0.5 speed for 180 degrees", new RotateDriveWithGyro(0.85, 180, 100));
-        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.25, 10, 100));
-        chooser.addObject("Breach outerworks (Drive 5')", new BreachAutonomousMode());
+        chooser.addObject("RotateDriveWithGyro at 0.85 speed for 180 degrees", new RotateDriveWithGyro(0.85, 180, 100));
+        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.5, 10, 100));
+        chooser.addObject("RotateDriveWithCamera at 0.75 speed", new RotateDriveWithCamera(0.75, 100));
+        chooser.addObject("BreachPlay", new BreachPlay());
+        chooser.addObject("TurnToTargetWithGyroPlay", new TurnToTargetWithGyroPlay());
+        chooser.addObject("TurnToTargetWithCameraPlay", new TurnToTargetWithCameraPlay());
+        chooser.addObject("BreachTurnShootWithGyroAutonomous", new BreachTurnShootWithGyroAutonomous());
+        chooser.addObject("BreachTurnShootWithCameraAutonomous", new BreachTurnShootWithCameraAutonomous());
+        
+        chooser.addObject("WaitThenRotateDriveWithCamera", new WaitThenRotateDriveWithCamera(0.75, 5000));
+        
         SmartDashboard.putData("Auto mode", chooser);
     }
 	
@@ -82,6 +97,7 @@ public class Robot extends IterativeRobot {
         autonomousCommand = (Command) chooser.getSelected();
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+        cameraCommand.start();
     }
 
     /**

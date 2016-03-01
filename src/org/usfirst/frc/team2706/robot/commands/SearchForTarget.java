@@ -6,8 +6,8 @@ import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SearchForTarget extends Command {
-	public static final float SEARCH_SPEED = 0.01f;
-	public static final float SEARCH_TILT_BOTTOM = 0.9f;
+	public static final float SEARCH_SPEED = 0.015f;
+	public static final float SEARCH_TILT_BOTTOM = 0.7f;
 	public static final float SEARCH_TILT_TOP = 0.4f;
 	public static final float SEARCH_TILT_INCREMENT = 0.1f;
 	public static final float SEARCH_PAN_RIGHT = 1;

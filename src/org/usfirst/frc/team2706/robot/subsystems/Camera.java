@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.usfirst.frc.team2706.robot.RobotMap;
+
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -29,12 +32,17 @@ public class Camera extends Subsystem {
 	public  String RPi_addr;
 	public final  int visionDataPort = 1182;
 	public static TargetObject cachedTarget;
+	
+	private CameraPIDSource cameraPIDSource;
+	
 public Camera(String ip) {
 	super();
 	
 	RPi_addr = ip;
 	turnXAxis = new Servo(RobotMap.MOTOR_CAMERA_PAN);
 	turnYAxis = new Servo(RobotMap.MOTOR_CAMERA_TILT);
+	
+	cameraPIDSource = new CameraPIDSource(this);
 }
 public class TargetObject implements Comparable<TargetObject> {
 	  public float boundingArea = -1;     // % of cam [0, 1.0]
@@ -200,6 +208,9 @@ public class TargetObject implements Comparable<TargetObject> {
 	public float GetBoundingArea() {
 		return cachedTarget.boundingArea;
 	}
+	public boolean HasTarget() {
+		return cachedTarget == null ? false : true;
+	}
 	public float GetCtrX() {
 		return (float)turnXAxis.getPosition();
 	}
@@ -207,8 +218,6 @@ public class TargetObject implements Comparable<TargetObject> {
 		return (float)turnYAxis.getPosition();
 	}
 
-	//Call this every tick to continue it
-	
 	public float RobotTurnDegrees() {
 		return (float)turnXAxis.getPosition() / (1f / 180f) - 90f;
 	}
@@ -234,6 +243,47 @@ public class TargetObject implements Comparable<TargetObject> {
 		}
 		else {
 			turnYAxis.set(turnYAxis.getPosition() + tiltValue);
+		}
+	}
+	
+	/**
+	 * @return The robot's camera PIDSource
+	 */
+	public PIDSource getCameraPIDSource(boolean invert) {
+		cameraPIDSource.invert(invert);
+		return cameraPIDSource;
+	}
+	
+	class CameraPIDSource implements PIDSource {
+
+		private final Camera camera;
+		private boolean invert;
+		
+		private PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
+		
+		public CameraPIDSource(Camera driveTrain) {
+			this.camera = driveTrain;
+		}
+		
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			pidSourceType = pidSource;
+		};
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return pidSourceType;
+		}
+
+		@Override
+		public double pidGet() {
+			System.out.println(invert ? -camera.RobotTurnDegrees() : camera.RobotTurnDegrees());
+			return invert ? -camera.RobotTurnDegrees() : camera.RobotTurnDegrees();
+		}
+		
+		
+		public void invert(boolean invert) {
+			this.invert = invert;
 		}
 	}
 }
