@@ -44,36 +44,34 @@ public class RobotMap {
 	public static final int MOTOR_REAR_RIGHT;
 	public static final boolean MOTOR_REAR_RIGHT_INVERTED;
 	
-	public static final int CAN_ADDR_PNEUMATIC;
 
 	// Motor for panning camera
 	public static final int MOTOR_CAMERA_PAN;
 	// Motor for tilting camera
 	public static final int MOTOR_CAMERA_TILT;
 	
-<<<<<<< HEAD
 	// @TODO find out whether this is the pneumatic for the ball shooting
 	public static final int CAN_ADDR_PNEUMATIC = 0;
 	
 	// @TODO: Get channel of motors and pneumatics that shoot
 	// Using drive motors now
-	public static final int MOTOR_PLATFORM_LEFT = 3;
-	public static final int MOTOR_PLATFORM_RIGHT = 0;
+	public static final int MOTOR_PLATFORM_LEFT = 1;
+	public static final int MOTOR_PLATFORM_RIGHT = 2;
 	
 	// Pneumatic and compressor for shooting
 	// @TODO find out the port number of all the ports
 	public static final int SOLENOID_SHOOT0 = 0;
-	public static final int SOLENOID_SHOOT1 = 0;
+	public static final int SOLENOID_SHOOT1 = 1;
 	public static final int COMPRESSOR_SHOOT = 0;
 	
 	// pneumatic platform mover
-	public static final int SOLENOID_PLATFORM0A = 0;
-	public static final int SOLENOID_PLATFORM0B = 0;
-	public static final int SOLENOID_PLATFORM1A = 0;
-	public static final int SOLENOID_PLATFORM1B = 0;
+	public static final int SOLENOID_PLATFORM0A = 2;
+	public static final int SOLENOID_PLATFORM0B = 3;
+	public static final int SOLENOID_PLATFORM1A = 4;
+	public static final int SOLENOID_PLATFORM1B = 5;
+	
 	public static final int COMPRESSOR_PLATFORM = 0;
 	// @TODO: Get encoder channels, gyro channel, and rangefinder channel
-=======
 	// XXX: Encoders got flipped
 	public static final int ENCODER_LEFT_A;
 	public static final int ENCODER_LEFT_B;
@@ -245,7 +243,6 @@ public class RobotMap {
 		MOTOR_REAR_RIGHT = motorRearRight;
 		MOTOR_REAR_RIGHT_INVERTED = motorRearRightInverted;
 		
-		CAN_ADDR_PNEUMATIC = canAddrPneumatic;
 		
 		MOTOR_CAMERA_PAN = motorCameraPan;
 		MOTOR_CAMERA_TILT = motorCameraTilt;
@@ -378,5 +375,4 @@ public class RobotMap {
 		
 		// @TODO: Get Gyro channel, and rangefinder channel11
 	}
->>>>>>> refs/remotes/origin/master
 }

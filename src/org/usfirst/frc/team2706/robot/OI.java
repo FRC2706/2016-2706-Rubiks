@@ -3,7 +3,6 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ChangePlatformPosition;
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
-import org.usfirst.frc.team2706.robot.commands.PassBall;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
 import org.usfirst.frc.team2706.robot.commands.ShootBall;
 
@@ -51,14 +50,14 @@ public class OI {
 	
 	// TODO get the actual map of the buttons
 	// button to do with the platform motors
-	Button buttonShoot = new JoystickButton(stick, 1);
-	Button buttonPass = new JoystickButton(stick, 2);
-	Button buttonIntake = new JoystickButton(stick, 3);
+	Button buttonShoot = new JoystickButton(stick, 5);
+	Button buttonIntake = new JoystickButton(stick, 4);
 	
 	// buttons to change the platform position
-	Button buttonPlatformUp = new JoystickButton(stick, 4);
-	Button buttonPlatformDown = new JoystickButton(stick, 5);
+	Button buttonPlatformUp = new JoystickButton(stick, 2);
+	Button buttonPlatformDown = new JoystickButton(stick, 0);
 	
+	Button buttonPlatformFloat = new JoystickButton(stick, 1);
 	
     public Joystick getJoystick() {
         return stick;
@@ -67,7 +66,6 @@ public class OI {
     public OI() {
     	// While the buttons are held constantly run the command
     	buttonShoot.whileHeld(new ShootBall(0.5));
-    	buttonPass.whileHeld(new PassBall(0.5));
     	buttonIntake.whileHeld(new IntakeBall(0.5));
     	
     	// Depending on which button is pressed down the platform changes

@@ -2,12 +2,9 @@
 package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
-<<<<<<< HEAD
 import org.usfirst.frc.team2706.robot.commands.ChangePlatformPosition;
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
-import org.usfirst.frc.team2706.robot.commands.PassBall;
 import org.usfirst.frc.team2706.robot.commands.ShootBall;
-=======
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithCamera;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
@@ -20,7 +17,6 @@ import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
 import org.usfirst.frc.team2706.robot.commands.plays.TurnToTargetWithCameraPlay;
 import org.usfirst.frc.team2706.robot.commands.plays.TurnToTargetWithGyroPlay;
 import org.usfirst.frc.team2706.robot.commands.plays.WaitThenRotateDriveWithCamera;
->>>>>>> refs/remotes/origin/master
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2706.robot.subsystems.PlatformMechanism;
 import org.usfirst.frc.team2706.robot.subsystems.PneumaticMechanism;
@@ -42,18 +38,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-<<<<<<< HEAD
-	
-	public static DriveTrain driveTrain;
 	public static PlatformMechanism platformMechanism;
 	public static PneumaticMechanism pneumaticMechanism;
 	public static ShootIntakeMechanism shootIntakeMechanism;
-=======
 
 	public static Camera camera;
 	public static DriveTrain driveTrain;
 	public static DoubleSolenoid solenoid;
->>>>>>> refs/remotes/origin/master
+
 	public static OI oi;
     Command autonomousCommand;
     AutomaticCameraControl cameraCommand;
@@ -65,15 +57,12 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
-<<<<<<< HEAD
         driveTrain = new DriveTrain();
         shootIntakeMechanism = new ShootIntakeMechanism();
         platformMechanism = new PlatformMechanism();
         pneumaticMechanism = new PneumaticMechanism();
-        
-=======
-        driveTrain = new DriveTrain();      
->>>>>>> refs/remotes/origin/master
+
+        driveTrain = new DriveTrain();
         chooser = new SendableChooser();
         camera = new Camera(Camera.CAMERA_IP);
 
@@ -96,7 +85,6 @@ public class Robot extends IterativeRobot {
         
         chooser.addDefault("Change Platform Position", new ChangePlatformPosition(true));
         chooser.addDefault("Intake Ball", new IntakeBall(-0.5));
-        chooser.addDefault("PassBall", new PassBall(0.5));
         chooser.addDefault("Shoot Ball", new ShootBall(1));
         
         
