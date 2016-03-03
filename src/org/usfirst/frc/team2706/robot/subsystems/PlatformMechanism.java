@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class PlatformMechanism extends Subsystem {
 
-	private Compressor c;
+	//private Compressor c;
 	private DoubleSolenoid sol;
 	private DoubleSolenoid floating;
 	
@@ -22,12 +22,14 @@ public class PlatformMechanism extends Subsystem {
 	public PlatformMechanism() {
 		super();
 		
-		c = new Compressor(RobotMap.COMPRESSOR_PLATFORM);
+		// Kevin Lam: We don't actually need to do this - creating a DoubleSolenoid
+		//            automatically sets up the compressor control system under the hood.
+		//c = new Compressor(RobotMap.COMPRESSOR_PLATFORM);
 		sol = new DoubleSolenoid(RobotMap.SOLENOID_PLATFORM0A, RobotMap.SOLENOID_PLATFORM0B);
 		floating = new DoubleSolenoid(RobotMap.SOLENOID_PLATFORM1A, RobotMap.SOLENOID_PLATFORM1B);
 		
-		c.start();
-		c.setClosedLoopControl(true);
+		//c.start();
+		//c.setClosedLoopControl(true);
 	}
 	
 	/*
