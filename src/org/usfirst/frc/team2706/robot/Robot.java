@@ -1,14 +1,11 @@
 
 package org.usfirst.frc.team2706.robot;
 
-import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
-import org.usfirst.frc.team2706.robot.commands.RotateDriveWithCamera;
-import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithCameraAutonomous;
-import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithGyroAutonomous;
-import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithGyroAutonomous2;
-import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
-import org.usfirst.frc.team2706.robot.commands.plays.WaitThenRotateDriveWithCamera;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootCameraAutonomous;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootGyroAutonomous;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomous;
+import org.usfirst.frc.team2706.robot.commands.plays.GoToTargetGyroPlay;
 import org.usfirst.frc.team2706.robot.subsystems.AutonomousSelector;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
@@ -54,7 +51,7 @@ public class Robot extends IterativeRobot {
         // TODO: Use RobotMap value
         solenoid = new DoubleSolenoid(0, 1);
         
-        chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
+/*        chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
 //        chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
 //        chooser.addObject("RotateDriveWithGyro at 0.85 speed for 180 degrees", new RotateDriveWithGyro(0.85, 180, 100));
 //        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.5, 10, 100));
@@ -67,8 +64,11 @@ public class Robot extends IterativeRobot {
         
         chooser.addObject("WaitThenRotateDriveWithCamera", new WaitThenRotateDriveWithCamera(0.75, 5000));
         
-        chooser.addObject("Backup BreachTurnShootWithGyroAtonomous", new BreachTurnShootWithGyroAutonomous2());
-        
+        chooser.addObject("Backup BreachTurnShootWithGyroAtonomous", new BreachTurnShootWithGyroAutonomous2());*/
+        chooser.addObject("Backup BreachTurnShootWithGyroAtonomous", new GoToTargetGyroPlay());
+        chooser.addObject("Breach and Go To Target and Shoot", new BreachGoToTargetShootGyroAutonomous());
+        chooser.addObject("Breach and Go To Target and Shoot with Camera", new BreachGoToTargetShootCameraAutonomous());
+        chooser.addObject("Breach and Go To Target and Shoot with Hybrid", new BreachGoToTargetShootHybridAutonomous());
         SmartDashboard.putData("Auto mode", chooser);
     }
 	
@@ -117,7 +117,7 @@ public class Robot extends IterativeRobot {
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
         cameraCommand.start();
-        cameraCommand.cancel(); // Uncomment/comment to disable/enable camera movement
+        //cameraCommand.cancel(); // Uncomment/comment to disable/enable camera movement
     }
 
     /**

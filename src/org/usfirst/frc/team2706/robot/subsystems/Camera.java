@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -77,11 +76,11 @@ public class TargetObject implements Comparable<TargetObject> {
 			System.out.println("Setting up Sockets");
 
 		Socket sock = new Socket();
-		try {
+/*		try {
 			sock.setSoTimeout(5);
 		} catch (SocketException e1) {
 			e1.printStackTrace();
-		}
+		}*/
 		try {
 			sock.connect(new InetSocketAddress(RPi_addr, visionDataPort), 20);
 		} catch (Exception e) {
@@ -222,7 +221,14 @@ public class TargetObject implements Comparable<TargetObject> {
 	}
 
 	public float RobotTurnDegrees() {
-		return - (float)(turnXAxis.getPosition() * 180 - 90f);
+		float out;
+		if(cachedTarget != null) {
+			out = - (float)(turnXAxis.getPosition() * 180 - 90f);
+		}
+		else {
+			out = 45;
+		}
+		return out;
 	}
 	public void ResetCamera() {
 		turnXAxis.set(DEFAULT_PAN);

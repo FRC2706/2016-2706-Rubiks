@@ -19,7 +19,7 @@ public class RotateDriveWithCamera extends Command {
 	
 	private int doneCount;
 	
-	private final double P=0.25, I=0.03125, D=0, F=0;
+	private final double P=0.25, I=0.03125, D=0.03125, F=0;
 	
 	/**
 	 * Turn to the target
@@ -28,28 +28,21 @@ public class RotateDriveWithCamera extends Command {
 	 */
     public RotateDriveWithCamera(double speed, int minDoneCycles) {
         requires(Robot.driveTrain);
-//        requires(Robot.camera);
-
-        System.out.println("Init!");
         
         this.speed = speed;
 
         this.minDoneCycles = minDoneCycles;
-        leftPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(false), 
+        leftPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(true), 
         		Robot.driveTrain.getDrivePIDOutput(false, true));
         
-        rightPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(false), 
+        rightPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(true), 
         		Robot.driveTrain.getDrivePIDOutput(true, false));
-        
-        System.out.println("TEst: End Init");
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
     	Robot.driveTrain.reset();
-    	
-    	System.out.println("TEst: Start");
     	
     	// Use gyro if there is no target
 /*    	if(!Robot.camera.HasTarget()) {
@@ -80,8 +73,6 @@ public class RotateDriveWithCamera extends Command {
     	// Start going to location
     	leftPID.enable();
     	rightPID.enable();
-    	
-    	System.out.println("TEst: Start End");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -119,12 +110,10 @@ public class RotateDriveWithCamera extends Command {
     private boolean onTarget() {
     	if(leftPID.getError() < 5.0 && rightPID.getError() < 5.0) {
     		doneCount++;
-    		System.out.println("TEst: Returning Ture");
     		return true;
     	}
     	else {
     		doneCount = 0;
-    		System.out.println("TEst: Returning False");
     		return false;
     	}
     		
