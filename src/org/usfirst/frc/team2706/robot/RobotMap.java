@@ -63,6 +63,8 @@ public class RobotMap {
 	public static final boolean INVERT_JOYSTICK_X;
 	public static final boolean INVERT_JOYSTICK_Y;
 	
+	public static final int SELECTOR_CHANNEL;
+	
 	// @TODO: Get Gyro channel, and rangefinder channel11
 
 	static {
@@ -94,6 +96,8 @@ public class RobotMap {
 		
 		boolean invertJoystickX = false;
 		boolean invertJoystickY = false;
+		
+		int selectorChannel = 0;
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("/home/lvuser/robot-type.conf"));
@@ -139,6 +143,7 @@ public class RobotMap {
 				encoderRightDPP = CompetitionRobotMap.ENCODER_RIGHT_DPP;
 				invertJoystickX = CompetitionRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = CompetitionRobotMap.INVERT_JOYSTICK_Y;
+				selectorChannel = CompetitionRobotMap.SELECTOR_CHANNEL;
 				break;
 			// Practice
 			case 1:
@@ -161,6 +166,7 @@ public class RobotMap {
 				encoderRightDPP = PracticeRobotMap.ENCODER_RIGHT_DPP;
 				invertJoystickX = PracticeRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = PracticeRobotMap.INVERT_JOYSTICK_Y;
+				selectorChannel = PracticeRobotMap.SELECTOR_CHANNEL;
 				break;
 			case 2:
 				// Simulation
@@ -183,6 +189,7 @@ public class RobotMap {
 				encoderRightDPP = SimulationRobotMap.ENCODER_RIGHT_DPP;
 				invertJoystickX = SimulationRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = SimulationRobotMap.INVERT_JOYSTICK_Y;
+				selectorChannel = SimulationRobotMap.SELECTOR_CHANNEL;
 				break;
 			default:
 				motorFrontLeft = CompetitionRobotMap.MOTOR_FRONT_LEFT;
@@ -204,6 +211,7 @@ public class RobotMap {
 				encoderRightDPP = CompetitionRobotMap.ENCODER_RIGHT_DPP;
 				invertJoystickX = CompetitionRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = CompetitionRobotMap.INVERT_JOYSTICK_Y;
+				selectorChannel = CompetitionRobotMap.SELECTOR_CHANNEL;
 				break;
 			}
 		} catch (IOException e) {
@@ -237,6 +245,8 @@ public class RobotMap {
 		
 		INVERT_JOYSTICK_X = invertJoystickX;
 		INVERT_JOYSTICK_Y = invertJoystickY;
+		
+		SELECTOR_CHANNEL = selectorChannel;
 	}
 
 	private class CompetitionRobotMap extends RobotMap {
@@ -275,6 +285,8 @@ public class RobotMap {
 		public static final boolean INVERT_JOYSTICK_X = false;
 		public static final boolean INVERT_JOYSTICK_Y = false;
 
+		public static final int SELECTOR_CHANNEL = 0;
+		
 		// @TODO: Get Gyro channel, and rangefinder channel11
 	}
 
@@ -314,6 +326,8 @@ public class RobotMap {
 		public static final boolean INVERT_JOYSTICK_X = false;
 		public static final boolean INVERT_JOYSTICK_Y = false;
 		
+		public static final int SELECTOR_CHANNEL = 0;
+		
 		// @TODO: Get Gyro channel, and rangefinder channel11
 	}
 
@@ -352,6 +366,8 @@ public class RobotMap {
 
 		public static final boolean INVERT_JOYSTICK_X = false;
 		public static final boolean INVERT_JOYSTICK_Y = false;
+		
+		public static final int SELECTOR_CHANNEL = 0;
 		
 		// @TODO: Get Gyro channel, and rangefinder channel11
 	}

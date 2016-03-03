@@ -21,7 +21,7 @@ public class RotateDriveWithGyro extends Command {
 	
 	private int doneCount;
 	
-	private final double P=0.25, I=0.03125, D=0, F=0;
+	private final double P=0.25, I=0.03125, D=0.03125, F=0;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -48,6 +48,8 @@ public class RotateDriveWithGyro extends Command {
     protected void initialize() {
     	Robot.driveTrain.reset();
     	
+    	
+    	
     	leftPID.setInputRange(0.0, 360.0);
     	rightPID.setInputRange(0.0, 360.0);
     	
@@ -60,8 +62,8 @@ public class RotateDriveWithGyro extends Command {
     	rightPID.setOutputRange(-speed, speed);
     	
     	// Will accept within 1 degrees of target
-    	leftPID.setAbsoluteTolerance(1);
-    	rightPID.setAbsoluteTolerance(1);
+    	leftPID.setAbsoluteTolerance(4);
+    	rightPID.setAbsoluteTolerance(4);
     	
     	leftPID.setSetpoint(angle);
     	rightPID.setSetpoint(angle);
@@ -102,7 +104,7 @@ public class RotateDriveWithGyro extends Command {
     }
     
     private boolean onTarget() {
-    	if(leftPID.getError() < 1.0 && rightPID.getError() < 1.0) {
+    	if(leftPID.getError() < 4.0 && rightPID.getError() < 4.0) {
     		doneCount++;
     		return true;
     	}

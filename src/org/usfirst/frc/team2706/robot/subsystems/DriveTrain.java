@@ -156,6 +156,10 @@ public class DriveTrain extends Subsystem {
 		return gyroPIDSource;
 	}
 
+	public void inverGyroPIDSource(boolean invert) {
+		gyroPIDSource.invert(invert);
+	}
+	
 	/**
 	 * Reset the robots sensors to the zero states.
 	 */
@@ -225,12 +229,12 @@ public class DriveTrain extends Subsystem {
 		}
 	}
 	
-	class DrivePIDOutput implements PIDOutput {
+	public class DrivePIDOutput implements PIDOutput {
 
 		private final Victor front;
 		private final Victor rear;
 		
-		private final boolean invert;
+		private boolean invert;
 		
 		private final boolean left;
 		
@@ -263,5 +267,9 @@ public class DriveTrain extends Subsystem {
 					rear.set(output);
 				}
 		}		
+		
+		public void setInvert(boolean invert) {
+			this.invert = invert;
+		}
 	}
 }

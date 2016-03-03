@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BreachPlay extends CommandGroup {
 	
 	public BreachPlay() {
-		this.addSequential(new StraightDriveWithEncoders(0.5, 15, 100));
+		// TODO: Fix speeds and distances
+		this.addSequential(new StraightDriveWithEncoders(0.25,1.0, 25));
 	}
 }

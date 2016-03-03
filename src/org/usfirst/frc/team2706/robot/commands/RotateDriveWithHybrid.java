@@ -1,19 +1,17 @@
 package org.usfirst.frc.team2706.robot.commands;
 
 import org.usfirst.frc.team2706.robot.Robot;
+import org.usfirst.frc.team2706.robot.subsystems.DriveTrain.DrivePIDOutput;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Have the robot drive certain distance
+ * Have the robot drive certain amount of time
  */
-public class StraightDriveWithEncoders extends Command {
+public class RotateDriveWithHybrid extends Command {
     
 	private final double speed;
-	
-	private final double distance;
 	
 	private final int minDoneCycles;
 	
@@ -22,52 +20,38 @@ public class StraightDriveWithEncoders extends Command {
 	
 	private int doneCount;
 	
-	private final double P=1.0, I=0.0625, D=0.0625, F=0;
+	private final double P=0.25, I=0.03125, D=0.03125, F=0;
+	
+	private final DrivePIDOutput leftOut = (DrivePIDOutput) Robot.driveTrain.getDrivePIDOutput(false, true);
+	private final DrivePIDOutput rightOut = (DrivePIDOutput) Robot.driveTrain.getDrivePIDOutput(true, false);
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
 	 * 
 	 * @param speed Speed in range [-1,1]
-	 * @param distance The encoder distance to travel
-	 * @param minDoneCycles The amount of cycles when the robot is within its target range to end the comman
+	 * @param angle The angle to rotate to
 	 */
-    public StraightDriveWithEncoders(double speed, double distance, int minDoneCycles) {
+    public RotateDriveWithHybrid(double speed, int minDoneCycles) {
         requires(Robot.driveTrain);
 
         this.speed = speed;
-        
-        this.distance = distance;
-        
-        this.minDoneCycles = minDoneCycles;
 
-        leftPID = new PIDController(0,0,0,	 
-       		Robot.driveTrain.getEncoderPIDSource(true), 
-       		Robot.driveTrain.getDrivePIDOutput(false, true)
-        );
+        this.minDoneCycles = minDoneCycles;
+        leftPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
+        		leftOut);
         
-        rightPID = new PIDController(0,0,0,	 
-           	Robot.driveTrain.getEncoderPIDSource(false), 
-           	Robot.driveTrain.getDrivePIDOutput(false, false)
-        );
+        rightPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
+        		rightOut);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.driveTrain.reset();
     	
-    	// Set the PID values using Smartdashboard
-    	leftPID.setPID(       	
-    		SmartDashboard.getNumber("P", P), 
-           	SmartDashboard.getNumber("I", I), 
-          	SmartDashboard.getNumber("D", D), 
-          	SmartDashboard.getNumber("F", F)
-    	);
-    	rightPID.setPID(       	
-        	SmartDashboard.getNumber("P", P), 
-        	SmartDashboard.getNumber("I", I), 
-        	SmartDashboard.getNumber("D", D), 
-        	SmartDashboard.getNumber("F", F)
-        );    	
+    	doneCount = 0;
+    	
+    	leftPID.setInputRange(0.0, 360.0);
+    	rightPID.setInputRange(0.0, 360.0);
     	
     	// Make input infinite
     	leftPID.setContinuous();
@@ -77,15 +61,23 @@ public class StraightDriveWithEncoders extends Command {
     	leftPID.setOutputRange(-speed, speed);
     	rightPID.setOutputRange(-speed, speed);
     	
-
+    	// Will accept within 1 degrees of target
+    	leftPID.setAbsoluteTolerance(4);
+    	rightPID.setAbsoluteTolerance(4);
     	
-    	leftPID.setSetpoint(distance);
-    	rightPID.setSetpoint(distance);
+//    	if(Robot.camera.RobotTurnDegrees() < 0) {
+//    		leftOut.setInvert(true);
+//    		rightOut.setInvert(false);
+//    		Robot.driveTrain.inverGyroPIDSource(true);
+//    	}
+//    	else {
+//    		leftOut.setInvert(false);
+//    		rightOut.setInvert(true);
+//    		Robot.driveTrain.inverGyroPIDSource(false);
+//    	}
     	
-    	
-    	// Will accept within 1 inch of target
-    	leftPID.setAbsoluteTolerance(1.0/12);
-    	rightPID.setAbsoluteTolerance(1.0/12);
+    	leftPID.setSetpoint(Robot.camera.RobotTurnDegrees());
+    	rightPID.setSetpoint(Robot.camera.RobotTurnDegrees());
     	
     	// Start going to location
     	leftPID.enable();
@@ -93,18 +85,18 @@ public class StraightDriveWithEncoders extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {    	
+    protected void execute() {
     	// TODO: Use WPI onTarget()
     	onTarget();
     }
-    
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	if(this.doneCount > this.minDoneCycles)
     		return true;
     	else
     		return false;
-
+    	
     }
 
     // Called once after isFinished returns true
@@ -112,6 +104,7 @@ public class StraightDriveWithEncoders extends Command {
     	// Disable PID output and stop robot to be safe
     	leftPID.disable();
     	rightPID.disable();
+    	
         Robot.driveTrain.drive(0, 0);
     }
 
@@ -122,7 +115,7 @@ public class StraightDriveWithEncoders extends Command {
     }
     
     private boolean onTarget() {
-    	if(leftPID.getError() < 1.0/12 && rightPID.getError() < 1.0/12) {
+    	if(leftPID.getError() < 4.0 && rightPID.getError() < 4.0) {
     		doneCount++;
     		return true;
     	}
@@ -137,4 +130,3 @@ public class StraightDriveWithEncoders extends Command {
     	return doneCount;
     }
 }
-
