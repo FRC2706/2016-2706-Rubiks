@@ -57,7 +57,7 @@ public class StraightDriveWithTime extends Command {
     protected void interrupted() {
         end();
     }
-    
+    public boolean done;
     class CommandTimerTask extends TimerTask {
     	Command command;
     	
@@ -67,6 +67,8 @@ public class StraightDriveWithTime extends Command {
     	}
     	public void run() {
     		command.cancel();
+    		done = true;
+    		System.out.println("Cancelled!");
     	}
     }
 }

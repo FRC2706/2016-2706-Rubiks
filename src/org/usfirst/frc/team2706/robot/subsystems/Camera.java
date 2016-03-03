@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +27,7 @@ public class Camera extends Subsystem {
 	public static final float MAX_PAN_LEFT = 0;
 	public static final float MAX_PAN_RIGHT = 1;
 	float boat; // must be a float or else it sinks
-	public boolean PRINT_STUFF = true;
+	public boolean PRINT_STUFF = false;
 	public Servo turnXAxis; 
 	public Servo turnYAxis;
 	public  String RPi_addr;
@@ -102,11 +103,14 @@ public class TargetObject implements Comparable<TargetObject> {
 
 			byte[] rawBytes = new byte[2048];
 			try {
+				try {
 				if( sock.getInputStream().read(rawBytes) < 0 ) {
 					System.out.println("Something went wrong reading response from TrackerBox2: ");
 					return null;
 				}
-
+				} catch(SocketTimeoutException e) {
+					
+				}
 				String rawData = new String(rawBytes);
 				if(PRINT_STUFF)
 					System.out.println("I got back: " + rawData);
@@ -170,7 +174,6 @@ public class TargetObject implements Comparable<TargetObject> {
 /*	public float savedXaxis = DEFAULT_PAN;
 	public float savedYaxis = DEFAULT_TILT;*/
 	public  TargetObject getVisionDataByTarget(int target) { // put in -1 for center target, -2 for right and -3 for left
-		System.out.println("Finding");
 		ArrayList<TargetObject> pr = getVisionData();
 		Collections.sort((List<TargetObject>) pr);
 		// pr should now be sorted
@@ -219,7 +222,7 @@ public class TargetObject implements Comparable<TargetObject> {
 	}
 
 	public float RobotTurnDegrees() {
-		return (float)turnXAxis.getPosition() / (1f / 180f) - 90f;
+		return - (float)(turnXAxis.getPosition() * 180 - 90f);
 	}
 	public void ResetCamera() {
 		turnXAxis.set(DEFAULT_PAN);
@@ -277,7 +280,6 @@ public class TargetObject implements Comparable<TargetObject> {
 
 		@Override
 		public double pidGet() {
-			System.out.println(invert ? -camera.RobotTurnDegrees() : camera.RobotTurnDegrees());
 			return invert ? -camera.RobotTurnDegrees() : camera.RobotTurnDegrees();
 		}
 		

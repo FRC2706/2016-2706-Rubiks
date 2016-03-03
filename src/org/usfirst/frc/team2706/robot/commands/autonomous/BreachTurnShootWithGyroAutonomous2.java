@@ -1,27 +1,22 @@
-package org.usfirst.frc.team2706.robot.commands.plays;
+package org.usfirst.frc.team2706.robot.commands.autonomous;
 
-import org.usfirst.frc.team2706.robot.commands.RotateDriveWithCamera;
+import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
+import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class WaitThenRotateDriveWithCamera extends Command {
-	
-	double speed;
-	long time;
+public class BreachTurnShootWithGyroAutonomous2 extends Command {
 	
 	Command first;
 	Command second;
 	
-	public WaitThenRotateDriveWithCamera(double speed, long time) {
-		this.speed = speed;
-		this.time = time;
-	}
-
+	public BreachTurnShootWithGyroAutonomous2 (){}
+	
 	@Override
 	protected void initialize() {
-		first = new StraightDriveWithTime(0.0, time);
-		second = new RotateDriveWithCamera(speed, 100);
+		first = new StraightDriveWithEncoders(0.85, 15, 100);
+		second = new RotateDriveWithGyro(0.85, 37.5, 100);
 		
 		first.start();
 		

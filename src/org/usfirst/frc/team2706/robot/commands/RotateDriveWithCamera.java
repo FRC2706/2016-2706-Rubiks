@@ -28,8 +28,10 @@ public class RotateDriveWithCamera extends Command {
 	 */
     public RotateDriveWithCamera(double speed, int minDoneCycles) {
         requires(Robot.driveTrain);
-        requires(Robot.camera);
+//        requires(Robot.camera);
 
+        System.out.println("Init!");
+        
         this.speed = speed;
 
         this.minDoneCycles = minDoneCycles;
@@ -38,18 +40,23 @@ public class RotateDriveWithCamera extends Command {
         
         rightPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(false), 
         		Robot.driveTrain.getDrivePIDOutput(true, false));
+        
+        System.out.println("TEst: End Init");
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    @Override
+    public void initialize() {
     	Robot.driveTrain.reset();
     	
+    	System.out.println("TEst: Start");
+    	
     	// Use gyro if there is no target
-    	if(!Robot.camera.HasTarget()) {
+/*    	if(!Robot.camera.HasTarget()) {
     		new RotateDriveWithGyro(0.85, 45, 100).start();
     		this.cancel();
     		return;
-    	}
+    	}*/
     	
     	leftPID.setInputRange(-90.0, 90.0);
     	rightPID.setInputRange(-90.0, 90.0);
@@ -73,12 +80,16 @@ public class RotateDriveWithCamera extends Command {
     	// Start going to location
     	leftPID.enable();
     	rightPID.enable();
+    	
+    	System.out.println("TEst: Start End");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	// TODO: Use WPI onTarget()
     	onTarget();
+    	
+    	System.out.println("Tick!!!");
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -106,12 +117,16 @@ public class RotateDriveWithCamera extends Command {
     }
     
     private boolean onTarget() {
+    	double l = leftPID.getError();
+    	double r = rightPID.getError();
     	if(leftPID.getError() < 5.0 && rightPID.getError() < 5.0) {
     		doneCount++;
+    		System.out.println("TEst: Returning Ture");
     		return true;
     	}
     	else {
     		doneCount = 0;
+    		System.out.println("TEst: Returning False");
     		return false;
     	}
     		

@@ -10,6 +10,7 @@ import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithCameraAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithGyroAutonomous;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithGyroAutonomous2;
 import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
 import org.usfirst.frc.team2706.robot.commands.plays.TurnToTargetWithCameraPlay;
 import org.usfirst.frc.team2706.robot.commands.plays.TurnToTargetWithGyroPlay;
@@ -56,17 +57,19 @@ public class Robot extends IterativeRobot {
         solenoid = new DoubleSolenoid(0, 1);
         
         chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
-        chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
-        chooser.addObject("RotateDriveWithGyro at 0.85 speed for 180 degrees", new RotateDriveWithGyro(0.85, 180, 100));
-        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.5, 10, 100));
+//        chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
+//        chooser.addObject("RotateDriveWithGyro at 0.85 speed for 180 degrees", new RotateDriveWithGyro(0.85, 180, 100));
+//        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.5, 10, 100));
         chooser.addObject("RotateDriveWithCamera at 0.75 speed", new RotateDriveWithCamera(0.75, 100));
         chooser.addObject("BreachPlay", new BreachPlay());
-        chooser.addObject("TurnToTargetWithGyroPlay", new TurnToTargetWithGyroPlay());
-        chooser.addObject("TurnToTargetWithCameraPlay", new TurnToTargetWithCameraPlay());
+//        chooser.addObject("TurnToTargetWithGyroPlay", new TurnToTargetWithGyroPlay());
+//        chooser.addObject("TurnToTargetWithCameraPlay", new TurnToTargetWithCameraPlay());
         chooser.addObject("BreachTurnShootWithGyroAutonomous", new BreachTurnShootWithGyroAutonomous());
         chooser.addObject("BreachTurnShootWithCameraAutonomous", new BreachTurnShootWithCameraAutonomous());
         
         chooser.addObject("WaitThenRotateDriveWithCamera", new WaitThenRotateDriveWithCamera(0.75, 5000));
+        
+        chooser.addObject("Backup BreachTurnShootWithGyroAtonomous", new BreachTurnShootWithGyroAutonomous2());
         
         SmartDashboard.putData("Auto mode", chooser);
     }
