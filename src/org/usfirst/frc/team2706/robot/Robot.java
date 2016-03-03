@@ -4,17 +4,13 @@ package org.usfirst.frc.team2706.robot;
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithCamera;
-import org.usfirst.frc.team2706.robot.subsystems.Camera;
-import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
-import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
-import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithCameraAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithGyroAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachTurnShootWithGyroAutonomous2;
 import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
-import org.usfirst.frc.team2706.robot.commands.plays.TurnToTargetWithCameraPlay;
-import org.usfirst.frc.team2706.robot.commands.plays.TurnToTargetWithGyroPlay;
 import org.usfirst.frc.team2706.robot.commands.plays.WaitThenRotateDriveWithCamera;
+import org.usfirst.frc.team2706.robot.subsystems.AutonomousSelector;
+import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -37,6 +33,7 @@ public class Robot extends IterativeRobot {
 	public static Camera camera;
 	public static DriveTrain driveTrain;
 	public static DoubleSolenoid solenoid;
+	public static AutonomousSelector hardwareChooser;
 	public static OI oi;
     Command autonomousCommand;
     AutomaticCameraControl cameraCommand;
@@ -51,7 +48,8 @@ public class Robot extends IterativeRobot {
         driveTrain = new DriveTrain();      
         chooser = new SendableChooser();
         camera = new Camera(Camera.CAMERA_IP);
-
+        hardwareChooser = new AutonomousSelector();
+        
         cameraCommand = new AutomaticCameraControl();
         // TODO: Use RobotMap value
         solenoid = new DoubleSolenoid(0, 1);
@@ -97,10 +95,11 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
+        cameraCommand.start();
+    	
         autonomousCommand = (Command) chooser.getSelected();
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
-        cameraCommand.start();
     }
 
     /**

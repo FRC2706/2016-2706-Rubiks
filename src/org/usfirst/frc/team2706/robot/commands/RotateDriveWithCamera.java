@@ -117,8 +117,6 @@ public class RotateDriveWithCamera extends Command {
     }
     
     private boolean onTarget() {
-    	double l = leftPID.getError();
-    	double r = rightPID.getError();
     	if(leftPID.getError() < 5.0 && rightPID.getError() < 5.0) {
     		doneCount++;
     		System.out.println("TEst: Returning Ture");
