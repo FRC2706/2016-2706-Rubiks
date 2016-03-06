@@ -121,8 +121,8 @@ public class DriveTrain extends Subsystem {
 	 * @param joy The Xbox style joystick to use to drive arcade style.
 	 */
 	public void drive(Joystick joy) {
-		drive.arcadeDrive(RobotMap.INVERT_JOYSTICK_Y ? -joy.getY() : joy.getY(), 
-				RobotMap.INVERT_JOYSTICK_X ? -joy.getX() : joy.getX(), true);
+		drive.arcadeDrive(RobotMap.INVERT_JOYSTICK_Y ? -joy.getRawAxis(5) : joy.getRawAxis(5), 
+				RobotMap.INVERT_JOYSTICK_X ? -joy.getRawAxis(4) : joy.getRawAxis(4), true);
 	}
 
 	/**

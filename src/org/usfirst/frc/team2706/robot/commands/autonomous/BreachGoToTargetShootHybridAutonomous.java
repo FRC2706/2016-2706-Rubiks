@@ -1,5 +1,9 @@
 package org.usfirst.frc.team2706.robot.commands.autonomous;
 
+import org.usfirst.frc.team2706.robot.commands.ArmDownAuto;
+import org.usfirst.frc.team2706.robot.commands.ShootBall;
+import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
+import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
 import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
 import org.usfirst.frc.team2706.robot.commands.plays.GoToTargetHybridPlay;
 
@@ -10,6 +14,6 @@ public class BreachGoToTargetShootHybridAutonomous extends CommandGroup {
 	public BreachGoToTargetShootHybridAutonomous() {
 		this.addSequential(new BreachPlay());
 		this.addSequential(new GoToTargetHybridPlay());
-		// TODO: Shoot!
+		this.addSequential(new ShootBall(TeleopPneumaticControl.SHOOT_SPEED));
 	}
 }

@@ -30,7 +30,11 @@ public class AutonomousSelector extends Subsystem {
 	protected void initDefaultCommand() {}
 	
 	public Command getSelected() {
-		return commands.get(getVoltageAsIndex());
+		int idx = getVoltageAsIndex();
+		if(idx >= commands.size())
+			idx = 0;
+		
+		return commands.get(idx);
 	}
 
 	private int getVoltageAsIndex() {

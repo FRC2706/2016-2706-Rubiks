@@ -2,7 +2,6 @@ package org.usfirst.frc.team2706.robot.commands;
 
 import org.usfirst.frc.team2706.robot.Robot;
 
-import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,7 +22,7 @@ public class AutomaticCameraControl extends Command {
 		SmartDashboard.putNumber("Vision Angle", Robot.camera.RobotTurnDegrees());
 		if(Robot.camera.getVisionData() != null) {
 			if(lostTarget == true) {
-			Robot.oi.getJoystick().setRumble(RumbleType.kLeftRumble, 0.5f);
+			//Robot.oi.getJoystick().setRumble(RumbleType.kLeftRumble, 0.5f);
 			}
 			lostTarget = false;
 			move.start();
