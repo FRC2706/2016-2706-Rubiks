@@ -1,8 +1,6 @@
 package org.usfirst.frc.team2706.robot.commands.autonomous;
 
-import org.usfirst.frc.team2706.robot.commands.ArmDownAuto;
 import org.usfirst.frc.team2706.robot.commands.ShootBall;
-import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
 import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
 import org.usfirst.frc.team2706.robot.commands.plays.GoToTargetHybridPlay;

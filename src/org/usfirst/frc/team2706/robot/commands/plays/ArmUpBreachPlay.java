@@ -1,8 +1,6 @@
 package org.usfirst.frc.team2706.robot.commands.plays;
 
-import org.usfirst.frc.team2706.robot.commands.ArmUpAuto;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
-import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
