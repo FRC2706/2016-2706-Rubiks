@@ -35,7 +35,6 @@ public class RobotMap {
 	// Right gearbox
 	public static final int MOTOR_FRONT_RIGHT;
 	public static final boolean MOTOR_FRONT_RIGHT_INVERTED;
-	
 	// Right gearbox
 	public static final int MOTOR_REAR_LEFT;
 	public static final boolean MOTOR_REAR_LEFT_INVERTED;
@@ -68,6 +67,15 @@ public class RobotMap {
 	
 	public static final int SELECTOR_CHANNEL;
 	
+	public static final int RING_LIGHT;
+	
+	//Compressors
+	public static final int BALL_KICKER_A;
+	public static final int BALL_KICKER_B;
+	public static final int ARM_A;
+	public static final int ARM_B;
+	public static final int FLOAT_A;
+	public static final int FLOAT_B;
 	// @TODO: Get Gyro channel, and rangefinder channel11
 
 	static {
@@ -105,6 +113,14 @@ public class RobotMap {
 		
 		int selectorChannel = 0;
 
+		int ringLight = 0;
+		
+		int ballKickerA = 0;
+		int ballKickerB = 0;
+		int armA = 0;
+		int armB = 0;
+		int floatA = 0;
+		int floatB = 0;
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("/home/lvuser/robot-type.conf"));
 
@@ -152,6 +168,13 @@ public class RobotMap {
 				invertJoystickX = CompetitionRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = CompetitionRobotMap.INVERT_JOYSTICK_Y;
 				selectorChannel = CompetitionRobotMap.SELECTOR_CHANNEL;
+				ringLight = CompetitionRobotMap.RING_LIGHT;
+				ballKickerA = CompetitionRobotMap.BALL_KICKER_A;
+				ballKickerB = CompetitionRobotMap.BALL_KICKER_B;
+				armA = CompetitionRobotMap.ARM_A;
+				armB = CompetitionRobotMap.ARM_B;
+				floatA = CompetitionRobotMap.FLOAT_A;
+				floatB = CompetitionRobotMap.FLOAT_B;
 				break;
 			// Practice
 			case 1:
@@ -177,6 +200,13 @@ public class RobotMap {
 				invertJoystickX = PracticeRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = PracticeRobotMap.INVERT_JOYSTICK_Y;
 				selectorChannel = PracticeRobotMap.SELECTOR_CHANNEL;
+				ringLight = PracticeRobotMap.RING_LIGHT;
+				ballKickerA = PracticeRobotMap.BALL_KICKER_A;
+				ballKickerB = PracticeRobotMap.BALL_KICKER_B;
+				armA = PracticeRobotMap.ARM_A;
+				armB = PracticeRobotMap.ARM_B;
+				floatA = PracticeRobotMap.FLOAT_A;
+				floatB = PracticeRobotMap.FLOAT_B;
 				break;
 			case 2:
 				// Simulation
@@ -202,6 +232,13 @@ public class RobotMap {
 				invertJoystickX = SimulationRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = SimulationRobotMap.INVERT_JOYSTICK_Y;
 				selectorChannel = SimulationRobotMap.SELECTOR_CHANNEL;
+				ringLight = SimulationRobotMap.RING_LIGHT;
+				ballKickerA = SimulationRobotMap.BALL_KICKER_A;
+				ballKickerB = SimulationRobotMap.BALL_KICKER_B;
+				armA = SimulationRobotMap.ARM_A;
+				armB = SimulationRobotMap.ARM_B;
+				floatA = SimulationRobotMap.FLOAT_A;
+				floatB = SimulationRobotMap.FLOAT_B;
 				break;
 			default:
 				motorFrontLeft = CompetitionRobotMap.MOTOR_FRONT_LEFT;
@@ -226,6 +263,13 @@ public class RobotMap {
 				invertJoystickX = CompetitionRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = CompetitionRobotMap.INVERT_JOYSTICK_Y;
 				selectorChannel = CompetitionRobotMap.SELECTOR_CHANNEL;
+				ringLight = CompetitionRobotMap.RING_LIGHT;
+				ballKickerA = CompetitionRobotMap.BALL_KICKER_A;
+				ballKickerB = CompetitionRobotMap.BALL_KICKER_B;
+				armA = CompetitionRobotMap.ARM_A;
+				armB = CompetitionRobotMap.ARM_B;
+				floatA = CompetitionRobotMap.FLOAT_A;
+				floatB = CompetitionRobotMap.FLOAT_B;
 				break;
 			}
 		} catch (IOException e) {
@@ -264,6 +308,15 @@ public class RobotMap {
 		INVERT_JOYSTICK_Y = invertJoystickY;
 		
 		SELECTOR_CHANNEL = selectorChannel;
+		
+		RING_LIGHT = ringLight;
+		
+		BALL_KICKER_A = ballKickerA;
+		BALL_KICKER_B = ballKickerB;
+		ARM_A = armA;
+		ARM_B = armB;
+		FLOAT_A = floatA;
+		FLOAT_B = floatB;
 	}
 
 	private class CompetitionRobotMap extends RobotMap {
@@ -307,6 +360,7 @@ public class RobotMap {
 				
 		public static final int SELECTOR_CHANNEL = 0;
 		
+		public static final int RING_LIGHT = 6;
 		// @TODO: Get Gyro channel, and rangefinder channel11
 	}
 
@@ -351,6 +405,7 @@ public class RobotMap {
 		
 		public static final int SELECTOR_CHANNEL = 0;
 		
+		public static final int RING_LIGHT = 6;
 		// @TODO: Get Gyro channel, and rangefinder channel11
 	}
 
@@ -395,6 +450,7 @@ public class RobotMap {
 		
 		public static final int SELECTOR_CHANNEL = 0;
 		
+		public static final int RING_LIGHT = 6;
 		// @TODO: Get Gyro channel, and rangefinder channel11
 	}
 }

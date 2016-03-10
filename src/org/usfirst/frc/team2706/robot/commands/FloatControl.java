@@ -19,12 +19,13 @@ public class FloatControl extends Command {
 	@Override
 	protected void execute() {
 		// TODO Auto-generated method stub
+		this.cancel();
 	}
 
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 
 	@Override

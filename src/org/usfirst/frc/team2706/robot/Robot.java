@@ -3,7 +3,9 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
+import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachToShootHybridBackwardsAutonomous;
 import org.usfirst.frc.team2706.robot.commands.plays.ArmUpBreachPlay;
 import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
 import org.usfirst.frc.team2706.robot.subsystems.AutonomousSelector;
@@ -17,8 +19,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -38,7 +38,6 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand;
     TeleopPneumaticControl teleopControl;
     AutomaticCameraControl cameraCommand;
-    SendableChooser chooser;
     public static DoubleSolenoid ballKicker;
     public static DoubleSolenoid armCylinder1;
     public static DoubleSolenoid armCylinder2;
@@ -51,13 +50,13 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
-		ringLightPower = new Solenoid(6);	
+		ringLightPower = new Solenoid(RobotMap.RING_LIGHT);	
 		ringLightPower.set(true);
         driveTrain = new DriveTrain();      
-        chooser = new SendableChooser();
+
         camera = new Camera(Camera.CAMERA_IP);
         hardwareChooser = new AutonomousSelector(new ArcadeDriveWithJoystick(), new ArcadeDriveWithJoystick(),
-        		new BreachPlay(), new ArmUpBreachPlay());
+        		new BreachPlay(), new ArmUpBreachPlay(), new BreachToShootHybridBackwardsAutonomous(), new RotateDriveWithGyro(0.5, 180, 25));
         ballKicker = new DoubleSolenoid(0,1);
         armCylinder1 = new DoubleSolenoid(2,3);
         armCylinder2 = new DoubleSolenoid(4,5);
@@ -65,26 +64,6 @@ public class Robot extends IterativeRobot {
         teleopControl = new TeleopPneumaticControl();
         intakeLeft = new CANTalon(RobotMap.CAN_INTAKE_LEFT);
         intakeRight = new CANTalon(RobotMap.CAN_INTAKE_RIGHT);
-      chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
-/*        chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
-//        chooser.addObject("RotateDriveWithGyro at 0.85 speed for 180 degrees", new RotateDriveWithGyro(0.85, 180, 100));
-//        chooser.addObject("StraightDriveWithEncoders at 0.5 speed for 10 feet", new StraightDriveWithEncoders(0.5, 10, 100));
-        chooser.addObject("RotateDriveWithCamera at 0.75 speed", new RotateDriveWithCamera(0.75, 100));
-        chooser.addObject("BreachPlay", new BreachPlay());
-//        chooser.addObject("TurnToTargetWithGyroPlay", new TurnToTargetWithGyroPlay());
-//        chooser.addObject("TurnToTargetWithCameraPlay", new TurnToTargetWithCameraPlay());
-        chooser.addObject("BreachTurnShootWithGyroAutonomous", new BreachTurnShootWithGyroAutonomous());
-        chooser.addObject("BreachTurnShootWithCameraAutonomous", new BreachTurnShootWithCameraAutonomous());
-        
-        chooser.addObject("WaitThenRotateDriveWithCamera", new WaitThenRotateDriveWithCamera(0.75, 5000));
-        
-        chooser.addObject("Backup BreachTurnShootWithGyroAtonomous", new BreachTurnShootWithGyroAutonomous2());*/
-     chooser.addObject("Through Low Bar(Working)", new ArmUpBreachPlay());
-     chooser.addObject("Arm up breach",new ArmUpBreachPlay());
-       /* chooser.addObject("BROKEN: Breach and Go To Target and Shoot", new BreachGoToTargetShootGyroAutonomous());
-        chooser.addObject("Breach and Go To Target and Shoot with Camera and Time", new BreachWithTimeGoToTargetShootHybridAutonomous());*/
-      //  chooser.addObject("Breach and Go To Target and Shoot with Hybrid(Mostly Working but not competition ready)", new BreachGoToTargetShootHybridAutonomous());
-        SmartDashboard.putData("Auto mode", chooser);
     }
 	
 	/**
@@ -113,7 +92,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         cameraCommand.start();
     	System.out.println(hardwareChooser.getSelected());
-        autonomousCommand = hardwareChooser.getSelected(); //(Command) chooser.getSelected();
+        autonomousCommand = hardwareChooser.getSelected();
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
     }

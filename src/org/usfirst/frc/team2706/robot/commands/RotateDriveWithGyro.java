@@ -21,7 +21,7 @@ public class RotateDriveWithGyro extends Command {
 	
 	private int doneCount;
 	
-	private final double P=0.25, I=0.03125, D=0.03125, F=0;
+	private final double P=2, I=0.05, D=0.05, F=0;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -50,17 +50,20 @@ public class RotateDriveWithGyro extends Command {
     	
     	
     	
-    	leftPID.setInputRange(0.0, 360.0);
-    	rightPID.setInputRange(0.0, 360.0);
+    	leftPID.setInputRange(-360.0, 360.0);
+    	rightPID.setInputRange(-360.0, 360.0);
     	
     	// Make input infinite
     	leftPID.setContinuous();
     	rightPID.setContinuous();
-    	
+    	if(speed > 0) {
     	// Set output speed range
     	leftPID.setOutputRange(-speed, speed);
     	rightPID.setOutputRange(-speed, speed);
-    	
+    	} else {
+    		leftPID.setOutputRange(speed, -speed);
+        	rightPID.setOutputRange(speed, -speed);
+    	}
     	// Will accept within 1 degrees of target
     	leftPID.setAbsoluteTolerance(4);
     	rightPID.setAbsoluteTolerance(4);
@@ -117,5 +120,16 @@ public class RotateDriveWithGyro extends Command {
     
     public int getDoneCount() {
     	return doneCount;
+    }
+    public void Turn() {
+    	float fastSpeed;
+    	float slowSpeed = 0.2f;
+    	float medSpeed = 0.4f;
+    	if(Robot.driveTrain.getGyroPIDSource(false).pidGet() - angle < 20 && Robot.driveTrain.getGyroPIDSource(false).pidGet() - angle >= 0) {
+    		Robot.driveTrain.drive(-slowSpeed,slowSpeed);
+    	}
+    	else if(Robot.driveTrain.getGyroPIDSource(false).pidGet() - angle < 80 && Robot.driveTrain.getGyroPIDSource(false).pidGet() - angle >= 21) {
+    		Robot.driveTrain.drive(-medSpeed,medSpeed);
+    	}
     }
 }

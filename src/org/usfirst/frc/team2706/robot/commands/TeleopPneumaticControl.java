@@ -10,7 +10,7 @@ public class TeleopPneumaticControl extends Command {
 	
 
 	public static final double SHOOT_SPEED = 1.0;
-	public static final double INTAKE_SPEED = 0.3;
+	public static final double INTAKE_SPEED = 0.5;
 	
 	GetBall getBall = new GetBall(INTAKE_SPEED);
 	ShootBall shootBall = new ShootBall(SHOOT_SPEED);
@@ -20,19 +20,14 @@ public class TeleopPneumaticControl extends Command {
 	@Override
 	protected void initialize() {
 	}
-
 	@Override
 	protected void execute() {
 		boolean controlButtonA = Robot.oi.getOperatorJoystick().getRawButton(1);
 		boolean controlButtonB = Robot.oi.getOperatorJoystick().getRawButton(2);
-		//boolean controlButtonX = Robot.oi.getOperatorJoystick().getRawButton(3);
+		boolean controlButtonX = Robot.oi.getOperatorJoystick().getRawButton(3);
 		boolean controlButtonY = Robot.oi.getOperatorJoystick().getRawButton(4);
 		boolean controlButtonLB = Robot.oi.getOperatorJoystick().getRawButton(5);
 		boolean controlButtonRB = Robot.oi.getOperatorJoystick().getRawButton(6);
-		/*boolean controlButtonBack = Robot.oi.getOperatorJoystick().getRawButton(7);
-		boolean controlButtonStart = Robot.oi.getOperatorJoystick().getRawButton(8);
-		boolean controlButtonLeftStick = Robot.oi.getOperatorJoystick().getRawButton(9);
-		boolean controlButtonRightStick = Robot.oi.getOperatorJoystick().getRawButton(10);*/
 		if(controlButtonLB) { 
 			getBall = new GetBall(INTAKE_SPEED);
 			getBall.start();
@@ -53,27 +48,27 @@ public class TeleopPneumaticControl extends Command {
 		if(controlButtonY)
 			armUp.start();
 		
-		if(controlButtonB)
+		if(controlButtonB) {
 			new FloatControl(true).start();
+		}
+		if(controlButtonX) {
+			new FloatControl(false).start();
+		}
 		
 	}
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	protected void end() {
-		// TODO Auto-generated method stub
-		
+	protected void end() {	
 	}
 
 	@Override
 	protected void interrupted() {
-		// TODO Auto-generated method stub
-		
+		end();
 	}
 
 }

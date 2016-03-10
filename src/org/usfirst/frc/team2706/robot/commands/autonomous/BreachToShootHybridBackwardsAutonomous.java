@@ -12,9 +12,9 @@ public class BreachToShootHybridBackwardsAutonomous extends CommandGroup {
 	
 	public BreachToShootHybridBackwardsAutonomous() {
 		
-		this.addSequential(new StraightDriveWithEncoders(-0.4,-2,25));
+		this.addSequential(new StraightDriveWithEncoders(-0.4,-1,25));
 		this.addSequential(new BackwardsBreachPlay());
 		this.addSequential(new GoToTargetBackwardsHybridPlay());
-		this.addSequential(new ShootBall(TeleopPneumaticControl.SHOOT_SPEED));
+		this.addSequential(new ShootBall(TeleopPneumaticControl.SHOOT_SPEED),2);
 	}
 }
