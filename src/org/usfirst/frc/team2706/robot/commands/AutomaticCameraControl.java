@@ -21,7 +21,7 @@ public class AutomaticCameraControl extends Command {
 	protected void execute() {
 		if(Robot.camera.getVisionData() != null) {
 			if(lostTarget == true) {
-			Robot.oi.getJoystick().setRumble(RumbleType.kLeftRumble, 0.5f);
+			//Robot.oi.getJoystick().setRumble(RumbleType.kLeftRumble, 0.5f);
 			}
 			lostTarget = false;
 			move.start();
@@ -30,7 +30,7 @@ public class AutomaticCameraControl extends Command {
 		else {
 			
 			if(lostTarget == false) {
-				Robot.oi.getJoystick().setRumble(RumbleType.kRightRumble, 0.5f);
+				//Robot.oi.getJoystick().setRumble(RumbleType.kRightRumble, 0.5f);
 				savedMilis = System.currentTimeMillis();
 				lostTarget = true;
 			}

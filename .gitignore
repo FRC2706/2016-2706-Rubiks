@@ -9,3 +9,5 @@
 sysProps.xml
 .settings/org.eclipse.ltk.core.refactoring.prefs
 >>>>>>> refs/remotes/origin/master
+*.class
+*.jar
