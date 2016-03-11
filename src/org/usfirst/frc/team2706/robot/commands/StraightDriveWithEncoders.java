@@ -22,7 +22,7 @@ public class StraightDriveWithEncoders extends Command {
 	
 	private int doneCount;
 	
-	private final double P=1.0, I=0.0625, D=0, F=0;
+	private final double P=1.0, I=0.0, D=0.0, F=0;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -74,9 +74,14 @@ public class StraightDriveWithEncoders extends Command {
     	rightPID.setContinuous();
     	
     	// Set output speed range
+    	if(speed > 0) {
     	leftPID.setOutputRange(-speed, speed);
     	rightPID.setOutputRange(-speed, speed);
-    	
+    	}
+    	else {
+    		leftPID.setOutputRange(speed, -speed);
+        	rightPID.setOutputRange(speed, -speed);
+    	}
 
     	
     	leftPID.setSetpoint(distance);
@@ -122,7 +127,7 @@ public class StraightDriveWithEncoders extends Command {
     }
     
     private boolean onTarget() {
-    	if(leftPID.getError() < 1.0/12 && rightPID.getError() < 1.0/12) {
+    	if(leftPID.getError() < 3.0/12 && rightPID.getError() < 3.0/12) {
     		doneCount++;
     		return true;
     	}

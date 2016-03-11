@@ -19,7 +19,7 @@ public class RotateDriveWithCamera extends Command {
 	
 	private int doneCount;
 	
-	private final double P=0.25, I=0.03125, D=0, F=0;
+	private final double P=0.25, I=0.03125, D=0.03125, F=0;
 	
 	/**
 	 * Turn to the target
@@ -28,28 +28,28 @@ public class RotateDriveWithCamera extends Command {
 	 */
     public RotateDriveWithCamera(double speed, int minDoneCycles) {
         requires(Robot.driveTrain);
-        requires(Robot.camera);
-
+        
         this.speed = speed;
 
         this.minDoneCycles = minDoneCycles;
-        leftPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(false), 
+        leftPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(true), 
         		Robot.driveTrain.getDrivePIDOutput(false, true));
         
-        rightPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(false), 
+        rightPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(true), 
         		Robot.driveTrain.getDrivePIDOutput(true, false));
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    @Override
+    public void initialize() {
     	Robot.driveTrain.reset();
     	
     	// Use gyro if there is no target
-    	if(!Robot.camera.HasTarget()) {
+/*    	if(!Robot.camera.HasTarget()) {
     		new RotateDriveWithGyro(0.85, 45, 100).start();
     		this.cancel();
     		return;
-    	}
+    	}*/
     	
     	leftPID.setInputRange(-90.0, 90.0);
     	rightPID.setInputRange(-90.0, 90.0);
@@ -79,6 +79,8 @@ public class RotateDriveWithCamera extends Command {
     protected void execute() {
     	// TODO: Use WPI onTarget()
     	onTarget();
+    	
+    	System.out.println("Tick!!!");
     }
 
     // Make this return true when this Command no longer needs to run execute()

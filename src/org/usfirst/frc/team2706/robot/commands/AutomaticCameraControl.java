@@ -2,8 +2,8 @@ package org.usfirst.frc.team2706.robot.commands;
 
 import org.usfirst.frc.team2706.robot.Robot;
 
-import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutomaticCameraControl extends Command {
 	public int waitTime = 5;
@@ -19,9 +19,10 @@ public class AutomaticCameraControl extends Command {
 
 	@Override
 	protected void execute() {
+		SmartDashboard.putNumber("Vision Angle", Robot.camera.RobotTurnDegrees());
 		if(Robot.camera.getVisionData() != null) {
 			if(lostTarget == true) {
-			Robot.oi.getJoystick().setRumble(RumbleType.kLeftRumble, 0.5f);
+			//Robot.oi.getJoystick().setRumble(RumbleType.kLeftRumble, 0.5f);
 			}
 			lostTarget = false;
 			move.start();
@@ -30,17 +31,17 @@ public class AutomaticCameraControl extends Command {
 		else {
 			
 			if(lostTarget == false) {
-				Robot.oi.getJoystick().setRumble(RumbleType.kRightRumble, 0.5f);
+				//Robot.oi.getJoystick().setRumble(RumbleType.kRightRumble, 0.5f);
 				savedMilis = System.currentTimeMillis();
 				lostTarget = true;
 			}
 			if(System.currentTimeMillis() - (waitTime * 1000) > savedMilis) {
-				System.out.println("Here");
-				move.end();
+			//	System.out.println("Here");
+				/*move.end();
 				if(search.isRunning()) {
 				search.end();
 				}
-				search.start();
+				search.start();*/
 			}
 		}
 

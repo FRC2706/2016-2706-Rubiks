@@ -121,8 +121,8 @@ public class DriveTrain extends Subsystem {
 	 * @param joy The Xbox style joystick to use to drive arcade style.
 	 */
 	public void drive(Joystick joy) {
-		drive.arcadeDrive(RobotMap.INVERT_JOYSTICK_Y ? -joy.getY() : joy.getY(), 
-				RobotMap.INVERT_JOYSTICK_X ? -joy.getX() : joy.getX(), true);
+		drive.arcadeDrive(RobotMap.INVERT_JOYSTICK_Y ? -joy.getRawAxis(5) : joy.getRawAxis(5), 
+				RobotMap.INVERT_JOYSTICK_X ? -joy.getRawAxis(4) : joy.getRawAxis(4), true);
 	}
 
 	/**
@@ -156,13 +156,17 @@ public class DriveTrain extends Subsystem {
 		return gyroPIDSource;
 	}
 
+	public void inverGyroPIDSource(boolean invert) {
+		gyroPIDSource.invert(invert);
+	}
+	
 	/**
 	 * Reset the robots sensors to the zero states.
 	 */
 	public void reset() {
 		// This may be redundant
 		gyro.zeroYaw();
-	//	gyro.resetDisplacement();
+		gyro.resetDisplacement();
 		gyro.reset();
 		left_encoder.reset();
 		right_encoder.reset();
@@ -216,7 +220,11 @@ public class DriveTrain extends Subsystem {
 
 		@Override
 		public double pidGet() {
-			return invert ? -driveTrain.getHeading() : driveTrain.getHeading();
+			double heading = driveTrain.getHeading();
+			if(heading > 358.0)
+				heading = 0;
+			
+			return invert ? -heading : heading;
 		}
 		
 		
@@ -225,12 +233,12 @@ public class DriveTrain extends Subsystem {
 		}
 	}
 	
-	class DrivePIDOutput implements PIDOutput {
+	public class DrivePIDOutput implements PIDOutput {
 
 		private final Victor front;
 		private final Victor rear;
 		
-		private final boolean invert;
+		private boolean invert;
 		
 		private final boolean left;
 		
@@ -263,5 +271,9 @@ public class DriveTrain extends Subsystem {
 					rear.set(output);
 				}
 		}		
+		
+		public void setInvert(boolean invert) {
+			this.invert = invert;
+		}
 	}
 }
