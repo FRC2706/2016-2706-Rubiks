@@ -56,20 +56,17 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-		oi = new OI();
         driveTrain = new DriveTrain();
         shootIntakeMechanism = new ShootIntakeMechanism();
         platformMechanism = new PlatformMechanism();
         pneumaticMechanism = new PneumaticMechanism();
-
-        driveTrain = new DriveTrain();
         chooser = new SendableChooser();
         camera = new Camera(Camera.CAMERA_IP);
 
         cameraCommand = new AutomaticCameraControl();
-        // TODO: Use RobotMap value
-        solenoid = new DoubleSolenoid(0, 1);
-        
+
+		oi = new OI();
+
         chooser.addDefault("ArcadeDriveWithJoystick (Default)", new ArcadeDriveWithJoystick());
         chooser.addObject("StraightDriveWithTime at 0.5 speed for 5 seconds", new StraightDriveWithTime(0.5, 5000));
         chooser.addObject("RotateDriveWithGyro at 0.85 speed for 180 degrees", new RotateDriveWithGyro(0.85, 180, 100));
@@ -83,9 +80,9 @@ public class Robot extends IterativeRobot {
         
         chooser.addObject("WaitThenRotateDriveWithCamera", new WaitThenRotateDriveWithCamera(0.75, 5000));
         
-        chooser.addDefault("Change Platform Position", new ChangePlatformPosition(true));
-        chooser.addDefault("Intake Ball", new IntakeBall(-0.5));
-        chooser.addDefault("Shoot Ball", new ShootBall(1));
+        //chooser.addDefault("Change Platform Position", new ChangePlatformPosition(true));
+        //chooser.addDefault("Intake Ball", new IntakeBall(-0.5));
+        //chooser.addDefault("Shoot Ball", new ShootBall(1));
         
         
         SmartDashboard.putData("Auto mode", chooser);

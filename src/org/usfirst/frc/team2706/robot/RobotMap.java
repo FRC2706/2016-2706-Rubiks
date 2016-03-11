@@ -29,26 +29,26 @@ public class RobotMap {
 	
 
 	// Left gearbox
-	public static final int MOTOR_FRONT_LEFT;
-	public static final boolean MOTOR_FRONT_LEFT_INVERTED;
+	public static  int MOTOR_FRONT_LEFT;
+	public static  boolean MOTOR_FRONT_LEFT_INVERTED;
 	
 	// Right gearbox
-	public static final int MOTOR_FRONT_RIGHT;
-	public static final boolean MOTOR_FRONT_RIGHT_INVERTED;
+	public static  int MOTOR_FRONT_RIGHT;
+	public static  boolean MOTOR_FRONT_RIGHT_INVERTED;
 	
 	// Right gearbox
-	public static final int MOTOR_REAR_LEFT;
-	public static final boolean MOTOR_REAR_LEFT_INVERTED;
+	public static  int MOTOR_REAR_LEFT;
+	public static  boolean MOTOR_REAR_LEFT_INVERTED;
 	
 	// Left gearbox
-	public static final int MOTOR_REAR_RIGHT;
-	public static final boolean MOTOR_REAR_RIGHT_INVERTED;
+	public static  int MOTOR_REAR_RIGHT;
+	public static  boolean MOTOR_REAR_RIGHT_INVERTED;
 	
 
 	// Motor for panning camera
-	public static final int MOTOR_CAMERA_PAN;
+	public static  int MOTOR_CAMERA_PAN;
 	// Motor for tilting camera
-	public static final int MOTOR_CAMERA_TILT;
+	public static  int MOTOR_CAMERA_TILT;
 	
 	// @TODO find out whether this is the pneumatic for the ball shooting
 	public static final int CAN_ADDR_PNEUMATIC = 0;
@@ -73,16 +73,16 @@ public class RobotMap {
 	public static final int COMPRESSOR_PLATFORM = 0;
 	// @TODO: Get encoder channels, gyro channel, and rangefinder channel
 	// XXX: Encoders got flipped
-	public static final int ENCODER_LEFT_A;
-	public static final int ENCODER_LEFT_B;
-	public static final double ENCODER_LEFT_DPP;
+	public static int ENCODER_LEFT_A;
+	public static int ENCODER_LEFT_B;
+	public static double ENCODER_LEFT_DPP;
 
-	public static final int ENCODER_RIGHT_A;
-	public static final int ENCODER_RIGHT_B;
-	public static final double ENCODER_RIGHT_DPP;
+	public static int ENCODER_RIGHT_A;
+	public static int ENCODER_RIGHT_B;
+	public static double ENCODER_RIGHT_DPP;
 
-	public static final boolean INVERT_JOYSTICK_X;
-	public static final boolean INVERT_JOYSTICK_Y;
+	public static boolean INVERT_JOYSTICK_X;
+	public static boolean INVERT_JOYSTICK_Y;
 	
 	// @TODO: Get Gyro channel, and rangefinder channel11
 
@@ -116,13 +116,13 @@ public class RobotMap {
 		boolean invertJoystickX = false;
 		boolean invertJoystickY = false;
 
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("/home/lvuser/robot-type.conf"));
+		//try {
+			//BufferedReader br = new BufferedReader(new FileReader("/home/lvuser/robot-type.conf"));
 
 			// Defaults to competition robot
-			int robotType = 0;
+			int robotType = 1;
 
-			String line = "";
+			/*String line = "";
 			while ((line = br.readLine()) != null) {
 				line = line.trim();
 				boolean isNumber = true;
@@ -137,7 +137,8 @@ public class RobotMap {
 					break;
 				}
 				br.close();
-			}
+			}*/
+			
 			switch (robotType) {
 			// Competition
 			case 0:
@@ -227,9 +228,9 @@ public class RobotMap {
 				invertJoystickY = CompetitionRobotMap.INVERT_JOYSTICK_Y;
 				break;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
 		MOTOR_FRONT_LEFT = motorFrontLeft;
 		MOTOR_FRONT_LEFT_INVERTED = motorFrontLeftInverted;

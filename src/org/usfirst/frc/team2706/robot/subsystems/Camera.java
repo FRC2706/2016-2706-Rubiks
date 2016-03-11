@@ -15,6 +15,7 @@ import org.usfirst.frc.team2706.robot.RobotMap;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
@@ -35,6 +36,8 @@ public class Camera extends Subsystem {
 	
 	private CameraPIDSource cameraPIDSource;
 	
+	private Solenoid ringLightSolenoid;
+	
 public Camera(String ip) {
 	super();
 	
@@ -42,6 +45,10 @@ public Camera(String ip) {
 	turnXAxis = new Servo(RobotMap.MOTOR_CAMERA_PAN);
 	turnYAxis = new Servo(RobotMap.MOTOR_CAMERA_TILT);
 	
+	ringLightSolenoid = new Solenoid(6);
+	
+	// turn the ring light on
+	ringLightSolenoid.set(true);
 	cameraPIDSource = new CameraPIDSource(this);
 }
 public class TargetObject implements Comparable<TargetObject> {

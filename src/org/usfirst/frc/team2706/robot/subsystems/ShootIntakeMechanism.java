@@ -3,6 +3,7 @@ package org.usfirst.frc.team2706.robot.subsystems;
 import org.usfirst.frc.team2706.robot.RobotMap;
 import org.usfirst.frc.team2706.robot.commands.IntakeBall;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -22,11 +23,11 @@ public class ShootIntakeMechanism extends Subsystem {
 	public ShootIntakeMechanism() {
 		super();
 		
-		left_motor = new Talon(RobotMap.MOTOR_PLATFORM_LEFT);
-		right_motor = new Talon(RobotMap.MOTOR_PLATFORM_RIGHT);
+		left_motor = new CANTalon(RobotMap.MOTOR_PLATFORM_LEFT);
+		right_motor = new CANTalon(RobotMap.MOTOR_PLATFORM_RIGHT);
 		
 		left_motor.setInverted(false);
-		right_motor.setInverted(false);
+		right_motor.setInverted(true);
 	
 	}
 	
@@ -49,7 +50,7 @@ public class ShootIntakeMechanism extends Subsystem {
 	
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new IntakeBall(-0.5));
+		//setDefaultCommand(new IntakeBall(-0.5));
 	}
 
 }

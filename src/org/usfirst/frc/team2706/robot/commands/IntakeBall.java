@@ -14,7 +14,6 @@ public class IntakeBall extends Command {
 	// Sets the speed at which the motors turn
 	double speed;
 	
-	
 	public IntakeBall(double speed) {
 		super();
 		requires(Robot.shootIntakeMechanism);

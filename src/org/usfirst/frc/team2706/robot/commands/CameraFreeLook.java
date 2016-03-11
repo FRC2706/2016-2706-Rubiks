@@ -16,8 +16,8 @@ public class CameraFreeLook extends Command {
 
 	@Override
 	protected void execute() {
-		GamePadX = (float) Robot.oi.getJoystick().getRawAxis(4);
-		GamePadY = (float) Robot.oi.getJoystick().getRawAxis(5);
+		GamePadX = (float) Robot.oi.getDriverJoystick().getRawAxis(4);
+		GamePadY = (float) Robot.oi.getDriverJoystick().getRawAxis(5);
 		TurnOnGamepad(-GamePadX,GamePadY);
 	}
 

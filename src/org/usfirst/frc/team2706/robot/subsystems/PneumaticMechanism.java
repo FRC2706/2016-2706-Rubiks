@@ -7,20 +7,15 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+// This subsystem code represents the pneumatic kicker
 public class PneumaticMechanism extends Subsystem {
 
-	private DoubleSolenoid sol;
-	private Compressor c;
-	
+	private DoubleSolenoid sol;	
 	
 	public PneumaticMechanism() {
 		super();
 		
 		sol = new DoubleSolenoid(RobotMap.SOLENOID_SHOOT0, RobotMap.SOLENOID_SHOOT1);
-		c = new Compressor(RobotMap.COMPRESSOR_SHOOT);
-		
-		c.start();
-		c.setClosedLoopControl(true);
 	}
 	
 	/*

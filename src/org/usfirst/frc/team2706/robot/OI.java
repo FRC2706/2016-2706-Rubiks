@@ -44,34 +44,33 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
-	// TODO: Arcade drive joystick (Backwards)
-	Joystick stick = new Joystick(0);
+	Joystick driveStick = new Joystick(0);
+	Joystick controlStick = new Joystick(1);	
 	
-	
-	// TODO get the actual map of the buttons
-	// button to do with the platform motors
-	Button buttonShoot = new JoystickButton(stick, 5);
-	Button buttonIntake = new JoystickButton(stick, 4);
-	
-	// buttons to change the platform position
-	Button buttonPlatformUp = new JoystickButton(stick, 2);
-	Button buttonPlatformDown = new JoystickButton(stick, 0);
-	
-	Button buttonPlatformFloat = new JoystickButton(stick, 1);
-	
-    public Joystick getJoystick() {
-        return stick;
+	Button controlButtonA = new JoystickButton(controlStick, 1);
+	Button controlButtonB = new JoystickButton(controlStick, 2);
+	Button controlButtonX = new JoystickButton(controlStick, 3);
+	Button controlButtonY = new JoystickButton(controlStick, 4);
+	Button controlButtonLB = new JoystickButton(controlStick, 5);            
+	Button controlButtonRB = new JoystickButton(controlStick, 6);            	
+
+	public Joystick getDriverJoystick() {
+        return driveStick;
     }
     
-    public OI() {
-    	// While the buttons are held constantly run the command
-    	buttonShoot.whileHeld(new ShootBall(0.5));
-    	buttonIntake.whileHeld(new IntakeBall(0.5));
+	public Joystick getOperatorJoystick() {
+        return controlStick;
+    }
+
+	public OI() {
+    	// While the buttons are held constantly run these commands
+		//controlButtonRB.whileHeld(new ShootBall(1.0)); // TODO: shootball command needs kicker
+    	//controlButtonLB.whileHeld(new IntakeBall(0.3));
     	
-    	// Depending on which button is pressed down the platform changes
+    	// Depending on which button is pressed down the arm changes
     	// to that position
-    	buttonPlatformUp.whenPressed(new ChangePlatformPosition(true));
-    	buttonPlatformDown.whenPressed(new ChangePlatformPosition(false));
+    	//controlButtonY.whenPressed(new ChangePlatformPosition(true)); // arm goes up
+    	//controlButtonA.whenPressed(new ChangePlatformPosition(false)); // arm goes down
     	
     }
 }
