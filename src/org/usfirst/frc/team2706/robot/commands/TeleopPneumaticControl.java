@@ -78,6 +78,7 @@ public class TeleopPneumaticControl extends Command {
 		}
 		if(controlButtonRT >= 1.0) {
 			new HighGoalShooter(SHOOT_SPEED).start();
+			armIsDown = true;
 		}
 	}
 

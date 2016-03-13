@@ -20,10 +20,14 @@ boolean done = false;
 	protected void execute() {
 		Robot.intakeLeft.set(-speed);
 		Robot.intakeRight.set(speed);
-		new ArmDown().start();
-		if(System.currentTimeMillis() - 150 > startTime ) {
-		Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
-		done = true;
+		
+		if(System.currentTimeMillis() - 50 > startTime ) {
+			new ArmDown().start();	
+		}
+		
+		if(System.currentTimeMillis() - 180 > startTime ) {
+			Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
+			done = true;
 		}
 		//}
 		//else if(System.currentTimeMillis() - 700 > startTime) {
