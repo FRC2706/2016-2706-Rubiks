@@ -11,6 +11,7 @@ public class TeleopPneumaticControl extends Command {
 	 * repeatedly and waste air. */
 	boolean armIsDown = false;
 	boolean inFloatMode = false;
+	boolean ballShot = false;
 
 	public static final double SHOOT_SPEED = 1.0;
 	public static final double INTAKE_SPEED = 0.5;
@@ -31,18 +32,21 @@ public class TeleopPneumaticControl extends Command {
 		boolean controlButtonY = Robot.oi.getOperatorJoystick().getRawButton(4);
 		boolean controlButtonLB = Robot.oi.getOperatorJoystick().getRawButton(5);
 		boolean controlButtonRB = Robot.oi.getOperatorJoystick().getRawButton(6);
+		
 		if(controlButtonLB) {
 			getBall = new GetBall(INTAKE_SPEED);
 			getBall.start();
 		}
-		else if(controlButtonRB) {
+		else if(controlButtonRB && !ballShot) {
 			shootBall = new ShootBall(SHOOT_SPEED);
 			shootBall.start();
+			ballShot = true;
 		}
-		else {
+		else if(!controlButtonRB && ballShot) {
 			Robot.intakeLeft.set(0.0);
 			Robot.intakeRight.set(0.0);
 			Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
+			ballShot = false;
 		}
 
 
