@@ -32,7 +32,7 @@ public class TeleopPneumaticControl extends Command {
 		boolean controlButtonY = Robot.oi.getOperatorJoystick().getRawButton(4);
 		boolean controlButtonLB = Robot.oi.getOperatorJoystick().getRawButton(5);
 		boolean controlButtonRB = Robot.oi.getOperatorJoystick().getRawButton(6);
-		
+
 		if(controlButtonLB) {
 			getBall = new GetBall(INTAKE_SPEED);
 			getBall.start();
@@ -42,11 +42,14 @@ public class TeleopPneumaticControl extends Command {
 			shootBall.start();
 			ballShot = true;
 		}
-		else if(!controlButtonRB && ballShot) {
+		else {
 			Robot.intakeLeft.set(0.0);
 			Robot.intakeRight.set(0.0);
-			Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
-			ballShot = false;
+
+			if (ballShot) {
+				Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
+				ballShot = false;
+			}
 		}
 
 
