@@ -6,12 +6,15 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TeleopPneumaticControl extends Command {
-	
-	
+
+	/** Booleans to track the state of various things so that we don't fire solinoids
+	 * repeatedly and waste air. */
+	boolean armIsDown = false;
+	boolean inFloatMode = false;
 
 	public static final double SHOOT_SPEED = 1.0;
 	public static final double INTAKE_SPEED = 0.5;
-	
+
 	GetBall getBall = new GetBall(INTAKE_SPEED);
 	ShootBall shootBall = new ShootBall(SHOOT_SPEED);
 	ArmDown armDown = new ArmDown();
@@ -28,33 +31,39 @@ public class TeleopPneumaticControl extends Command {
 		boolean controlButtonY = Robot.oi.getOperatorJoystick().getRawButton(4);
 		boolean controlButtonLB = Robot.oi.getOperatorJoystick().getRawButton(5);
 		boolean controlButtonRB = Robot.oi.getOperatorJoystick().getRawButton(6);
-		if(controlButtonLB) { 
+		if(controlButtonLB) {
 			getBall = new GetBall(INTAKE_SPEED);
 			getBall.start();
 		}
 		else if(controlButtonRB) {
 			shootBall = new ShootBall(SHOOT_SPEED);
-		shootBall.start();
+			shootBall.start();
 		}
 		else {
 			Robot.intakeLeft.set(0.0);
 			Robot.intakeRight.set(0.0);
 			Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
 		}
-			
-					
-		if(controlButtonA)
+
+
+		if(controlButtonA && !armIsDown) {
 			armDown.start();
-		if(controlButtonY)
+			armIsDown = true;
+		}
+		if(controlButtonY && armIsDown) {
 			armUp.start();
-		
-		if(controlButtonB) {
+			armIsDown = false;
+		}
+
+		if(controlButtonB && !inFloatMode) {
 			new FloatControl(true).start();
+			inFloatMode = true;
 		}
-		if(controlButtonX) {
+		if(controlButtonX && inFloatMode) {
 			new FloatControl(false).start();
+			inFloatMode = false;
 		}
-		
+
 	}
 
 	@Override
@@ -63,7 +72,7 @@ public class TeleopPneumaticControl extends Command {
 	}
 
 	@Override
-	protected void end() {	
+	protected void end() {
 	}
 
 	@Override
