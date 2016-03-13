@@ -37,29 +37,35 @@ public class TeleopPneumaticControl extends Command {
 			getBall = new GetBall(INTAKE_SPEED);
 			getBall.start();
 		}
-		else if(controlButtonRB && !ballShot) {
-			shootBall = new ShootBall(SHOOT_SPEED);
-			shootBall.start();
-			ballShot = true;
+		else if(controlButtonRB) {
+			if(!ballShot) {
+				shootBall = new ShootBall(SHOOT_SPEED);
+				shootBall.start();
+				ballShot = true;
+			}
 		}
 		else {
 			Robot.intakeLeft.set(0.0);
 			Robot.intakeRight.set(0.0);
 
-			if (ballShot) {
+			if(ballShot) {
 				Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
 				ballShot = false;
 			}
 		}
 
 
-		if(controlButtonA && !armIsDown) {
-			armDown.start();
-			armIsDown = true;
+		if(controlButtonA) {
+			if(!armIsDown) {
+				armDown.start();
+				armIsDown = true;
+			}
 		}
-		if(controlButtonY && armIsDown) {
-			armUp.start();
-			armIsDown = false;
+		if(controlButtonY) {
+			if(armIsDown) {
+				armUp.start();
+				armIsDown = false;
+			}
 		}
 
 		if(controlButtonB && !inFloatMode) {
