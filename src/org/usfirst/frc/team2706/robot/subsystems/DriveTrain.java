@@ -166,7 +166,7 @@ public class DriveTrain extends Subsystem {
 	public void reset() {
 		// This may be redundant
 		gyro.zeroYaw();
-		gyro.resetDisplacement();
+	//	gyro.resetDisplacement();
 		gyro.reset();
 		left_encoder.reset();
 		right_encoder.reset();

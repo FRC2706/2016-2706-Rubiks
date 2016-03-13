@@ -3,16 +3,18 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
-import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
+import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
-import org.usfirst.frc.team2706.robot.commands.autonomous.BreachToShootHybridBackwardsAutonomous;
-import org.usfirst.frc.team2706.robot.commands.plays.ArmUpBreachPlay;
-import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomous;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomousHighGoal;
+import org.usfirst.frc.team2706.robot.commands.autonomous.ChevalDeFriseBreachPlay;
+import org.usfirst.frc.team2706.robot.commands.autonomous.PortCullisBreachPlay;
 import org.usfirst.frc.team2706.robot.subsystems.AutonomousSelector;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -43,20 +45,23 @@ public class Robot extends IterativeRobot {
     public static DoubleSolenoid armCylinder2;
     public static CANTalon intakeLeft;
     public static CANTalon intakeRight;
-
-    /**
+        /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
 		oi = new OI();
+		CameraServer server = CameraServer.getInstance();
+		server.setQuality(50);
+		server.startAutomaticCapture("cam0");
 		ringLightPower = new Solenoid(RobotMap.RING_LIGHT);	
 		ringLightPower.set(true);
         driveTrain = new DriveTrain();      
 
         camera = new Camera(Camera.CAMERA_IP);
         hardwareChooser = new AutonomousSelector(new ArcadeDriveWithJoystick(), new ArcadeDriveWithJoystick(),
-        		new BreachPlay(), new ArmUpBreachPlay(), new BreachToShootHybridBackwardsAutonomous(), new RotateDriveWithGyro(0.5, 180, 25));
+        		new BreachGoToTargetShootHybridAutonomous(),/*TODO: camera full*/ new ArcadeDriveWithJoystick(),new ArcadeDriveWithJoystick()
+        		,new StraightDriveWithTime(0.5,3),new StraightDriveWithTime(0.5,6),new StraightDriveWithTime(0.7,6),new PortCullisBreachPlay(),new ChevalDeFriseBreachPlay(),new BreachGoToTargetShootHybridAutonomousHighGoal());
         ballKicker = new DoubleSolenoid(0,1);
         armCylinder1 = new DoubleSolenoid(2,3);
         armCylinder2 = new DoubleSolenoid(4,5);

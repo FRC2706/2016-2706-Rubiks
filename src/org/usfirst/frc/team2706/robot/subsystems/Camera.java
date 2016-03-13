@@ -226,7 +226,7 @@ public class TargetObject implements Comparable<TargetObject> {
 			out = - (float)(turnXAxis.getPosition() * 180 - 90f);
 		}
 		else {
-			out = 30;
+			out = 60;
 		}
 		return out;
 	}
