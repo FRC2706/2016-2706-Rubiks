@@ -32,7 +32,7 @@ public class TeleopPneumaticControl extends Command {
 		boolean controlButtonY = Robot.oi.getOperatorJoystick().getRawButton(4);
 		boolean controlButtonLB = Robot.oi.getOperatorJoystick().getRawButton(5);
 		boolean controlButtonRB = Robot.oi.getOperatorJoystick().getRawButton(6);
-
+		double controlButtonRT = Robot.oi.getOperatorJoystick().getRawAxis(3);
 		if(controlButtonLB) {
 			getBall = new GetBall(INTAKE_SPEED);
 			getBall.start();
@@ -76,7 +76,9 @@ public class TeleopPneumaticControl extends Command {
 			new FloatControl(false).start();
 			inFloatMode = false;
 		}
-
+		if(controlButtonRT >= 1.0) {
+			new HighGoalShooter(SHOOT_SPEED).start();
+		}
 	}
 
 	@Override

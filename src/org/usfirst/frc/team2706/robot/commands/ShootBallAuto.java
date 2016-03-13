@@ -5,9 +5,9 @@ import org.usfirst.frc.team2706.robot.Robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class HighGoalShooter extends Command {
+public class ShootBallAuto extends Command {
 	public double speed;
-	public HighGoalShooter(double speed) {
+	public ShootBallAuto(double speed) {
 		this.speed = speed;
 	}
 	long startTime;
@@ -15,26 +15,28 @@ public class HighGoalShooter extends Command {
 	protected void initialize() {
 		startTime = System.currentTimeMillis();
 	}
-boolean done = false;
 	@Override
 	protected void execute() {
 		Robot.intakeLeft.set(-speed);
 		Robot.intakeRight.set(speed);
-		new ArmDown().start();
-		if(System.currentTimeMillis() - 150 > startTime ) {
+		if(System.currentTimeMillis() - 400 > startTime ) {
 		Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
-		done = true;
 		}
-		//}
-		//else if(System.currentTimeMillis() - 700 > startTime) {
-		//	done = true;
-		//}
 	}
-
+int donee = 0;
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return done;
+		if(++donee < 50) {
+			return false;
+		}
+		else if(donee < 100) {
+			Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
+			return false;
+		}
+		else {
+			donee = 0;
+			return true;
+		}
 	}
 
 	@Override

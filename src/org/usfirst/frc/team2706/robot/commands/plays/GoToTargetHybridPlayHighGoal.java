@@ -1,23 +1,21 @@
 package org.usfirst.frc.team2706.robot.commands.plays;
 
-import org.usfirst.frc.team2706.robot.commands.ArmDownAuto;
 import org.usfirst.frc.team2706.robot.commands.ArmUpAuto;
-import org.usfirst.frc.team2706.robot.commands.FloatControlAuto;
+import org.usfirst.frc.team2706.robot.commands.GetBallAuto;
 import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class GoToTargetHybridPlay extends CommandGroup {
+public class GoToTargetHybridPlayHighGoal extends CommandGroup {
 	
-	public GoToTargetHybridPlay() {
+	public GoToTargetHybridPlayHighGoal() {
 		// TODO: Fix speeds and distances
 		this.addSequential(new StraightDriveWithTime(0.0, 500));
 		this.addSequential(new RotateDriveWithGyro(0.8, 60, 25));
 		this.addSequential(new ArmUpAuto(),1);
+		this.addSequential(new GetBallAuto(0.3),1);
 		this.addSequential(new StraightDriveWithEncoders(0.4, 6.0, 25));
-		this.addSequential(new ArmDownAuto(),1);
-		this.addSequential(new FloatControlAuto(true),1);
 	}
 }
