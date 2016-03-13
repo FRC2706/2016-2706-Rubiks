@@ -6,12 +6,16 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TeleopPneumaticControl extends Command {
-	
-	
+
+	/** Booleans to track the state of various things so that we don't fire solinoids
+	 * repeatedly and waste air. */
+	boolean armIsDown = false;
+	boolean inFloatMode = false;
+	boolean ballShot = false;
 
 	public static final double SHOOT_SPEED = 1.0;
 	public static final double INTAKE_SPEED = 0.5;
-	
+
 	GetBall getBall = new GetBall(INTAKE_SPEED);
 	ShootBall shootBall = new ShootBall(SHOOT_SPEED);
 	ArmDown armDown = new ArmDown();
@@ -29,36 +33,52 @@ public class TeleopPneumaticControl extends Command {
 		boolean controlButtonLB = Robot.oi.getOperatorJoystick().getRawButton(5);
 		boolean controlButtonRB = Robot.oi.getOperatorJoystick().getRawButton(6);
 		double controlButtonRT = Robot.oi.getOperatorJoystick().getRawAxis(3);
-		if(controlButtonLB) { 
+		if(controlButtonLB) {
 			getBall = new GetBall(INTAKE_SPEED);
 			getBall.start();
 		}
 		else if(controlButtonRB) {
-			shootBall = new ShootBall(SHOOT_SPEED);
-		shootBall.start();
+			if(!ballShot) {
+				shootBall = new ShootBall(SHOOT_SPEED);
+				shootBall.start();
+				ballShot = true;
+			}
 		}
 		else {
 			Robot.intakeLeft.set(0.0);
 			Robot.intakeRight.set(0.0);
-			Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
+
+			if(ballShot) {
+				Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
+				ballShot = false;
+			}
 		}
-			
-					
-		if(controlButtonA)
-			armDown.start();
-		if(controlButtonY)
-			armUp.start();
-		
-		if(controlButtonB) {
+
+
+		if(controlButtonA) {
+			if(!armIsDown) {
+				armDown.start();
+				armIsDown = true;
+			}
+		}
+		if(controlButtonY) {
+			if(armIsDown) {
+				armUp.start();
+				armIsDown = false;
+			}
+		}
+
+		if(controlButtonB && !inFloatMode) {
 			new FloatControl(true).start();
+			inFloatMode = true;
 		}
-		if(controlButtonX) {
+		if(controlButtonX && inFloatMode) {
 			new FloatControl(false).start();
+			inFloatMode = false;
 		}
 		if(controlButtonRT >= 1.0) {
 			new HighGoalShooter(SHOOT_SPEED).start();
 		}
-		
 	}
 
 	@Override
@@ -67,7 +87,7 @@ public class TeleopPneumaticControl extends Command {
 	}
 
 	@Override
-	protected void end() {	
+	protected void end() {
 	}
 
 	@Override
