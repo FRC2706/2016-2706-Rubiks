@@ -15,9 +15,16 @@ public class HighGoalShooter extends Command {
 	protected void initialize() {
 		startTime = System.currentTimeMillis();
 	}
-boolean done = false;
+	boolean started = false;
+	boolean done = false;
+
 	@Override
 	protected void execute() {
+		// only spawn a new thread once.
+		if (started) return;
+
+		started = true;
+
 		Robot.intakeLeft.set(-speed);
 		Robot.intakeRight.set(speed);
 
