@@ -20,19 +20,28 @@ boolean done = false;
 	protected void execute() {
 		Robot.intakeLeft.set(-speed);
 		Robot.intakeRight.set(speed);
-		
-		if(System.currentTimeMillis() - 50 > startTime ) {
-			new ArmDown().start();	
-		}
-		
-		if(System.currentTimeMillis() - 180 > startTime ) {
-			Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
-			done = true;
-		}
-		//}
-		//else if(System.currentTimeMillis() - 700 > startTime) {
-		//	done = true;
-		//}
+
+		// We're doing this timing in a separate thread and checking every 1 ms
+		// rather than relying on the driver station's 50 hz loop, which can be +/- 20 ms
+		Thread thread1 = new Thread(new Runnable() {
+			@Override
+			public void run(){
+				while(true) {
+					if(System.currentTimeMillis() - 50 > startTime ) {
+						new ArmDown().start();
+					}
+
+					if(System.currentTimeMillis() - 180 > startTime ) {
+						Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
+						done = true;
+						break;
+					}
+					Thread.sleep(1);
+				}
+			}
+		});
+
+		thread1.start();
 	}
 
 	@Override
