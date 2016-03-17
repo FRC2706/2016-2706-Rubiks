@@ -128,6 +128,28 @@ public class DriveTrain extends Subsystem {
 	}
 
 	/**
+	 * Reset the robots sensors to the zero states.
+	 */
+	public void reset() {
+		left_encoder.reset();
+		right_encoder.reset();
+	}
+	
+	/**
+	 * Reset the robot gyro to the zero state.
+	 */
+	public void resetGyro() {
+		gyro.reset();
+	}
+	
+	/**
+	 * @return The distance driven (average of left and right encoders).
+	 */
+	public double getDistance() {
+		return (left_encoder.getDistance() + right_encoder.getDistance())/2;
+	}
+	
+	/**
 	 * @return The robots heading in degrees.
 	 */
 	public double getHeading() {
@@ -160,28 +182,6 @@ public class DriveTrain extends Subsystem {
 
 	public void inverGyroPIDSource(boolean invert) {
 		gyroPIDSource.invert(invert);
-	}
-	
-	/**
-	 * Reset the robots sensors to the zero states.
-	 */
-	public void reset() {
-		left_encoder.reset();
-		right_encoder.reset();
-	}
-	
-	/**
-	 * Reset the robot gyro to the zero state.
-	 */
-	public void reset() {
-		gyro.reset();
-	}
-	
-	/**
-	 * @return The distance driven (average of left and right encoders).
-	 */
-	public double getDistance() {
-		return (left_encoder.getDistance() + right_encoder.getDistance())/2;
 	}
 
 	/**
