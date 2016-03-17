@@ -56,23 +56,24 @@ public class TeleopPneumaticControl extends Command {
 
 
 		if(controlButtonA) {
-			if(!armIsDown) {
+			//if(!armIsDown) {
 				armDown.start();
 				armIsDown = true;
-			}
+			//}
 		}
 		if(controlButtonY) {
-			if(armIsDown) {
+			//if(armIsDown) {
 				armUp.start();
 				armIsDown = false;
-			}
+			//}
 		}
 
-		if(controlButtonB && !inFloatMode) {
+		// buggy, commenting out guard code
+		if(controlButtonB /**&& !inFloatMode**/) {
 			new FloatControl(true).start();
 			inFloatMode = true;
 		}
-		if(controlButtonX && inFloatMode) {
+		if(controlButtonX /**&& inFloatMode**/) {
 			new FloatControl(false).start();
 			inFloatMode = false;
 		}

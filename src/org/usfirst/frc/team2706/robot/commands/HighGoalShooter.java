@@ -10,45 +10,54 @@ public class HighGoalShooter extends Command {
 	public HighGoalShooter(double speed) {
 		this.speed = speed;
 	}
-	long startTime;
-	@Override
-	protected void initialize() {
-		startTime = System.currentTimeMillis();
-	}
+	
+
 	boolean started = false;
 	boolean done = false;
-
+	
 	@Override
-	protected void execute() {
-		// only spawn a new thread once.
-		if (started) return;
-
-		started = true;
-
-		Robot.intakeLeft.set(-speed);
-		Robot.intakeRight.set(speed);
-
-		// We're doing this timing in a separate thread and checking every 1 ms
-		// rather than relying on the driver station's 50 hz loop, which can be +/- 20 ms
+	protected void initialize() {
 		Thread thread1 = new Thread(new Runnable() {
 			@Override
 			public void run(){
+
+				long startTime = System.currentTimeMillis();
+				boolean armFired = false;
+				
 				while(true) {
-					if(System.currentTimeMillis() - 50 > startTime ) {
-						new ArmDown().start();
+
+					Robot.intakeLeft.set(-speed);
+					Robot.intakeRight.set(speed);
+					
+					if(System.currentTimeMillis() - 80 > startTime ) {
+						if (!armFired)
+							{
+								new ArmDown().start();
+								armFired = true;
+							}
 					}
 
-					if(System.currentTimeMillis() - 180 > startTime ) {
+					if(System.currentTimeMillis() - 360 > startTime ) {
 						Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
-						done = true;
 						break;
 					}
-					Thread.sleep(1);
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e) {
+						break;
+					}
 				}
+				done = true;
 			}
 		});
 
 		thread1.start();
+		
+	}
+
+	@Override
+	protected void execute() {
+		
 	}
 
 	@Override
@@ -60,7 +69,7 @@ public class HighGoalShooter extends Command {
 	@Override
 	protected void end() {
 
-	//	Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
+		Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	@Override

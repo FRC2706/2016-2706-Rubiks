@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ChevalDeFriseBreachPlay extends CommandGroup {
 public ChevalDeFriseBreachPlay() {
-	this.addSequential(new StraightDriveWithTime(0.4,6));
+	this.addSequential(new StraightDriveWithTime(0.4,3000));
 	this.addSequential(new ArmDownAuto(),1);
-	this.addSequential(new StraightDriveWithTime(0.6,4));
+	this.addSequential(new StraightDriveWithTime(0.8,3000));
 }
 }

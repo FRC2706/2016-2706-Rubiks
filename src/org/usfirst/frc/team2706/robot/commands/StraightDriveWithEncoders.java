@@ -20,9 +20,11 @@ public class StraightDriveWithEncoders extends Command {
 	private final PIDController leftPID;
 	private final PIDController rightPID;
 	
+	private double heading;
+	
 	private int doneCount;
 	
-	private final double P=1.0, I=0.0, D=0.0, F=0;
+	private final double P=1.0, I=0.0, D=0.25, F=0;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -39,13 +41,15 @@ public class StraightDriveWithEncoders extends Command {
         this.distance = distance;
         
         this.minDoneCycles = minDoneCycles;
+        
+        this.heading = Robot.driveTrain.getHeading();
 
-        leftPID = new PIDController(0,0,0,	 
+        leftPID = new PIDController(P,I,D,	 
        		Robot.driveTrain.getEncoderPIDSource(true), 
        		Robot.driveTrain.getDrivePIDOutput(false, true)
         );
         
-        rightPID = new PIDController(0,0,0,	 
+        rightPID = new PIDController(P,I,D,	 
            	Robot.driveTrain.getEncoderPIDSource(false), 
            	Robot.driveTrain.getDrivePIDOutput(false, false)
         );
@@ -55,28 +59,14 @@ public class StraightDriveWithEncoders extends Command {
     protected void initialize() {
     	Robot.driveTrain.reset();
     	
-    	// Set the PID values using Smartdashboard
-    	leftPID.setPID(       	
-    		SmartDashboard.getNumber("P", P), 
-           	SmartDashboard.getNumber("I", I), 
-          	SmartDashboard.getNumber("D", D), 
-          	SmartDashboard.getNumber("F", F)
-    	);
-    	rightPID.setPID(       	
-        	SmartDashboard.getNumber("P", P), 
-        	SmartDashboard.getNumber("I", I), 
-        	SmartDashboard.getNumber("D", D), 
-        	SmartDashboard.getNumber("F", F)
-        );    	
-    	
     	// Make input infinite
     	leftPID.setContinuous();
     	rightPID.setContinuous();
     	
     	// Set output speed range
     	if(speed > 0) {
-    	leftPID.setOutputRange(-speed, speed);
-    	rightPID.setOutputRange(-speed, speed);
+    		leftPID.setOutputRange(-speed, speed);
+    		rightPID.setOutputRange(-speed, speed);
     	}
     	else {
     		leftPID.setOutputRange(speed, -speed);

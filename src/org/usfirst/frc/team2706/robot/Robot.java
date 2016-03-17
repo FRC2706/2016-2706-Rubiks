@@ -3,8 +3,11 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
+import org.usfirst.frc.team2706.robot.commands.QuickRotate;
+import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootGyroAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomousHighGoal;
 import org.usfirst.frc.team2706.robot.commands.autonomous.ChevalDeFriseBreachPlay;
@@ -32,43 +35,66 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	public static Camera camera;
-	public static Solenoid ringLightPower;
 	public static DriveTrain driveTrain;
-	public static DoubleSolenoid solenoid;
 	public static AutonomousSelector hardwareChooser;
 	public static OI oi;
-    Command autonomousCommand;
+
+	Command autonomousCommand;
     TeleopPneumaticControl teleopControl;
-    AutomaticCameraControl cameraCommand;
+	
+    public static Solenoid ringLightPower;
     public static DoubleSolenoid ballKicker;
     public static DoubleSolenoid armCylinder1;
     public static DoubleSolenoid armCylinder2;
     public static CANTalon intakeLeft;
     public static CANTalon intakeRight;
-        /**
+    
+    /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
 		oi = new OI();
-		CameraServer server = CameraServer.getInstance();
-		server.setQuality(50);
-		server.startAutomaticCapture("cam0");
-		ringLightPower = new Solenoid(RobotMap.RING_LIGHT);	
-		ringLightPower.set(true);
+		
+		// Instantiate the robot subsystems
         driveTrain = new DriveTrain();      
-
         camera = new Camera(Camera.CAMERA_IP);
-        hardwareChooser = new AutonomousSelector(new ArcadeDriveWithJoystick(), new ArcadeDriveWithJoystick(),
-        		new BreachGoToTargetShootHybridAutonomous(),/*TODO: camera full*/ new ArcadeDriveWithJoystick(),new ArcadeDriveWithJoystick()
-        		,new StraightDriveWithTime(0.5,3),new StraightDriveWithTime(0.5,6),new StraightDriveWithTime(0.7,6),new PortCullisBreachPlay(),new ChevalDeFriseBreachPlay(),new BreachGoToTargetShootHybridAutonomousHighGoal());
+        
+        // Set up our autonomous modes with the hardware selector switch
+        // holy long class names batman
+        hardwareChooser = new AutonomousSelector(
+        	/*  no switch: do nothing      */	 new ArcadeDriveWithJoystick(), 
+        	/* position 1: do nothing      */	 new ArcadeDriveWithJoystick(),
+        	/* position 2: low goal gyro   */	 new BreachGoToTargetShootGyroAutonomous(),
+        	/* position 3: low goal camera */	 new BreachGoToTargetShootHybridAutonomous(),
+        	/* position 4: low goal hybrid */	 new BreachGoToTargetShootHybridAutonomous(),
+        	/* position 5: reach anything  */	 new StraightDriveWithEncoders(0.5,6,25),
+        	/* position 6: breach slow     */	 new StraightDriveWithTime(0.5,6000),
+        	/* position 7: breach fast     */	 new StraightDriveWithTime(0.7,6000),
+        	/* position 8: portcullis      */	 new PortCullisBreachPlay(),
+        	/* position 9: cheval de frise */	 new ChevalDeFriseBreachPlay(),
+        	/* position 10: high goal      */	 new BreachGoToTargetShootHybridAutonomousHighGoal()
+        										);
+        	/* position 11 - 12 currently unused */
+        
+        // TODO: we should move these to subsystem classes
+        // and also use the RobotMap values
         ballKicker = new DoubleSolenoid(0,1);
         armCylinder1 = new DoubleSolenoid(2,3);
         armCylinder2 = new DoubleSolenoid(4,5);
-        cameraCommand = new AutomaticCameraControl();
         teleopControl = new TeleopPneumaticControl();
         intakeLeft = new CANTalon(RobotMap.CAN_INTAKE_LEFT);
         intakeRight = new CANTalon(RobotMap.CAN_INTAKE_RIGHT);
+
+		// Set up the Microsoft LifeCam and start streaming it to the Driver Station
+		CameraServer server = CameraServer.getInstance();
+		server.setQuality(50);
+		server.startAutomaticCapture("cam0");
+		
+		// Turn on the ring light for vision tracking
+		ringLightPower = new Solenoid(RobotMap.RING_LIGHT);	
+		ringLightPower.set(true);		
+    
     }
 	
 	/**
@@ -77,7 +103,6 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
-    	if(!cameraCommand.isCanceled()) cameraCommand.cancel();
     	teleopControl.cancel();
     }
 	
@@ -86,18 +111,12 @@ public class Robot extends IterativeRobot {
 	}
 
 	/**
-	 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes
-	 * using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW
-	 * Dashboard, remove all of the chooser code and uncomment the getString code to get the auto name from the text box
-	 * below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the chooser code above (like the commented example)
-	 * or additional comparisons to the switch structure below with additional strings & commands.
+	 * Initialize autonomous mode using the hardware chooser
 	 */
     public void autonomousInit() {
-        cameraCommand.start();
     	System.out.println(hardwareChooser.getSelected());
         autonomousCommand = hardwareChooser.getSelected();
+        
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
     }
@@ -116,8 +135,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-       // cameraCommand.start();
-        //cameraCommand.cancel(); // Uncomment/comment to disable/enable camera movement
+
         teleopControl.start();
     }
 

@@ -22,9 +22,10 @@ public class StraightDriveWithTime extends Command {
 	 * @param time Time in milliseconds to drive
 	 */
     public StraightDriveWithTime(double speed, long time) {
-        requires(Robot.driveTrain);
+    	super("StraightDriveWithTime");
+    	requires(Robot.driveTrain);
 
-        this.speed = speed;
+        this.speed = -speed;
         
         this.time = time;
     }

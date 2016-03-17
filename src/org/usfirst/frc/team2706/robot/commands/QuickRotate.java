@@ -5,10 +5,11 @@ import org.usfirst.frc.team2706.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * A very simple two-stage proportional control for quickly rotating the robot heading based on gyro.
- * Note this uses the current gyro heading and does NOT reset it.
- * Note that the input heading is ABSOLUTE (gyro based) and not relative to current position, i.e.
- * "90" means face the robot due east (relative to the gyro heading), not turn 90 degrees from wherever it is now.
+ * A very simple two-stage proportional control for quickly rotating the robot heading based on the robot gyro.
+ *
+ * Command parameters:
+ *  targetHeading - the target heading value
+ *  
  */
 public class QuickRotate extends Command {
 
@@ -20,21 +21,25 @@ public class QuickRotate extends Command {
 	private int direction = 1;
 	
 	// Rotate faster if far away from target heading
-	private double fastRotateSpeed = 0.7;
+	private double fastRotateSpeed = 0.8;
 
 	// Rotate slower when approaching target heading
-	private double slowRotateSpeed = 0.3;
+	private double slowRotateSpeed = 0.4;
 	
 	// Threshold (degrees) at which to switch from fast to slow 
-	private double speedThreshold = 0.0;
-	
+	private double speedThreshold = 30.0;
+
+	private int maxCycles = 120;
+
 	// "Close enough"
-	private double arrivalThreshold = 3.0;
+	private double arrivalThreshold = 4.0;
 
 	private boolean done = false;
 
     public QuickRotate(double targetHeading) {
-        requires(Robot.driveTrain);
+    	super("QuickRotate");
+
+    	requires(Robot.driveTrain);
         this.targetHeading = normalize(targetHeading);
     }
 
@@ -48,10 +53,6 @@ public class QuickRotate extends Command {
     	currentHeading = normalize(Robot.driveTrain.getHeading());
     	double error = targetHeading - currentHeading;
     	
-    	System.out.println("Current Heading = " + currentHeading);
-    	System.out.println("Target Heading = " + targetHeading);
-    	System.out.println("error = " + error);
-
     	// which direction are we off by?
     	direction = (error > 0.0 ? -1 : 1);
     	
@@ -71,6 +72,7 @@ public class QuickRotate extends Command {
     		// turn slow
     		Robot.driveTrain.drive(direction * slowRotateSpeed, -direction * slowRotateSpeed);
     	}
+    	maxCycles--;
     }
 
     private double normalize(double input) {
@@ -85,11 +87,15 @@ public class QuickRotate extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return done;
+    	if(done||(maxCycles<=0))
+    		return true;
+    	else
+    		return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	done = true;
         Robot.driveTrain.drive(0, 0);    	
     }
 

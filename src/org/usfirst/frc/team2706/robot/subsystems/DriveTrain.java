@@ -32,6 +32,7 @@ public class DriveTrain extends Subsystem {
 	private AnalogInput rangefinder;
 	private AHRS gyro;
 	
+	// TODO: maybe we don't need this
 	private GyroPIDSource gyroPIDSource;
 
 	public DriveTrain() {
@@ -68,8 +69,9 @@ public class DriveTrain extends Subsystem {
 
 		// @TODO: Use RobotMap values
 		rangefinder = new AnalogInput(6);
-		gyro = new AHRS(SPI.Port.kMXP);
 		
+		// Set up navX gyro
+		gyro = new AHRS(SPI.Port.kMXP);
 		while(gyro.isCalibrating()) {
 			;
 		}
@@ -164,10 +166,6 @@ public class DriveTrain extends Subsystem {
 	 * Reset the robots sensors to the zero states.
 	 */
 	public void reset() {
-		// This may be redundant
-		gyro.zeroYaw();
-	//	gyro.resetDisplacement();
-		gyro.reset();
 		left_encoder.reset();
 		right_encoder.reset();
 	}
