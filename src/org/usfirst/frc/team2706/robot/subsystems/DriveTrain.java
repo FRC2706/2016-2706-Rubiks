@@ -169,7 +169,14 @@ public class DriveTrain extends Subsystem {
 		left_encoder.reset();
 		right_encoder.reset();
 	}
-
+	
+	/**
+	 * Reset the robot gyro to the zero state.
+	 */
+	public void reset() {
+		gyro.reset();
+	}
+	
 	/**
 	 * @return The distance driven (average of left and right encoders).
 	 */
