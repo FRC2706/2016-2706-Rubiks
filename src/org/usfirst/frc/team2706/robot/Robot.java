@@ -114,6 +114,9 @@ public class Robot extends IterativeRobot {
 	 * Initialize autonomous mode using the hardware chooser
 	 */
     public void autonomousInit() {
+    	driveTrain.reset();
+    	driveTrain.resetGyro();
+    	
     	System.out.println(hardwareChooser.getSelected());
         autonomousCommand = hardwareChooser.getSelected();
         
