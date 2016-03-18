@@ -5,6 +5,7 @@ import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootCameraAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootGyroAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomousHighGoal;
@@ -64,7 +65,7 @@ public class Robot extends IterativeRobot {
         	/*  no switch: do nothing      */	 new ArcadeDriveWithJoystick(), 
         	/* position 1: do nothing      */	 new ArcadeDriveWithJoystick(),
         	/* position 2: low goal gyro   */	 new BreachGoToTargetShootGyroAutonomous(),
-        	/* position 3: low goal camera */	 new BreachGoToTargetShootHybridAutonomous(),
+        	/* position 3: low goal camera */	 new BreachGoToTargetShootCameraAutonomous(),
         	/* position 4: low goal hybrid */	 new BreachGoToTargetShootHybridAutonomous(),
         	/* position 5: reach anything  */	 new StraightDriveWithEncoders(0.5,6,25),
         	/* position 6: breach slow     */	 new StraightDriveWithTime(0.5,6000),
