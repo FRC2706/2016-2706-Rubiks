@@ -5,10 +5,7 @@ import org.usfirst.frc.team2706.robot.commands.FloatControlAuto;
 import org.usfirst.frc.team2706.robot.commands.QuickRotate;
 import org.usfirst.frc.team2706.robot.commands.ShootBallAuto;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
-import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
-import org.usfirst.frc.team2706.robot.commands.plays.BreachPlay;
-import org.usfirst.frc.team2706.robot.commands.plays.GoToTargetGyroPlay;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

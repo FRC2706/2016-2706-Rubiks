@@ -46,6 +46,7 @@ public class QuickRotate extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	done = false;
+    	maxCycles = 120;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -59,7 +60,6 @@ public class QuickRotate extends Command {
     	if ( Math.abs(error) <= arrivalThreshold)
     	{
     		// close enough! We're done
-    		end();
     		done = true;
     	}
     	else if (Math.abs(error) > speedThreshold)

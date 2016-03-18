@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2706.robot.commands.plays;
 
 import org.usfirst.frc.team2706.robot.commands.QuickRotate;
-import org.usfirst.frc.team2706.robot.commands.RotateDriveWithGyro;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;

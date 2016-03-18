@@ -4,7 +4,6 @@ import org.usfirst.frc.team2706.robot.Robot;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Have the robot drive certain distance
@@ -20,11 +19,9 @@ public class StraightDriveWithEncoders extends Command {
 	private final PIDController leftPID;
 	private final PIDController rightPID;
 	
-	private double heading;
-	
 	private int doneCount;
 	
-	private final double P=1.0, I=0.0, D=0.25, F=0;
+	private final double P=1.0, I=0.0, D=0.25;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -41,8 +38,6 @@ public class StraightDriveWithEncoders extends Command {
         this.distance = distance;
         
         this.minDoneCycles = minDoneCycles;
-        
-        this.heading = Robot.driveTrain.getHeading();
 
         leftPID = new PIDController(P,I,D,	 
        		Robot.driveTrain.getEncoderPIDSource(true), 
