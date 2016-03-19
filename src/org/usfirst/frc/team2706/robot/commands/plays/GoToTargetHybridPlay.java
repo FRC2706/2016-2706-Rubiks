@@ -5,7 +5,6 @@ import org.usfirst.frc.team2706.robot.commands.ArmUpAuto;
 import org.usfirst.frc.team2706.robot.commands.FloatControlAuto;
 import org.usfirst.frc.team2706.robot.commands.QuickRotateWithCamera;
 import org.usfirst.frc.team2706.robot.commands.QuickViewWithCamera;
-import org.usfirst.frc.team2706.robot.commands.ResetCameraEndAuto;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 
@@ -21,12 +20,9 @@ public class GoToTargetHybridPlay extends CommandGroup {
 		this.addSequential(new QuickViewWithCamera(this));
 		this.addSequential(new StraightDriveWithEncoders(0.4, 4.22/12.0, 10));
 		this.addSequential(new QuickRotateWithCamera(this));
-		this.addParallel(new ArmUpAuto(),0.5);
-		this.addSequential(new StraightDriveWithEncoders(0.6, 3, 25));
-		this.addSequential(new ResetCameraEndAuto());
-		
-		this.addSequential(new StraightDriveWithEncoders(0.6, 4.5, 25));
-		this.addSequential(new ArmDownAuto(),0.5);
-		this.addSequential(new FloatControlAuto(true),0.5);
+		this.addParallel(new ArmUpAuto(), 0.5);
+		this.addSequential(new StraightDriveWithEncoders(0.6, 7.5, 25));
+		this.addSequential(new ArmDownAuto(), 0.5);
+		this.addSequential(new FloatControlAuto(true), 0.5);
 	}
 }
