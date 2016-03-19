@@ -16,24 +16,7 @@ public class QuickViewWithCamera extends Command {
 
 	// Gyro headings - what we want to be at, where we are now
 	private double targetHeading;
-	private double currentHeading;
 
-	// Clockwise or counterclockwise rotation
-	private int direction = 1;
-
-	// Rotate faster if far away from target heading
-	private double fastRotateSpeed = 0.65;
-
-	// Rotate slower when approaching target heading
-	private double slowRotateSpeed = 0.55;
-
-	// Threshold (degrees) at which to switch from fast to slow
-	private double speedThreshold = 20.0;
-
-	// "Close enough"
-	private double arrivalThreshold = 3.0;
-
-	private boolean done = false;
 	private GoToTargetHybridPlay commandGroup;
 	
 	public QuickViewWithCamera(GoToTargetHybridPlay commandGroup) {
