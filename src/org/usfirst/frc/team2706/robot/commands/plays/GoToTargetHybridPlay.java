@@ -22,9 +22,10 @@ public class GoToTargetHybridPlay extends CommandGroup {
 		this.addSequential(new QuickViewWithCamera(this));
 		this.addSequential(new StraightDriveWithEncoders(0.4, 4.22/12.0, 10));
 		this.addSequential(new QuickRotateWithCamera(this));
+		this.addParallel(new ArmUpAuto(),0.5);
 		this.addSequential(new StraightDriveWithEncoders(0.6, 3, 25));
 		this.addSequential(new ResetCameraEndAuto());
-		this.addParallel(new ArmUpAuto(),0.5);
+		
 		this.addSequential(new StraightDriveWithEncoders(0.6, 4.5, 25));
 		this.addSequential(new ArmDownAuto(),0.5);
 		this.addSequential(new FloatControlAuto(true),0.5);
