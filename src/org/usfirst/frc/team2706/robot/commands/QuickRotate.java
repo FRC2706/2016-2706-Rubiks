@@ -20,7 +20,7 @@ public class QuickRotate extends Command {
 	private int direction = 1;
 	
 	// Rotate faster if far away from target heading
-	private double fastRotateSpeed = 0.7;
+	private double fastRotateSpeed = 0.65;
 
 	// Rotate slower when approaching target heading
 	private double slowRotateSpeed = 0.3;

@@ -35,14 +35,14 @@ public class AutomaticCameraControl extends Command {
 				savedMilis = System.currentTimeMillis();
 				lostTarget = true;
 			}
-			if(System.currentTimeMillis() - (waitTime * 1000) > savedMilis) {
-			//	System.out.println("Here");
-				/*move.end();
+			/*if(System.currentTimeMillis() - (waitTime * 1000) > savedMilis) {
+
+				move.end();
 				if(search.isRunning()) {
 				search.end();
 				}
-				search.start();*/
-			}
+				search.start();
+			}*/
 		}
 
 	}

@@ -3,6 +3,7 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
+import org.usfirst.frc.team2706.robot.commands.ResetCameraEndAuto;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomous;
@@ -95,6 +96,8 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
+    	driveTrain.reset();
+    	driveTrain.gyroReset();
         cameraCommand.start();
     	System.out.println(hardwareChooser.getSelected());
         autonomousCommand = hardwareChooser.getSelected();
@@ -118,13 +121,17 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null) autonomousCommand.cancel();
        // cameraCommand.start();
         //cameraCommand.cancel(); // Uncomment/comment to disable/enable camera movement
+        new ResetCameraEndAuto().start();
         teleopControl.start();
+        cameraCommand.start();
+        
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	Robot.camera.RobotTurnDegrees();
         Scheduler.getInstance().run();
         log();
     }

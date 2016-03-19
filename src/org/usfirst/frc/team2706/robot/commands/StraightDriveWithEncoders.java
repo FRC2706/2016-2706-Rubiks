@@ -102,13 +102,19 @@ public class StraightDriveWithEncoders extends Command {
     	// TODO: Use WPI onTarget()
     	onTarget();
     }
-    
+    public boolean done;
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(this.doneCount > this.minDoneCycles)
+    	System.out.println(done);
+    	if(this.doneCount > this.minDoneCycles) {
+    		done = true;
     		return true;
-    	else
+    	
+    	}
+    	else {
+    		//done = false;
     		return false;
+    	}
 
     }
 

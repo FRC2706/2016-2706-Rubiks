@@ -165,13 +165,12 @@ public class DriveTrain extends Subsystem {
 	 */
 	public void reset() {
 		// This may be redundant
-		gyro.zeroYaw();
-	//	gyro.resetDisplacement();
-		gyro.reset();
 		left_encoder.reset();
 		right_encoder.reset();
 	}
-
+public void gyroReset() {
+	gyro.reset();
+}
 	/**
 	 * @return The distance driven (average of left and right encoders).
 	 */
