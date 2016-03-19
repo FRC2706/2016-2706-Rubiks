@@ -32,6 +32,7 @@ public class DriveTrain extends Subsystem {
 	private AnalogInput rangefinder;
 	private AHRS gyro;
 	
+	// TODO: maybe we don't need this
 	private GyroPIDSource gyroPIDSource;
 
 	public DriveTrain() {
@@ -68,8 +69,9 @@ public class DriveTrain extends Subsystem {
 
 		// @TODO: Use RobotMap values
 		rangefinder = new AnalogInput(6);
-		gyro = new AHRS(SPI.Port.kMXP);
 		
+		// Set up navX gyro
+		gyro = new AHRS(SPI.Port.kMXP);
 		while(gyro.isCalibrating()) {
 			;
 		}
@@ -126,6 +128,21 @@ public class DriveTrain extends Subsystem {
 	}
 
 	/**
+	 * Reset the robots sensors to the zero states.
+	 */
+	public void reset() {
+		left_encoder.reset();
+		right_encoder.reset();
+	}
+	
+	/**
+	 * Reset the robot gyro to the zero state.
+	 */
+	public void resetGyro() {
+		gyro.reset();
+	}
+	
+	/**
 	 * @return The robots heading in degrees.
 	 */
 	public double getHeading() {
@@ -159,18 +176,7 @@ public class DriveTrain extends Subsystem {
 	public void inverGyroPIDSource(boolean invert) {
 		gyroPIDSource.invert(invert);
 	}
-	
-	/**
-	 * Reset the robots sensors to the zero states.
-	 */
-	public void reset() {
-		// This may be redundant
-		left_encoder.reset();
-		right_encoder.reset();
-	}
-public void gyroReset() {
-	gyro.reset();
-}
+
 	/**
 	 * @return The distance driven (average of left and right encoders).
 	 */

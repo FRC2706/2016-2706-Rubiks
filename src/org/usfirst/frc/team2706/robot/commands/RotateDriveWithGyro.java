@@ -6,7 +6,11 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Have the robot drive certain amount of time
+ * This mostly works, but use the QuickRotate command instead. 
+ * PID control using gyro heading is slower and needs tuning of P,I,D parameters.
+ * 
+ * Note that the gyro heading is now absolute and not relative, so angle is a target heading
+ * and not a relative turn angle.
  */
 public class RotateDriveWithGyro extends Command {
     

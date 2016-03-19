@@ -21,7 +21,7 @@ public class ArmDownAuto extends Command {
 int ticks = 0;
 	@Override
 	protected boolean isFinished() {
-		if (++ticks < 120)
+		if (++ticks < 40)
 			return false;
 		else {
 			ticks = 0;

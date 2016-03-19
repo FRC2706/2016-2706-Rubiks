@@ -6,7 +6,6 @@ import org.usfirst.frc.team2706.robot.commands.FloatControlAuto;
 import org.usfirst.frc.team2706.robot.commands.QuickRotateWithCamera;
 import org.usfirst.frc.team2706.robot.commands.QuickViewWithCamera;
 import org.usfirst.frc.team2706.robot.commands.ResetCameraEndAuto;
-import org.usfirst.frc.team2706.robot.commands.RotateDriveWithHybrid;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 

@@ -10,25 +10,54 @@ public class HighGoalShooter extends Command {
 	public HighGoalShooter(double speed) {
 		this.speed = speed;
 	}
-	long startTime;
+	
+
+	boolean started = false;
+	boolean done = false;
+	
 	@Override
 	protected void initialize() {
-		startTime = System.currentTimeMillis();
+		Thread thread1 = new Thread(new Runnable() {
+			@Override
+			public void run(){
+
+				long startTime = System.currentTimeMillis();
+				boolean armFired = false;
+				
+				while(true) {
+
+					Robot.intakeLeft.set(-speed);
+					Robot.intakeRight.set(speed);
+					
+					if(System.currentTimeMillis() - 80 > startTime ) {
+						if (!armFired)
+							{
+								new ArmDown().start();
+								armFired = true;
+							}
+					}
+
+					if(System.currentTimeMillis() - 360 > startTime ) {
+						Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
+						break;
+					}
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e) {
+						break;
+					}
+				}
+				done = true;
+			}
+		});
+
+		thread1.start();
+		
 	}
-boolean done = false;
+
 	@Override
 	protected void execute() {
-		Robot.intakeLeft.set(-speed);
-		Robot.intakeRight.set(speed);
-		new ArmDown().start();
-		if(System.currentTimeMillis() - 150 > startTime ) {
-		Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
-		done = true;
-		}
-		//}
-		//else if(System.currentTimeMillis() - 700 > startTime) {
-		//	done = true;
-		//}
+		
 	}
 
 	@Override
@@ -40,7 +69,7 @@ boolean done = false;
 	@Override
 	protected void end() {
 
-	//	Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
+		Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	@Override
