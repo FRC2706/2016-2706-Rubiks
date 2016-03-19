@@ -97,6 +97,7 @@ public class Robot extends IterativeRobot {
 		ringLightPower = new Solenoid(RobotMap.RING_LIGHT);	
 		ringLightPower.set(true);		
     
+		cameraCommand = new AutomaticCameraControl();
     }
 	
 	/**
