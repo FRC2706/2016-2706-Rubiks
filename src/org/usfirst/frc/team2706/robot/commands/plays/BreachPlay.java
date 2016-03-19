@@ -2,7 +2,6 @@ package org.usfirst.frc.team2706.robot.commands.plays;
 
 import org.usfirst.frc.team2706.robot.commands.ArmDownAuto;
 import org.usfirst.frc.team2706.robot.commands.FloatControlAuto;
-import org.usfirst.frc.team2706.robot.commands.ResetCameraEndAuto;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;

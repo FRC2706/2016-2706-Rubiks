@@ -4,7 +4,6 @@ import org.usfirst.frc.team2706.robot.Robot;
 import org.usfirst.frc.team2706.robot.commands.plays.GoToTargetHybridPlay;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  * A very simple two-stage proportional control for quickly rotating the robot
