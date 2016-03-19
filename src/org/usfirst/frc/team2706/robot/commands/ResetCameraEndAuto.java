@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ResetCameraEndAuto extends Command{
 	@Override
 	protected void initialize() {
-		Robot.camera.turnXAxis.set(0.5);
+		Robot.camera.turnXAxis.set((float)Camera.DEFAULT_PAN);
 		Robot.camera.turnXAxis.set((float)Camera.DEFAULT_TILT);
 	}
 

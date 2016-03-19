@@ -18,15 +18,15 @@ public class GoToTargetHybridPlay extends CommandGroup {
 	
 	public GoToTargetHybridPlay() {
 		// TODO: Fix speeds and distances
-		this.addSequential(new StraightDriveWithTime(0.0, 2000));
+		this.addSequential(new StraightDriveWithTime(0.0, 1000));
 		this.addSequential(new QuickViewWithCamera(this));
-		this.addSequential(new StraightDriveWithEncoders(0.4, 10.0/12.0, 25));
+		this.addSequential(new StraightDriveWithEncoders(0.4, 4.22/12.0, 10));
 		this.addSequential(new QuickRotateWithCamera(this));
-		this.addSequential(new StraightDriveWithEncoders(0.5, 2, 25));
+		this.addSequential(new StraightDriveWithEncoders(0.6, 3, 25));
 		this.addSequential(new ResetCameraEndAuto());
-		this.addSequential(new ArmUpAuto(),1);
-		this.addSequential(new StraightDriveWithEncoders(0.5, 4.5, 25));
-		this.addSequential(new ArmDownAuto(),1);
-		this.addSequential(new FloatControlAuto(true),1);
+		this.addParallel(new ArmUpAuto(),0.5);
+		this.addSequential(new StraightDriveWithEncoders(0.6, 4.5, 25));
+		this.addSequential(new ArmDownAuto(),0.5);
+		this.addSequential(new FloatControlAuto(true),0.5);
 	}
 }
