@@ -143,13 +143,6 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	/**
-	 * @return The distance driven (average of left and right encoders).
-	 */
-	public double getDistance() {
-		return (left_encoder.getDistance() + right_encoder.getDistance())/2;
-	}
-	
-	/**
 	 * @return The robots heading in degrees.
 	 */
 	public double getHeading() {
@@ -182,6 +175,13 @@ public class DriveTrain extends Subsystem {
 
 	public void inverGyroPIDSource(boolean invert) {
 		gyroPIDSource.invert(invert);
+	}
+
+	/**
+	 * @return The distance driven (average of left and right encoders).
+	 */
+	public double getDistance() {
+		return (left_encoder.getDistance() + right_encoder.getDistance())/2;
 	}
 
 	/**

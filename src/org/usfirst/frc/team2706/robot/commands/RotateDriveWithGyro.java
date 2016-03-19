@@ -126,7 +126,6 @@ public class RotateDriveWithGyro extends Command {
     	return doneCount;
     }
     public void Turn() {
-    	float fastSpeed;
     	float slowSpeed = 0.2f;
     	float medSpeed = 0.4f;
     	if(Robot.driveTrain.getGyroPIDSource(false).pidGet() - angle < 20 && Robot.driveTrain.getGyroPIDSource(false).pidGet() - angle >= 0) {

@@ -3,10 +3,11 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
-import org.usfirst.frc.team2706.robot.commands.QuickRotate;
+import org.usfirst.frc.team2706.robot.commands.ResetCameraEndAuto;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
+import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootCameraAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootGyroAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomousHighGoal;
@@ -40,6 +41,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	Command autonomousCommand;
+	AutomaticCameraControl cameraCommand;
     TeleopPneumaticControl teleopControl;
 	
     public static Solenoid ringLightPower;
@@ -66,7 +68,7 @@ public class Robot extends IterativeRobot {
         	/*  no switch: do nothing      */	 new ArcadeDriveWithJoystick(), 
         	/* position 1: do nothing      */	 new ArcadeDriveWithJoystick(),
         	/* position 2: low goal gyro   */	 new BreachGoToTargetShootGyroAutonomous(),
-        	/* position 3: low goal camera */	 new BreachGoToTargetShootHybridAutonomous(),
+        	/* position 3: low goal camera */	 new BreachGoToTargetShootCameraAutonomous(),
         	/* position 4: low goal hybrid */	 new BreachGoToTargetShootHybridAutonomous(),
         	/* position 5: reach anything  */	 new StraightDriveWithEncoders(0.5,6,25),
         	/* position 6: breach slow     */	 new StraightDriveWithTime(0.5,6000),
@@ -95,6 +97,7 @@ public class Robot extends IterativeRobot {
 		ringLightPower = new Solenoid(RobotMap.RING_LIGHT);	
 		ringLightPower.set(true);		
     
+		cameraCommand = new AutomaticCameraControl();
     }
 	
 	/**
@@ -115,6 +118,7 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
     	driveTrain.reset();
+        cameraCommand.start();
     	driveTrain.resetGyro();
     	
     	System.out.println(hardwareChooser.getSelected());
@@ -138,14 +142,19 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-
+       // cameraCommand.start();
+        //cameraCommand.cancel(); // Uncomment/comment to disable/enable camera movement
+        new ResetCameraEndAuto().start();
         teleopControl.start();
+        cameraCommand.start();
+        
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	Robot.camera.RobotTurnDegrees();
         Scheduler.getInstance().run();
         log();
     }

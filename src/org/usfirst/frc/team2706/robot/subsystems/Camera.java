@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Camera extends Subsystem {
 	public static final String CAMERA_IP = "10.27.6.240";
-	public static final float DEFAULT_PAN = 0.5f;
-	public static final float DEFAULT_TILT = 1;
+	public static final float DEFAULT_PAN = 1f/6f;
+	public static final float DEFAULT_TILT = 0.7f;
 	public static final float MAX_TILT = 0;
 	public static final float MAX_PAN_LEFT = 0;
 	public static final float MAX_PAN_RIGHT = 1;
@@ -222,12 +222,13 @@ public class TargetObject implements Comparable<TargetObject> {
 
 	public float RobotTurnDegrees() {
 		float out;
-		if(cachedTarget != null) {
+		//if(cachedTarget != null) {
 			out = - (float)(turnXAxis.getPosition() * 180 - 90f);
-		}
-		else {
-			out = 60;
-		}
+	//	}
+		//else {
+		//	out = 60;
+	//	}
+		System.out.println(out);
 		return out;
 	}
 	public void ResetCamera() {

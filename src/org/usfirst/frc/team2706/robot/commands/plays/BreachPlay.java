@@ -9,9 +9,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BreachPlay extends CommandGroup {
 	
 	public BreachPlay() {
-		this.addSequential(new ArmDownAuto(),2);
-		this.addSequential(new FloatControlAuto(true),1);
+		this.addParallel(new ArmDownAuto(),1);
+		this.addSequential(new FloatControlAuto(true),0.2);
 		//this.addSequential(new StraightDriveWithTime(0.0,1000));
-		this.addSequential(new StraightDriveWithEncoders(0.4,5.5, 25));
+		this.addSequential(new StraightDriveWithEncoders(0.6,17.5, 25));
+		//this.addSequential(new ResetCameraEndAuto());
 	}
 }
