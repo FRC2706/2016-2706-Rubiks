@@ -16,8 +16,8 @@ public class StraightDriveWithEncoders extends Command {
 	
 	private final int minDoneCycles;
 	
-	private final PIDController leftPID;
-	private final PIDController rightPID;
+	private PIDController leftPID;
+	private PIDController rightPID;
 	
 	private int doneCount;
 	
@@ -38,7 +38,11 @@ public class StraightDriveWithEncoders extends Command {
         this.distance = distance;
         
         this.minDoneCycles = minDoneCycles;
+    }
 
+    // Called just before this Command runs the first time
+    protected void initialize() {
+    	// Will get all inverted if called multiple times from different constructors
         leftPID = new PIDController(P,I,D,	 
        		Robot.driveTrain.getEncoderPIDSource(true), 
        		Robot.driveTrain.getDrivePIDOutput(false, true)
@@ -48,10 +52,7 @@ public class StraightDriveWithEncoders extends Command {
            	Robot.driveTrain.getEncoderPIDSource(false), 
            	Robot.driveTrain.getDrivePIDOutput(false, false)
         );
-    }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
+    	
     	Robot.driveTrain.reset();
     	
     	// Make input infinite
@@ -84,6 +85,8 @@ public class StraightDriveWithEncoders extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {    	
+    	Robot.driveTrain.drive(Robot.driveTrain.getPIDOutput(true), Robot.driveTrain.getPIDOutput(false));
+    	
     	// TODO: Use WPI onTarget()
     	onTarget();
     }

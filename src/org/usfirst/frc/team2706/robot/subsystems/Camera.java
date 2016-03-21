@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
-public class Camera extends Subsystem {
+public class Camera extends Subsystem implements PIDSource {
 	public static final String CAMERA_IP = "10.27.6.240";
 	public static final float DEFAULT_PAN = 1f/6f;
 	public static final float DEFAULT_TILT = 0.7f;
@@ -33,16 +33,12 @@ public class Camera extends Subsystem {
 	public final  int visionDataPort = 1182;
 	public static TargetObject cachedTarget;
 	
-	private CameraPIDSource cameraPIDSource;
-	
 public Camera(String ip) {
 	super();
 	
 	RPi_addr = ip;
 	turnXAxis = new Servo(RobotMap.MOTOR_CAMERA_PAN);
 	turnYAxis = new Servo(RobotMap.MOTOR_CAMERA_TILT);
-	
-	cameraPIDSource = new CameraPIDSource(this);
 }
 public class TargetObject implements Comparable<TargetObject> {
 	  public float boundingArea = -1;     // % of cam [0, 1.0]
@@ -255,45 +251,27 @@ public class TargetObject implements Comparable<TargetObject> {
 			turnYAxis.set(turnYAxis.getPosition() + tiltValue);
 		}
 	}
+
+	private PIDSourceType pidSource = PIDSourceType.kDisplacement;
+	private boolean invertPID = true;
 	
-	/**
-	 * @return The robot's camera PIDSource
-	 */
-	public PIDSource getCameraPIDSource(boolean invert) {
-		cameraPIDSource.invert(invert);
-		return cameraPIDSource;
+	@Override
+	public void setPIDSourceType(PIDSourceType pidSource) {
+		this.pidSource = pidSource;
+	}
+
+	@Override
+	public PIDSourceType getPIDSourceType() {
+		return pidSource;
+	}
+
+	@Override
+	public double pidGet() {
+		return invertPID ? -RobotTurnDegrees() : RobotTurnDegrees();
 	}
 	
-	class CameraPIDSource implements PIDSource {
-
-		private final Camera camera;
-		private boolean invert;
-		
-		private PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
-		
-		public CameraPIDSource(Camera driveTrain) {
-			this.camera = driveTrain;
-		}
-		
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			pidSourceType = pidSource;
-		};
-
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return pidSourceType;
-		}
-
-		@Override
-		public double pidGet() {
-			return invert ? -camera.RobotTurnDegrees() : camera.RobotTurnDegrees();
-		}
-		
-		
-		public void invert(boolean invert) {
-			this.invert = invert;
-		}
+	public void invert(boolean invert) {
+		this.invertPID = invert;
 	}
 }
 
