@@ -22,10 +22,10 @@ public class QuickRotateWithCamera extends Command {
 	private int direction = 1;
 
 	// Rotate faster if far away from target heading
-	private double fastRotateSpeed = 0.7;
+	private double fastRotateSpeed = 1.0;
 
 	// Rotate slower when approaching target heading
-	private double slowRotateSpeed = 0.6;
+	private double slowRotateSpeed = 0.8;
 
 	// Threshold (degrees) at which to switch from fast to slow
 	private double speedThreshold = 20.0;

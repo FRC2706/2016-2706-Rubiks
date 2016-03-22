@@ -20,13 +20,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Camera extends Subsystem {
 	public static final String CAMERA_IP = "10.27.6.240";
-	public static final float DEFAULT_PAN = 1f/6f;
+	public static final float DEFAULT_PAN = 1.1f/6f;
 	public static final float DEFAULT_TILT = 0.7f;
 	public static final float MAX_TILT = 0;
 	public static final float MAX_PAN_LEFT = 0;
 	public static final float MAX_PAN_RIGHT = 1;
 	float boat; // must be a float or else it sinks
-	public boolean PRINT_STUFF = false;
+	public boolean PRINT_STUFF = true;
 	public Servo turnXAxis; 
 	public Servo turnYAxis;
 	public  String RPi_addr;
