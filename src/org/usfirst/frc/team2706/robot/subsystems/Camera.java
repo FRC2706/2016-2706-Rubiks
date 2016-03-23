@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 
 public class Camera extends Subsystem {
-	public static final String CAMERA_IP = "10.27.6.240";
+	public static final String CAMERA_IP = "10.27.6.23";
 	public static final float DEFAULT_PAN = 1.1f/6f;
 	public static final float DEFAULT_TILT = 0.7f;
 	public static final float MAX_TILT = 0;
