@@ -74,9 +74,9 @@ public class StraightDriveWithEncoders extends Command {
     	rightPID.setSetpoint(distance);
     	
     	
-    	// Will accept within 1 inch of target
-    	leftPID.setAbsoluteTolerance(1.0/12);
-    	rightPID.setAbsoluteTolerance(1.0/12);
+    	// Will accept within 5 inch of target
+    	leftPID.setAbsoluteTolerance(5.0/12);
+    	rightPID.setAbsoluteTolerance(5.0/12);
     	
     	// Start going to location
     	leftPID.enable();
@@ -121,7 +121,7 @@ public class StraightDriveWithEncoders extends Command {
     }
     
     private boolean onTarget() {
-    	if(leftPID.getError() < 3.0/12 && rightPID.getError() < 3.0/12) {
+    	if(leftPID.getError() < 5.0/12 && rightPID.getError() < 5.0/12) {
     		doneCount++;
     		return true;
     	}

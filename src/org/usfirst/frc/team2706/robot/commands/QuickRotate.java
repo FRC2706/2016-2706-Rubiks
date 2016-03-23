@@ -21,13 +21,13 @@ public class QuickRotate extends Command {
 	private int direction = 1;
 	
 	// Rotate faster if far away from target heading
-	private double fastRotateSpeed = 0.8;
+	private double fastRotateSpeed = 1.0;
 
 	// Rotate slower when approaching target heading
-	private double slowRotateSpeed = 0.4;
+	private double slowRotateSpeed = 0.9;
 	
 	// Threshold (degrees) at which to switch from fast to slow 
-	private double speedThreshold = 30.0;
+	private double speedThreshold = 40.0;
 
 	private int maxCycles = 120;
 

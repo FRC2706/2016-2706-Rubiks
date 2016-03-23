@@ -71,8 +71,8 @@ public class Robot extends IterativeRobot {
         	/* position 3: low goal camera */	 new BreachGoToTargetShootCameraAutonomous(),
         	/* position 4: low goal hybrid */	 new BreachGoToTargetShootHybridAutonomous(),
         	/* position 5: reach anything  */	 new StraightDriveWithEncoders(0.5,6,25),
-        	/* position 6: breach slow     */	 new StraightDriveWithTime(0.5,6000),
-        	/* position 7: breach fast     */	 new StraightDriveWithTime(0.7,6000),
+        	/* position 6: breach slow     */	 new StraightDriveWithTime(0.7,4000),
+        	/* position 7: breach fast     */	 new StraightDriveWithTime(0.85,2500),
         	/* position 8: portcullis      */	 new PortCullisBreachPlay(),
         	/* position 9: cheval de frise */	 new ChevalDeFriseBreachPlay(),
         	/* position 10: high goal      */	 new BreachGoToTargetShootHybridAutonomousHighGoal()

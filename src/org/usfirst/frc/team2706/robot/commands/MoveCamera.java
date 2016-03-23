@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class MoveCamera extends Command {
 	
-	public static final int TARGET = -1;
+	public static final int TARGET = -3;
 	private float cachedLocationX = Camera.DEFAULT_PAN;
 	private float cachedLocationY = Camera.DEFAULT_TILT;
 	private Camera.TargetObject target;
@@ -65,8 +65,8 @@ public class MoveCamera extends Command {
 		
 	}
 	public void SetServoAngles(float panAngle, float tiltAngle) {
-		double newPanVal = (panAngle >= 0.0 ? panAngle * panAngle : -1 * panAngle * panAngle) / 5;
-		double newTiltVal = (tiltAngle >= 0.0 ? tiltAngle * tiltAngle : -1 * tiltAngle * tiltAngle) / 5;
+		double newPanVal = (panAngle >= 0.0 ? panAngle * panAngle : -1 * panAngle * panAngle) / 7.5;
+		double newTiltVal = (tiltAngle >= 0.0 ? tiltAngle * tiltAngle : -1 * tiltAngle * tiltAngle) / 7.5;
 		Robot.camera.ProtectedSetServoAngles((float)newPanVal,(float)newTiltVal);
 	}
 }
