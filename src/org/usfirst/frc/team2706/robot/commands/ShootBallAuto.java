@@ -14,16 +14,18 @@ public class ShootBallAuto extends Command {
 	@Override
 	protected void initialize() {
 		startTime = System.currentTimeMillis();
+		donee = 0;
 	}
 	@Override
 	protected void execute() {
 		Robot.intakeLeft.set(-speed);
 		Robot.intakeRight.set(speed);
-		if(System.currentTimeMillis() - 400 > startTime ) {
-		Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
+		if(System.currentTimeMillis() - 600 > startTime ) {
+			Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
 		}
 	}
-int donee = 0;
+	
+	int donee = 0;
 	@Override
 	protected boolean isFinished() {
 		if(++donee < 50) {
@@ -41,7 +43,8 @@ int donee = 0;
 
 	@Override
 	protected void end() {
-
+		Robot.intakeLeft.set(0);
+		Robot.intakeRight.set(0);
 	//	Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
 	}
 
