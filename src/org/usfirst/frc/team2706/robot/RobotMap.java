@@ -348,7 +348,7 @@ public class RobotMap {
 
 		// XXX: Encoders got flipped
 		public static final int ENCODER_LEFT_A = 8;
-		public static final int ENCODER_LEFT_B = 9;
+		public static final int ENCODER_LEFT_B = 7;
 		public static final double ENCODER_LEFT_DPP = 1.0 / 1075;
 
 		public static final int ENCODER_RIGHT_A = 0;

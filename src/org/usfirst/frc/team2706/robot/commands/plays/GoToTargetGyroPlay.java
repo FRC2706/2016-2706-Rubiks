@@ -14,11 +14,11 @@ public class GoToTargetGyroPlay extends CommandGroup {
 	public GoToTargetGyroPlay() {
 		// TODO: Fix speeds and distances
 		this.addSequential(new StraightDriveWithTime(0,200));
-		this.addSequential(new QuickRotate(60));
+		this.addSequential(new QuickRotate(63));
 		this.addSequential(new StraightDriveWithTime(0,200));
 		this.addParallel(new ArmUpAuto(), 0.5);
-		this.addSequential(new StraightDriveWithEncoders(0.6, 9, 10));
-		this.addSequential(new ArmDownAuto(), 0.5);
+		this.addSequential(new StraightDriveWithEncoders(0.75, 9, 10),3);
+		this.addSequential(new ArmDownAuto(), 1.3);
 		this.addSequential(new FloatControlAuto(true), 0.5);
 	}
 }

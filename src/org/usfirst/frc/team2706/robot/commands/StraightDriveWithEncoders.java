@@ -68,7 +68,8 @@ public class StraightDriveWithEncoders extends Command {
         	rightPID.setOutputRange(speed, -speed);
     	}
 
-    	
+		Robot.driveTrain.initGyro = Robot.driveTrain.getHeading();
+		
     	leftPID.setSetpoint(distance);
     	rightPID.setSetpoint(distance);
     	
