@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PortCullisBreachPlay extends CommandGroup {
 public PortCullisBreachPlay() {
 	this.addParallel(new ArmDownAuto(),2);
-	this.addSequential(new StraightDriveWithTime(0.65,2400));
+	this.addSequential(new StraightDriveWithTime(0.50,2500));
 	this.addParallel(new ArmUpAuto(),2);
 	this.addSequential(new StraightDriveWithEncoders(0.65,7,25));
 	

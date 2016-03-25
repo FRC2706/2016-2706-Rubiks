@@ -21,20 +21,20 @@ public class QuickRotate extends Command {
 	private int direction = 1;
 	
 	// Rotate faster if far away from target heading
-	private double fastRotateSpeed = 1.0;
+	private double fastRotateSpeed = 1;
 
 	// Rotate slower when approaching target heading
-	private double slowRotateSpeed = 0.9;
+	private double slowRotateSpeed = 0.85;
 	
 	// Threshold (degrees) at which to switch from fast to slow 
-	private double speedThreshold = 40.0;
+	private double speedThreshold = 15.0;
 
 	private int maxCycles = 120;
 
 	// "Close enough"
-	private double arrivalThreshold = 4.0;
+	private double arrivalThreshold = 3.0;
 
-	private boolean done = false;
+	private int done = 10;
 
     public QuickRotate(double targetHeading) {
     	super("QuickRotate");
@@ -45,14 +45,15 @@ public class QuickRotate extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	done = false;
+    	done = 10;
     	maxCycles = 120;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	System.out.println(Robot.driveTrain.getHeading());
     	currentHeading = normalize(Robot.driveTrain.getHeading());
-    	double error = targetHeading - currentHeading;
+    	double error = normalize(targetHeading - currentHeading);
     	
     	// which direction are we off by?
     	direction = (error > 0.0 ? -1 : 1);
@@ -60,7 +61,8 @@ public class QuickRotate extends Command {
     	if ( Math.abs(error) <= arrivalThreshold)
     	{
     		// close enough! We're done
-    		done = true;
+    		done--;
+    		Robot.driveTrain.drive(0,0);
     	}
     	else if (Math.abs(error) > speedThreshold)
     	{
@@ -87,7 +89,7 @@ public class QuickRotate extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(done||(maxCycles<=0))
+    	if(done <= 0||(maxCycles<=0))
     		return true;
     	else
     		return false;
@@ -95,7 +97,7 @@ public class QuickRotate extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	done = true;
+    	done = 0;
         Robot.driveTrain.drive(0, 0);    	
     }
 

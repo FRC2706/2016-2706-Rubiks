@@ -58,9 +58,9 @@ public class TargetObject implements Comparable<TargetObject> {
 
 		@Override
 		public int compareTo(TargetObject other) {
-			if (this.ctrX - other.ctrX < 0)
+			if (this.ctrY - other.ctrY < 0)
 				return -1;
-			else if (this.ctrX - other.ctrX > 0)
+			else if (this.ctrY - other.ctrY > 0)
 				return 1;
 			else 
 				return 0;
@@ -228,7 +228,7 @@ public class TargetObject implements Comparable<TargetObject> {
 		//else {
 		//	out = 60;
 	//	}
-		System.out.println(out);
+	//	System.out.println(out);
 		return out;
 	}
 	public void ResetCamera() {

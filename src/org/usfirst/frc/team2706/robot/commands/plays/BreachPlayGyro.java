@@ -12,7 +12,7 @@ public class BreachPlayGyro extends CommandGroup {
 		this.addSequential(new ArmDownAuto(),1);
 		this.addParallel(new FloatControlAuto(true),0.2);
 		//this.addSequential(new StraightDriveWithTime(0.0,1000));
-		this.addSequential(new StraightDriveWithEncoders(0.6,18.25, 20));
+		this.addSequential(new StraightDriveWithEncoders(0.6,19.5, 20));
 		//this.addSequential(new ResetCameraEndAuto());
 	}
 }
