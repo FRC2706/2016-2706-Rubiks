@@ -3,7 +3,6 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
-import org.usfirst.frc.team2706.robot.commands.QuickRotate;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
@@ -67,7 +66,7 @@ public class Robot extends IterativeRobot {
         	/*  no switch: do nothing      */	 new ArcadeDriveWithJoystick(), 
         	/* position 1: do nothing      */	 new ArcadeDriveWithJoystick(),
         	/* position 2: low goal gyro   */	 new BreachGoToTargetShootGyroAutonomous(),
-        	/* position 3: low goal camera */	 new QuickRotate(90),
+        	/* position 3: low goal camera */	 new StraightDriveWithEncoders(0.5,3,25),
         	/* position 4: low goal hybrid */	 new BreachGoToTargetShootHybridAutonomous(),
         	/* position 5: reach anything  */	 new StraightDriveWithEncoders(0.5,6,25),
         	/* position 6: breach slow     */	 new StraightDriveWithTime(0.7,3000),

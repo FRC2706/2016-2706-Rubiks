@@ -79,7 +79,7 @@ public class StraightDriveWithEncoders extends Command {
     	
     	// Start going to location
     	leftPID.enable();
-    	rightPID.enable();
+    	//rightPID.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run

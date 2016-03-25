@@ -34,6 +34,8 @@ public class DriveTrain extends Subsystem {
 	
 	// TODO: maybe we don't need this
 	private GyroPIDSource gyroPIDSource;
+	
+	private double initGyro;
 
 	public DriveTrain() {
 		super();
@@ -79,6 +81,8 @@ public class DriveTrain extends Subsystem {
 		gyroPIDSource = new GyroPIDSource(this);
 		
 		reset();
+		
+		initGyro = getHeading();
 		
 		// Let's show everything on the LiveWindow
 		LiveWindow.addActuator("Drive Train", "Front Left Motor", front_left_motor);
@@ -256,24 +260,30 @@ public class DriveTrain extends Subsystem {
 		
 		@Override
 		public void pidWrite(double output) {
+			double rotateVal = (normalize(getHeading() - initGyro) * 0.1);
+			
+			System.out.println("Rotate:\t"+rotateVal);
+			
 			// XXX: Motors must be opposite to avoid fighting
 			if(left)
 				if(invert) {
-					front.set(output);
-					rear.set(output);
+					drive.arcadeDrive(output, rotateVal);
+//					front.set(asSpeed(output, rotateVal, true));
+//					rear.set(asSpeed(output, rotateVal, true));
 				}
 				else {
-					front.set(-output);
-					rear.set(-output);
+					drive.arcadeDrive(-output, -rotateVal);
+//					front.set(asSpeed(-output, -rotateVal, true));
+//					rear.set(asSpeed(-output, -rotateVal, true));
 				}
 			else
 				if(invert) {
-					front.set(-output);
-					rear.set(-output);
+					front.set(asSpeed(output, rotateVal, false));
+					rear.set(asSpeed(output, rotateVal, false));
 				}
 				else {
-					front.set(output);
-					rear.set(output);
+					front.set(asSpeed(-output, -rotateVal, false));
+					rear.set(asSpeed(-output, -rotateVal, false));
 				}
 		}		
 		
@@ -281,4 +291,46 @@ public class DriveTrain extends Subsystem {
 			this.invert = invert;
 		}
 	}
+	
+    
+    private double asSpeed(double moveValue, double rotateValue, boolean left) {
+
+    	double leftMotorSpeed = 0;
+    	double rightMotorSpeed = 0;
+    	
+    	if (moveValue > 0.0) {
+    		if (rotateValue > 0.0) {
+    			leftMotorSpeed = moveValue - rotateValue;
+    			rightMotorSpeed = Math.max(moveValue, rotateValue);
+    		}
+    		else {
+    			leftMotorSpeed = Math.max(moveValue, -rotateValue);
+    			rightMotorSpeed = moveValue + rotateValue;
+    		}
+    	}
+    	else {
+    		if (rotateValue > 0.0) {
+    			leftMotorSpeed = -Math.max(-moveValue, rotateValue);
+    			rightMotorSpeed = moveValue + rotateValue;
+    		}
+    		else {
+    			leftMotorSpeed = moveValue - rotateValue;
+    			rightMotorSpeed = -Math.max(-moveValue, -rotateValue);
+    		}
+    	}
+		
+    	System.out.println("Drive:\t" + (left ? leftMotorSpeed : rightMotorSpeed));
+    	
+		return left ? leftMotorSpeed : rightMotorSpeed;
+    }
+    
+    private double normalize(double input) {
+    	double normalizedValue = input;
+    	while (normalizedValue > 180)
+    		normalizedValue -= 360;
+    	while (normalizedValue < -180)
+    		normalizedValue +=360;
+    	
+		return normalizedValue;
+	}	
 }
