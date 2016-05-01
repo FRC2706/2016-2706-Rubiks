@@ -14,8 +14,8 @@ public class RotateDriveWithCamera extends Command {
 	
 	private final int minDoneCycles;
 	
-	private final PIDController leftPID;
-	private final PIDController rightPID;
+	private PIDController leftPID;
+	private PIDController rightPID;
 	
 	private int doneCount;
 	
@@ -32,16 +32,18 @@ public class RotateDriveWithCamera extends Command {
         this.speed = speed;
 
         this.minDoneCycles = minDoneCycles;
-        leftPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(true), 
-        		Robot.driveTrain.getDrivePIDOutput(false, true));
-        
-        rightPID = new PIDController(P, I, D, F, Robot.camera.getCameraPIDSource(true), 
-        		Robot.driveTrain.getDrivePIDOutput(true, false));
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
+    	// Will get all inverted if called multiple times from different constructors
+        leftPID = new PIDController(P, I, D, F, Robot.camera, 
+        		Robot.driveTrain.getDrivePIDOutput(false, true));
+        
+        rightPID = new PIDController(P, I, D, F, Robot.camera, 
+        		Robot.driveTrain.getDrivePIDOutput(true, false));
+    	
     	Robot.driveTrain.reset();
     	
     	// Use gyro if there is no target
@@ -77,10 +79,10 @@ public class RotateDriveWithCamera extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.driveTrain.drive(Robot.driveTrain.getPIDForwardOutput(true), Robot.driveTrain.getPIDForwardOutput(false));
+    	
     	// TODO: Use WPI onTarget()
     	onTarget();
-    	
-    	System.out.println("Tick!!!");
     }
 
     // Make this return true when this Command no longer needs to run execute()

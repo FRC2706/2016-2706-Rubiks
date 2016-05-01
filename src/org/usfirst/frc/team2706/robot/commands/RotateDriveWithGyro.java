@@ -20,8 +20,8 @@ public class RotateDriveWithGyro extends Command {
 	
 	private final int minDoneCycles;
 	
-	private final PIDController leftPID;
-	private final PIDController rightPID;
+	private PIDController leftPID;
+	private PIDController rightPID;
 	
 	private int doneCount;
 	
@@ -41,21 +41,23 @@ public class RotateDriveWithGyro extends Command {
         this.angle = angle;
 
         this.minDoneCycles = minDoneCycles;
+    }
+
+    // Called just before this Command runs the first time
+    protected void initialize() {
+    	// Will get all inverted if called multiple times from different constructors
         leftPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
         		Robot.driveTrain.getDrivePIDOutput(false, true));
         
         rightPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
         		Robot.driveTrain.getDrivePIDOutput(true, false));
-    }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
+        
     	Robot.driveTrain.reset();
     	
     	
-    	
-    	leftPID.setInputRange(-360.0, 360.0);
-    	rightPID.setInputRange(-360.0, 360.0);
+    	// See http://www.pdocs.kauailabs.com/navx-mxp/examples/rotate-to-angle-2/ on the java example @ line 73
+    	leftPID.setInputRange(-180, 180.0);
+    	rightPID.setInputRange(-180.0, 180.0);
     	
     	// Make input infinite
     	leftPID.setContinuous();
@@ -82,6 +84,8 @@ public class RotateDriveWithGyro extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.driveTrain.drive(Robot.driveTrain.getPIDForwardOutput(true), Robot.driveTrain.getPIDForwardOutput(false));
+    	
     	// TODO: Use WPI onTarget()
     	onTarget();
     }

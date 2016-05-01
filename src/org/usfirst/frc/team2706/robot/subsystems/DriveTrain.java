@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,13 +27,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain extends Subsystem {
 	private Victor front_left_motor, back_left_motor,
 							front_right_motor, back_right_motor;
+	
+	private ComposedMotor leftMotor, rightMotor;
+
 	private RobotDrive drive;
 	private Encoder left_encoder, right_encoder;
 	private AnalogInput rangefinder;
 	private AHRS gyro;
-	
-	// TODO: maybe we don't need this
-	private GyroPIDSource gyroPIDSource;
 	
 	public double initGyro;
 
@@ -43,6 +43,9 @@ public class DriveTrain extends Subsystem {
 		back_left_motor = new Victor(RobotMap.MOTOR_REAR_LEFT);
 		front_right_motor = new Victor(RobotMap.MOTOR_FRONT_RIGHT);
 		back_right_motor = new Victor(RobotMap.MOTOR_REAR_RIGHT);
+		
+		leftMotor = new ComposedMotor(front_left_motor, back_left_motor);
+		rightMotor = new ComposedMotor(front_right_motor, back_right_motor);
 		
 		front_left_motor.setInverted(RobotMap.MOTOR_FRONT_LEFT_INVERTED);
 		back_left_motor.setInverted(RobotMap.MOTOR_REAR_LEFT_INVERTED);
@@ -77,8 +80,6 @@ public class DriveTrain extends Subsystem {
 		while(gyro.isCalibrating()) {
 			;
 		}
-		
-		gyroPIDSource = new GyroPIDSource(this);
 		
 		reset();
 		
@@ -126,11 +127,15 @@ public class DriveTrain extends Subsystem {
 	/**
 	 * @param joy The Xbox style joystick to use to drive arcade style.
 	 */
-	public void drive(Joystick joy) {
+	public void arcadeDrive(Joystick joy) {
 		drive.arcadeDrive(RobotMap.INVERT_JOYSTICK_Y ? -joy.getRawAxis(5) : joy.getRawAxis(5), 
 				RobotMap.INVERT_JOYSTICK_X ? -joy.getRawAxis(4) : joy.getRawAxis(4), true);
 	}
 
+	public void arcadeDrive(double rotate, double forward) {
+		drive.arcadeDrive(rotate, forward);
+	}
+	
 	/**
 	 * Reset the robots sensors to the zero states.
 	 */
@@ -160,25 +165,34 @@ public class DriveTrain extends Subsystem {
 	 */
 	public PIDOutput getDrivePIDOutput(boolean invert, boolean left) {
 		if(left) {
-			DrivePIDOutput out = new DrivePIDOutput(front_left_motor, back_left_motor, left, invert);
-			return out;
+			leftMotor.setInverted(invert);
+			return leftMotor;
 		}
 		else {
-			DrivePIDOutput out = new DrivePIDOutput(front_right_motor, back_right_motor, left, invert);
-			return out;
+			rightMotor.setInverted(invert);
+			return rightMotor;
 		}
+	}
+	
+	public double getPIDForwardOutput(boolean left) {
+		if(left)
+			return leftMotor.getPIDForwardOutput();
+		else
+			return rightMotor.getPIDForwardOutput();
+	}
+	
+	public double getPIDRotateOutput(boolean left) {
+		if(left)
+			return leftMotor.getPIDRotateOutput();
+		else
+			return rightMotor.getPIDRotateOutput();
 	}
 	
 	/**
 	 * @return The robot's gyro PIDSource
 	 */
 	public PIDSource getGyroPIDSource(boolean invert) {
-		gyroPIDSource.invert(invert);
-		return gyroPIDSource;
-	}
-
-	public void inverGyroPIDSource(boolean invert) {
-		gyroPIDSource.invert(invert);
+		return gyro;
 	}
 
 	/**
@@ -207,123 +221,79 @@ public class DriveTrain extends Subsystem {
 		// Really meters in simulation since it's a rangefinder...
 		return rangefinder.getAverageVoltage();
 	}
-	
-	class GyroPIDSource implements PIDSource {
 
-		private final DriveTrain driveTrain;
-		private boolean invert;
-		
-		public GyroPIDSource(DriveTrain driveTrain) {
-			this.driveTrain = driveTrain;
-		}
-		
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			driveTrain.gyro.setPIDSourceType(pidSource);
-		};
+	private class ComposedMotor implements SpeedController {
 
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return driveTrain.gyro.getPIDSourceType();
-		}
-
-		@Override
-		public double pidGet() {
-			double heading = driveTrain.getHeading();
-			if(heading > 358.0)
-				heading = 0;
-			
-			return invert ? -heading : heading;
-		}
+		final SpeedController motorA;
+		final SpeedController motorB;
 		
+		private boolean inverted;
 		
-		public void invert(boolean invert) {
-			this.invert = invert;
-		}
-	}
-	
-	public class DrivePIDOutput implements PIDOutput {
-
-		private final Victor front;
-		private final Victor rear;
+		private double pidForward;
+		private double pidRotate;
 		
-		private boolean invert;
-		
-		private final boolean left;
-		
-		public DrivePIDOutput(Victor front, Victor rear, boolean left, boolean invert) {
-			this.front = front;
-			this.rear = rear;
-			this.left = left;
-			this.invert = invert;
+		public ComposedMotor(SpeedController motorA, SpeedController motorB) {
+			this.motorA = motorA;
+			this.motorB = motorB;
 		}
 		
 		@Override
 		public void pidWrite(double output) {
-			double rotateVal = (normalize(getHeading() - initGyro) * 0.1);
+			pidForward = inverted ? -output : output;
+			pidRotate  = (normalize(getHeading() - initGyro) * 0.1);
+		}
+
+		@Override
+		public double get() {
+			return motorA.get();
+		}
+
+		@Override
+		public void set(double speed, byte syncGroup) {
+			motorA.set(speed, syncGroup);
+			motorB.set(speed, syncGroup);
 			
-			System.out.println("Rotate:\t"+rotateVal);
+		}
+
+		@Override
+		public void set(double speed) {
+			motorA.set(speed);
+			motorB.set(speed);
 			
-			// XXX: Motors must be opposite to avoid fighting
-			if(left)
-				if(invert) {
-					drive.arcadeDrive(output, rotateVal);
-//					front.set(asSpeed(output, rotateVal, true));
-//					rear.set(asSpeed(output, rotateVal, true));
-				}
-				else {
-					drive.arcadeDrive(-output, -rotateVal);
-//					front.set(asSpeed(-output, -rotateVal, true));
-//					rear.set(asSpeed(-output, -rotateVal, true));
-				}
-			else
-				if(invert) {
-					front.set(asSpeed(output, rotateVal, false));
-					rear.set(asSpeed(output, rotateVal, false));
-				}
-				else {
-					front.set(asSpeed(-output, -rotateVal, false));
-					rear.set(asSpeed(-output, -rotateVal, false));
-				}
-		}		
+		}
+
+		@Override
+		public void setInverted(boolean isInverted) {
+			inverted = isInverted;
+			
+		}
+
+		@Override
+		public boolean getInverted() {
+			return inverted;
+		}
+
+		@Override
+		public void disable() {
+			motorA.disable();
+			motorB.disable();
+		}
+
+		@Override
+		public void stopMotor() {
+			motorA.stopMotor();
+			motorB.stopMotor();
+		}
 		
-		public void setInvert(boolean invert) {
-			this.invert = invert;
+		public double getPIDForwardOutput() {
+			return pidForward;
+		}
+		
+		public double getPIDRotateOutput() {
+			return pidRotate;
 		}
 	}
 	
-    
-    private double asSpeed(double moveValue, double rotateValue, boolean left) {
-
-    	double leftMotorSpeed = 0;
-    	double rightMotorSpeed = 0;
-    	
-    	if (moveValue > 0.0) {
-    		if (rotateValue > 0.0) {
-    			leftMotorSpeed = moveValue - rotateValue;
-    			rightMotorSpeed = Math.max(moveValue, rotateValue);
-    		}
-    		else {
-    			leftMotorSpeed = Math.max(moveValue, -rotateValue);
-    			rightMotorSpeed = moveValue + rotateValue;
-    		}
-    	}
-    	else {
-    		if (rotateValue > 0.0) {
-    			leftMotorSpeed = -Math.max(-moveValue, rotateValue);
-    			rightMotorSpeed = moveValue + rotateValue;
-    		}
-    		else {
-    			leftMotorSpeed = moveValue - rotateValue;
-    			rightMotorSpeed = -Math.max(-moveValue, -rotateValue);
-    		}
-    	}
-		
-    	System.out.println("Drive:\t" + (left ? leftMotorSpeed : rightMotorSpeed));
-    	
-		return left ? leftMotorSpeed : rightMotorSpeed;
-    }
-    
     private double normalize(double input) {
     	double normalizedValue = input;
     	while (normalizedValue > 180)

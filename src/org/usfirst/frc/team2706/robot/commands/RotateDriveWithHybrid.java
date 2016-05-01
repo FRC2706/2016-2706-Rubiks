@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2706.robot.commands;
 
 import org.usfirst.frc.team2706.robot.Robot;
-import org.usfirst.frc.team2706.robot.subsystems.DriveTrain.DrivePIDOutput;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,15 +14,12 @@ public class RotateDriveWithHybrid extends Command {
 	
 	private final int minDoneCycles;
 	
-	private final PIDController leftPID;
-	private final PIDController rightPID;
+	private PIDController leftPID;
+	private PIDController rightPID;
 	
 	private int doneCount;
 	
 	private final double P=0.25, I=0.03125, D=0.03125, F=0;
-	
-	private final DrivePIDOutput leftOut = (DrivePIDOutput) Robot.driveTrain.getDrivePIDOutput(false, true);
-	private final DrivePIDOutput rightOut = (DrivePIDOutput) Robot.driveTrain.getDrivePIDOutput(true, false);
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -37,21 +33,24 @@ public class RotateDriveWithHybrid extends Command {
         this.speed = speed;
 
         this.minDoneCycles = minDoneCycles;
-        leftPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
-        		leftOut);
-        
-        rightPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
-        		rightOut);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	// Will get all inverted if called multiple times from different constructors
+        leftPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
+        		Robot.driveTrain.getDrivePIDOutput(false, true));
+        
+        rightPID = new PIDController(P, I, D, F, Robot.driveTrain.getGyroPIDSource(false), 
+        		Robot.driveTrain.getDrivePIDOutput(true, false));
+    	
     	Robot.driveTrain.reset();
     	
     	doneCount = 0;
     	
-    	leftPID.setInputRange(0.0, 360.0);
-    	rightPID.setInputRange(0.0, 360.0);
+    	// See http://www.pdocs.kauailabs.com/navx-mxp/examples/rotate-to-angle-2/ on the java example @ line 73
+    	leftPID.setInputRange(-180.0, 180.0);
+    	rightPID.setInputRange(-180.0, 180.0);
     	
     	// Make input infinite
     	leftPID.setContinuous();
@@ -86,6 +85,8 @@ public class RotateDriveWithHybrid extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.driveTrain.drive(Robot.driveTrain.getPIDForwardOutput(true), Robot.driveTrain.getPIDForwardOutput(false));
+    	
     	// TODO: Use WPI onTarget()
     	onTarget();
     }

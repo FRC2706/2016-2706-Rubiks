@@ -16,8 +16,7 @@ public class StraightDriveWithEncoders extends Command {
 	
 	private final int minDoneCycles;
 	
-	private final PIDController leftPID;
-	private final PIDController rightPID;
+	private PIDController PID;
 	
 	private int doneCount;
 	
@@ -38,60 +37,52 @@ public class StraightDriveWithEncoders extends Command {
         this.distance = distance;
         
         this.minDoneCycles = minDoneCycles;
-
-        leftPID = new PIDController(P,I,D,	 
-       		Robot.driveTrain.getEncoderPIDSource(true), 
-       		Robot.driveTrain.getDrivePIDOutput(false, true)
-        );
-        
-        rightPID = new PIDController(P,I,D,	 
-           	Robot.driveTrain.getEncoderPIDSource(false), 
-           	Robot.driveTrain.getDrivePIDOutput(false, false)
-        );
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	// Will get all inverted if called multiple times from different constructors
+        PID = new PIDController(P,I,D,	 
+       		Robot.driveTrain.getEncoderPIDSource(true), 
+       		Robot.driveTrain.getDrivePIDOutput(false, true)
+        );
+    	
     	Robot.driveTrain.reset();
     	
     	// Make input infinite
-    	leftPID.setContinuous();
-    	rightPID.setContinuous();
+    	PID.setContinuous();
     	
     	// Set output speed range
     	if(speed > 0) {
-    		leftPID.setOutputRange(-speed, speed);
-    		rightPID.setOutputRange(-speed, speed);
+    		PID.setOutputRange(-speed, speed);
     	}
     	else {
-    		leftPID.setOutputRange(speed, -speed);
-        	rightPID.setOutputRange(speed, -speed);
+    		PID.setOutputRange(speed, -speed);
     	}
 
 		Robot.driveTrain.initGyro = Robot.driveTrain.getHeading();
 		
-    	leftPID.setSetpoint(distance);
-    	rightPID.setSetpoint(distance);
+    	PID.setSetpoint(distance);
     	
     	
     	// Will accept within 5 inch of target
-    	leftPID.setAbsoluteTolerance(5.0/12);
-    	rightPID.setAbsoluteTolerance(5.0/12);
+    	PID.setAbsoluteTolerance(5.0/12);
     	
     	// Start going to location
-    	leftPID.enable();
+    	PID.enable();
     	//rightPID.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {    	
+    	Robot.driveTrain.arcadeDrive(Robot.driveTrain.getPIDForwardOutput(true), Robot.driveTrain.getPIDRotateOutput(true));
+    	
     	// TODO: Use WPI onTarget()
     	onTarget();
     }
     public boolean done;
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	System.out.println(done);
     	if(this.doneCount > this.minDoneCycles) {
     		done = true;
     		return true;
@@ -107,8 +98,7 @@ public class StraightDriveWithEncoders extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	// Disable PID output and stop robot to be safe
-    	leftPID.disable();
-    	rightPID.disable();
+    	PID.disable();
         Robot.driveTrain.drive(0, 0);
     }
 
@@ -119,7 +109,7 @@ public class StraightDriveWithEncoders extends Command {
     }
     
     private boolean onTarget() {
-    	if(leftPID.getError() < 5.0/12 && rightPID.getError() < 5.0/12) {
+    	if(PID.getError() < 5.0/12) {
     		doneCount++;
     		return true;
     	}
