@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2706.robot.commands.autonomous;
 
-import org.usfirst.frc.team2706.robot.commands.QuickRotate;
 import org.usfirst.frc.team2706.robot.commands.ShootBallAuto;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
@@ -13,9 +12,8 @@ public class BreachGoToTargetShootGyroAutonomous extends CommandGroup {
 	
 	public BreachGoToTargetShootGyroAutonomous() {
 		this.addSequential(new BreachPlayGyro());
-		this.addSequential(new QuickRotate(55));
 		this.addSequential(new GoToTargetGyroPlay());		
-		this.addParallel(new StraightDriveWithTime(0.5, 3000));
+		//this.addParallel(new StraightDriveWithTime(0.6, 3000));
 		this.addSequential(new ShootBallAuto(TeleopPneumaticControl.SHOOT_SPEED));		
 	}
 }

@@ -3,11 +3,9 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
-import org.usfirst.frc.team2706.robot.commands.ResetCameraEndAuto;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
-import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootCameraAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootGyroAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomousHighGoal;
@@ -68,11 +66,11 @@ public class Robot extends IterativeRobot {
         	/*  no switch: do nothing      */	 new ArcadeDriveWithJoystick(), 
         	/* position 1: do nothing      */	 new ArcadeDriveWithJoystick(),
         	/* position 2: low goal gyro   */	 new BreachGoToTargetShootGyroAutonomous(),
-        	/* position 3: low goal camera */	 new BreachGoToTargetShootCameraAutonomous(),
+        	/* position 3: low goal camera */	 new StraightDriveWithEncoders(0.5,6,25),
         	/* position 4: low goal hybrid */	 new BreachGoToTargetShootHybridAutonomous(),
         	/* position 5: reach anything  */	 new StraightDriveWithEncoders(0.5,6,25),
-        	/* position 6: breach slow     */	 new StraightDriveWithTime(0.7,4000),
-        	/* position 7: breach fast     */	 new StraightDriveWithTime(0.85,2500),
+        	/* position 6: breach slow     */	 new StraightDriveWithEncoders(0.7,15,25),
+        	/* position 7: breach fast     */	 new StraightDriveWithEncoders(0.85,15,25),
         	/* position 8: portcullis      */	 new PortCullisBreachPlay(),
         	/* position 9: cheval de frise */	 new ChevalDeFriseBreachPlay(),
         	/* position 10: high goal      */	 new BreachGoToTargetShootHybridAutonomousHighGoal()
@@ -144,9 +142,9 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null) autonomousCommand.cancel();
        // cameraCommand.start();
         //cameraCommand.cancel(); // Uncomment/comment to disable/enable camera movement
-        new ResetCameraEndAuto().start();
+        Robot.camera.ResetCamera();
         teleopControl.start();
-        cameraCommand.start();
+
         
     }
 

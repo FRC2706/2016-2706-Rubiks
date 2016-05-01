@@ -69,7 +69,8 @@ public class StraightDriveWithEncoders extends Command {
         	rightPID.setOutputRange(speed, -speed);
     	}
 
-    	
+		Robot.driveTrain.initGyro = Robot.driveTrain.getHeading();
+		
     	leftPID.setSetpoint(distance);
     	rightPID.setSetpoint(distance);
     	
@@ -80,12 +81,12 @@ public class StraightDriveWithEncoders extends Command {
     	
     	// Start going to location
     	leftPID.enable();
-    	rightPID.enable();
+    	//rightPID.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {    	
-    	Robot.driveTrain.drive(Robot.driveTrain.getPIDOutput(true), Robot.driveTrain.getPIDOutput(false));
+    	Robot.driveTrain.arcadeDrive(Robot.driveTrain.getPIDForwardOutput(true), Robot.driveTrain.getPIDRotateOutput(true));
     	
     	// TODO: Use WPI onTarget()
     	onTarget();
@@ -93,7 +94,6 @@ public class StraightDriveWithEncoders extends Command {
     public boolean done;
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	System.out.println(done);
     	if(this.doneCount > this.minDoneCycles) {
     		done = true;
     		return true;

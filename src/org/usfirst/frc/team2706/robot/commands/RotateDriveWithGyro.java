@@ -25,7 +25,7 @@ public class RotateDriveWithGyro extends Command {
 	
 	private int doneCount;
 	
-	private final double P=2, I=0.05, D=0.05, F=0;
+	private final double P=1, I=0, D=0, F=0;
 	
 	/**
 	 * Drive at a specific speed for a certain amount of time
@@ -84,7 +84,7 @@ public class RotateDriveWithGyro extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.drive(Robot.driveTrain.getPIDOutput(true), Robot.driveTrain.getPIDOutput(false));
+    	Robot.driveTrain.drive(Robot.driveTrain.getPIDForwardOutput(true), Robot.driveTrain.getPIDForwardOutput(false));
     	
     	// TODO: Use WPI onTarget()
     	onTarget();

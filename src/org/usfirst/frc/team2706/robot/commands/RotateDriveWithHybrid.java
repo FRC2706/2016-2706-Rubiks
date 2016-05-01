@@ -85,7 +85,7 @@ public class RotateDriveWithHybrid extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.drive(Robot.driveTrain.getPIDOutput(true), Robot.driveTrain.getPIDOutput(false));
+    	Robot.driveTrain.drive(Robot.driveTrain.getPIDForwardOutput(true), Robot.driveTrain.getPIDForwardOutput(false));
     	
     	// TODO: Use WPI onTarget()
     	onTarget();

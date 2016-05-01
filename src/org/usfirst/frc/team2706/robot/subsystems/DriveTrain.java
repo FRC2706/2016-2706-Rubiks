@@ -34,6 +34,8 @@ public class DriveTrain extends Subsystem {
 	private Encoder left_encoder, right_encoder;
 	private AnalogInput rangefinder;
 	private AHRS gyro;
+	
+	public double initGyro;
 
 	public DriveTrain() {
 		super();
@@ -53,8 +55,8 @@ public class DriveTrain extends Subsystem {
 		drive = new RobotDrive(front_left_motor, back_left_motor,
 							   front_right_motor, back_right_motor);
 		
-		left_encoder = new Encoder(RobotMap.ENCODER_LEFT_A, RobotMap.ENCODER_LEFT_B);
-		right_encoder = new Encoder(RobotMap.ENCODER_RIGHT_A, RobotMap.ENCODER_RIGHT_B);
+		left_encoder = new Encoder(8, 7);
+		right_encoder = new Encoder(0,1);
 
 		// Encoders may measure differently in the real world and in
 		// simulation. In this example the robot move at some random value
@@ -80,6 +82,8 @@ public class DriveTrain extends Subsystem {
 		}
 		
 		reset();
+		
+
 		
 		// Let's show everything on the LiveWindow
 		LiveWindow.addActuator("Drive Train", "Front Left Motor", front_left_motor);
@@ -123,11 +127,15 @@ public class DriveTrain extends Subsystem {
 	/**
 	 * @param joy The Xbox style joystick to use to drive arcade style.
 	 */
-	public void drive(Joystick joy) {
+	public void arcadeDrive(Joystick joy) {
 		drive.arcadeDrive(RobotMap.INVERT_JOYSTICK_Y ? -joy.getRawAxis(5) : joy.getRawAxis(5), 
 				RobotMap.INVERT_JOYSTICK_X ? -joy.getRawAxis(4) : joy.getRawAxis(4), true);
 	}
 
+	public void arcadeDrive(double rotate, double forward) {
+		drive.arcadeDrive(rotate, forward);
+	}
+	
 	/**
 	 * Reset the robots sensors to the zero states.
 	 */
@@ -166,11 +174,18 @@ public class DriveTrain extends Subsystem {
 		}
 	}
 	
-	public double getPIDOutput(boolean left) {
+	public double getPIDForwardOutput(boolean left) {
 		if(left)
-			return leftMotor.getPIDOutput();
+			return leftMotor.getPIDForwardOutput();
 		else
-			return rightMotor.getPIDOutput();
+			return rightMotor.getPIDForwardOutput();
+	}
+	
+	public double getPIDRotateOutput(boolean left) {
+		if(left)
+			return leftMotor.getPIDRotateOutput();
+		else
+			return rightMotor.getPIDRotateOutput();
 	}
 	
 	/**
@@ -214,7 +229,8 @@ public class DriveTrain extends Subsystem {
 		
 		private boolean inverted;
 		
-		private double pidOutput;
+		private double pidForward;
+		private double pidRotate;
 		
 		public ComposedMotor(SpeedController motorA, SpeedController motorB) {
 			this.motorA = motorA;
@@ -223,7 +239,8 @@ public class DriveTrain extends Subsystem {
 		
 		@Override
 		public void pidWrite(double output) {
-			pidOutput = inverted ? -output : output;
+			pidForward = inverted ? -output : output;
+			pidRotate  = (normalize(getHeading() - initGyro) * 0.1);
 		}
 
 		@Override
@@ -268,8 +285,22 @@ public class DriveTrain extends Subsystem {
 			motorB.stopMotor();
 		}
 		
-		public double getPIDOutput() {
-			return pidOutput;
+		public double getPIDForwardOutput() {
+			return pidForward;
+		}
+		
+		public double getPIDRotateOutput() {
+			return pidRotate;
 		}
 	}
+	
+    private double normalize(double input) {
+    	double normalizedValue = input;
+    	while (normalizedValue > 180)
+    		normalizedValue -= 360;
+    	while (normalizedValue < -180)
+    		normalizedValue +=360;
+    	
+		return normalizedValue;
+	}	
 }
