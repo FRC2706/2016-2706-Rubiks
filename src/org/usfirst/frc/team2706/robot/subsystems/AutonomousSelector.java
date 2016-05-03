@@ -19,42 +19,42 @@ public class AutonomousSelector extends Subsystem {
 	private final List<Command> commands;
 	private final AnalogInput selector;
 	
-	public AutonomousSelector(Command ...commands) {	
-		List<Command> commandList = Arrays.asList(commands);
-		
-		this.commands = commandList;
-		this.selector = new AnalogInput(0);
-	}
-	
-	@Override
-	protected void initDefaultCommand() {}
-	
-	public Command getSelected() {
-		int idx = getVoltageAsIndex();
-		if(idx >= commands.size())
-			idx = 0;
-		
-		return commands.get(idx);
-	}
+    public AutonomousSelector(Command... commands) {
+        List<Command> commandList = Arrays.asList(commands);
 
-	private int getVoltageAsIndex() {
-		for(int i = 0; i < voltages.length; i++) {
-			double voltage = selector.getAverageVoltage();
-			if(voltage >= voltages[i].min && voltage < voltages[i].max) {
-				return i;
-			}
-		}
-		
-		return 0;
-	}
-	
-	private class Range {
-		
-		public final double min, max;
-		
-		Range(double min, double max) {
-			this.min = min;
-			this.max = max;
-		}
+        this.commands = commandList;
+        this.selector = new AnalogInput(0);
+    }
+
+    @Override
+    protected void initDefaultCommand() {}
+
+    public Command getSelected() {
+        int idx = getVoltageAsIndex();
+        if (idx >= commands.size())
+            idx = 0;
+
+        return commands.get(idx);
+    }
+
+    private int getVoltageAsIndex() {
+        for (int i = 0; i < voltages.length; i++) {
+            double voltage = selector.getAverageVoltage();
+            if (voltage >= voltages[i].min && voltage < voltages[i].max) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private class Range {
+
+        public final double min, max;
+
+        Range(double min, double max) {
+            this.min = min;
+            this.max = max;
+        }
 	}
 }

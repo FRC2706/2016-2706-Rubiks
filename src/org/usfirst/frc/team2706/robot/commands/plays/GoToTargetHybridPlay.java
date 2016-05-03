@@ -11,18 +11,18 @@ import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class GoToTargetHybridPlay extends CommandGroup {
-	
-	public double cameraAngle = 0;
-	
-	public GoToTargetHybridPlay() {
-		// TODO: Fix speeds and distances
-		this.addSequential(new StraightDriveWithTime(0.0, 1000));
-		this.addSequential(new QuickViewWithCamera(this));
-		this.addSequential(new StraightDriveWithEncoders(0.4, 5/12.0, 10));
-		this.addSequential(new QuickRotateWithCamera(this));
-		this.addParallel(new ArmUpAuto(), 0.5);
-		this.addSequential(new StraightDriveWithEncoders(0.6, 8.5, 25));
-		this.addSequential(new ArmDownAuto(), 0.5);
-		this.addSequential(new FloatControlAuto(true), 0.5);
-	}
+
+    public double cameraAngle = 0;
+
+    public GoToTargetHybridPlay() {
+        // TODO: Fix speeds and distances
+        this.addSequential(new StraightDriveWithTime(0.0, 1000));
+        this.addSequential(new QuickViewWithCamera(this));
+        this.addSequential(new StraightDriveWithEncoders(0.4, 5 / 12.0, 10));
+        this.addSequential(new QuickRotateWithCamera(this));
+        this.addParallel(new ArmUpAuto(), 0.5);
+        this.addSequential(new StraightDriveWithEncoders(0.6, 8.5, 25));
+        this.addSequential(new ArmDownAuto(), 0.5);
+        this.addSequential(new FloatControlAuto(true), 0.5);
+    }
 }

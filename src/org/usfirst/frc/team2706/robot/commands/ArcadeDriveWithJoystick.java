@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj.command.Command;
  * Have the robot drive arcade style using the Xbox Joystick until interrupted.
  */
 public class ArcadeDriveWithJoystick extends Command {
-    
+
     public ArcadeDriveWithJoystick() {
         requires(Robot.driveTrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.driveTrain.reset();
+        Robot.driveTrain.reset();
     }
 
     // Called repeatedly when this Command is scheduled to run

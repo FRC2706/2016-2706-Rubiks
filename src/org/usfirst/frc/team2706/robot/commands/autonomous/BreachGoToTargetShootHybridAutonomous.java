@@ -8,10 +8,10 @@ import org.usfirst.frc.team2706.robot.commands.plays.GoToTargetHybridPlay;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class BreachGoToTargetShootHybridAutonomous extends CommandGroup {
-	
-	public BreachGoToTargetShootHybridAutonomous() {
-		this.addSequential(new BreachPlay());
-		this.addSequential(new GoToTargetHybridPlay());
-		this.addSequential(new ShootBall(TeleopPneumaticControl.SHOOT_SPEED));
-	}
+
+    public BreachGoToTargetShootHybridAutonomous() {
+        this.addSequential(new BreachPlay());
+        this.addSequential(new GoToTargetHybridPlay());
+        this.addSequential(new ShootBall(TeleopPneumaticControl.SHOOT_SPEED));
+    }
 }

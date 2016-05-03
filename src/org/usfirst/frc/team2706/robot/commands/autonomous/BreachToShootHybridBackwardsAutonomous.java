@@ -9,12 +9,12 @@ import org.usfirst.frc.team2706.robot.commands.plays.GoToTargetBackwardsHybridPl
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class BreachToShootHybridBackwardsAutonomous extends CommandGroup {
-	
-	public BreachToShootHybridBackwardsAutonomous() {
-		
-		this.addSequential(new StraightDriveWithEncoders(-0.4,-1,25));
-		this.addSequential(new BackwardsBreachPlay());
-		this.addSequential(new GoToTargetBackwardsHybridPlay());
-		this.addSequential(new ShootBall(TeleopPneumaticControl.SHOOT_SPEED),2);
-	}
+
+    public BreachToShootHybridBackwardsAutonomous() {
+
+        this.addSequential(new StraightDriveWithEncoders(-0.4, -1, 25));
+        this.addSequential(new BackwardsBreachPlay());
+        this.addSequential(new GoToTargetBackwardsHybridPlay());
+        this.addSequential(new ShootBall(TeleopPneumaticControl.SHOOT_SPEED), 2);
+    }
 }

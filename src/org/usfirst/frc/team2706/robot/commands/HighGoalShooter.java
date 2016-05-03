@@ -6,76 +6,76 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class HighGoalShooter extends Command {
-	public double speed;
-	public HighGoalShooter(double speed) {
-		this.speed = speed;
-	}
-	
+    public double speed;
 
-	boolean started = false;
-	boolean done = false;
-	
-	@Override
-	protected void initialize() {
-		Thread thread1 = new Thread(new Runnable() {
-			@Override
-			public void run(){
+    public HighGoalShooter(double speed) {
+        this.speed = speed;
+    }
 
-				long startTime = System.currentTimeMillis();
-				boolean armFired = false;
-				
-				while(true) {
 
-					Robot.intakeLeft.set(-speed);
-					Robot.intakeRight.set(speed);
-					
-					if(System.currentTimeMillis() - 80 > startTime ) {
-						if (!armFired)
-							{
-								new ArmDown().start();
-								armFired = true;
-							}
-					}
+    boolean started = false;
+    boolean done = false;
 
-					if(System.currentTimeMillis() - 360 > startTime ) {
-						Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
-						break;
-					}
-					try {
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-						break;
-					}
-				}
-				done = true;
-			}
-		});
+    @Override
+    protected void initialize() {
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-		thread1.start();
-		
-	}
+                long startTime = System.currentTimeMillis();
+                boolean armFired = false;
 
-	@Override
-	protected void execute() {
-		
-	}
+                while (true) {
 
-	@Override
-	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return done;
-	}
+                    Robot.intakeLeft.set(-speed);
+                    Robot.intakeRight.set(speed);
 
-	@Override
-	protected void end() {
+                    if (System.currentTimeMillis() - 80 > startTime) {
+                        if (!armFired) {
+                            new ArmDown().start();
+                            armFired = true;
+                        }
+                    }
 
-		Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
-	}
+                    if (System.currentTimeMillis() - 360 > startTime) {
+                        Robot.ballKicker.set(DoubleSolenoid.Value.kForward);
+                        break;
+                    }
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }
+                done = true;
+            }
+        });
 
-	@Override
-	protected void interrupted() {
-		// TODO Auto-generated method stub
-		end();
-	}
+        thread1.start();
+
+    }
+
+    @Override
+    protected void execute() {
+
+    }
+
+    @Override
+    protected boolean isFinished() {
+        // TODO Auto-generated method stub
+        return done;
+    }
+
+    @Override
+    protected void end() {
+
+        Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    @Override
+    protected void interrupted() {
+        // TODO Auto-generated method stub
+        end();
+    }
 
 }

@@ -7,41 +7,43 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ArmUpAuto extends Command {
 
-	@Override
-	protected void initialize() {
+    @Override
+    protected void initialize() {
 
-		
-	}
 
-	@Override
-	protected void execute() {
-		//Robot.armCylinder2.set(DoubleSolenoid.Value.kForward);
-		Robot.armCylinder1.set(DoubleSolenoid.Value.kReverse);
-	}
-int ticks = 0;
-	@Override
-	protected boolean isFinished() {
-		if (++ticks < 120)
-			return false;
-		else {
-			ticks = 0;
-			return true;
-			
-		}
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	protected void end() {
-		Robot.armCylinder1.set(DoubleSolenoid.Value.kOff);
-		
-	}
+    @Override
+    protected void execute() {
+        // Robot.armCylinder2.set(DoubleSolenoid.Value.kForward);
+        Robot.armCylinder1.set(DoubleSolenoid.Value.kReverse);
+    }
 
-	@Override
-	protected void interrupted() {
-		end();
-		
-	}
+    int ticks = 0;
+
+    @Override
+    protected boolean isFinished() {
+        if (++ticks < 120)
+            return false;
+        else {
+            ticks = 0;
+            return true;
+
+        }
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    protected void end() {
+        Robot.armCylinder1.set(DoubleSolenoid.Value.kOff);
+
+    }
+
+    @Override
+    protected void interrupted() {
+        end();
+
+    }
 
 }
