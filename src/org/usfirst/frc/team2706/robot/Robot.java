@@ -4,7 +4,6 @@ package org.usfirst.frc.team2706.robot;
 import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
 import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
-import org.usfirst.frc.team2706.robot.commands.StraightDriveWithTime;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootGyroAutonomous;
 import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomous;
@@ -15,8 +14,8 @@ import org.usfirst.frc.team2706.robot.subsystems.AutonomousSelector;
 import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CameraServer;
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -87,9 +86,9 @@ public class Robot extends IterativeRobot {
         intakeRight = new CANTalon(RobotMap.CAN_INTAKE_RIGHT);
 
 		// Set up the Microsoft LifeCam and start streaming it to the Driver Station
-		CameraServer server = CameraServer.getInstance();
-		server.setQuality(50);
-		server.startAutomaticCapture("cam0");
+//		CameraServer server = CameraServer.getInstance();
+//		server.setQuality(50);
+//		server.startAutomaticCapture("cam0");
 		
 		// Turn on the ring light for vision tracking
 		ringLightPower = new Solenoid(RobotMap.RING_LIGHT);	
