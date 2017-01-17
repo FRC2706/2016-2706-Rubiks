@@ -11,6 +11,10 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/2016-2706-Rubiks/lib/navX/docs.zip!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/canTalon/CTRLib.jar"/>
+	<classpathentry kind="lib" path="lib/ctrLib/CTRLib.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/ryan/wpilib/user/java/docs/CTRLib/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -69,7 +69,7 @@ public class HighGoalShooter extends Command {
 	@Override
 	protected void end() {
 
-		Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
+		//Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	@Override
