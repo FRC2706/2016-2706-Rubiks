@@ -16,6 +16,7 @@ import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -87,8 +88,7 @@ public class Robot extends IterativeRobot {
 
 		// Set up the Microsoft LifeCam and start streaming it to the Driver Station
 //		CameraServer server = CameraServer.getInstance();
-//		server.setQuality(50);
-//		server.startAutomaticCapture("cam0");
+		CameraServer.getInstance().startAutomaticCapture();
 		
 		// Turn on the ring light for vision tracking
 		ringLightPower = new Solenoid(RobotMap.RING_LIGHT);	
