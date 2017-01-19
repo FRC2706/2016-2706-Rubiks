@@ -87,7 +87,6 @@ public class Robot extends IterativeRobot {
         intakeRight = new CANTalon(RobotMap.CAN_INTAKE_RIGHT);
 
 		// Set up the Microsoft LifeCam and start streaming it to the Driver Station
-//		CameraServer server = CameraServer.getInstance();
 		CameraServer.getInstance().startAutomaticCapture();
 		
 		// Turn on the ring light for vision tracking
