@@ -48,11 +48,6 @@ public class RobotMap {
 	public static final int CAN_INTAKE_LEFT;
 	public static final int CAN_INTAKE_RIGHT;
 	
-	// Motor for panning camera
-	public static final int MOTOR_CAMERA_PAN;
-	// Motor for tilting camera
-	public static final int MOTOR_CAMERA_TILT;
-	
 	// XXX: Encoders got flipped
 	public static final int ENCODER_LEFT_A;
 	public static final int ENCODER_LEFT_B;
@@ -64,10 +59,6 @@ public class RobotMap {
 
 	public static final boolean INVERT_JOYSTICK_X;
 	public static final boolean INVERT_JOYSTICK_Y;
-	
-	public static final int SELECTOR_CHANNEL;
-	
-	public static final int RING_LIGHT;
 	
 	//Compressors
 	public static final int BALL_KICKER_A;
@@ -97,9 +88,6 @@ public class RobotMap {
 		int canIntakeLeft = 0;
 		int canIntakeRight = 0;
 		
-		int motorCameraPan = 0;
-		int motorCameraTilt = 0;
-		
 		int encoderLeftA = 0;
 		int encoderLeftB = 0;
 		double encoderLeftDPP = 0.0;
@@ -110,10 +98,6 @@ public class RobotMap {
 		
 		boolean invertJoystickX = false;
 		boolean invertJoystickY = false;
-		
-		int selectorChannel = 0;
-
-		int ringLight = 0;
 		
 		int ballKickerA = 0;
 		int ballKickerB = 0;
@@ -157,8 +141,6 @@ public class RobotMap {
 				canAddrPneumatic = CompetitionRobotMap.CAN_ADDR_PNEUMATIC;
 				canIntakeLeft = CompetitionRobotMap.CAN_INTAKE_LEFT;
 				canIntakeRight = CompetitionRobotMap.CAN_INTAKE_RIGHT;
-				motorCameraPan = CompetitionRobotMap.MOTOR_CAMERA_PAN;
-				motorCameraTilt = CompetitionRobotMap.MOTOR_CAMERA_TILT;
 				encoderLeftA = CompetitionRobotMap.ENCODER_LEFT_A;
 				encoderLeftB = CompetitionRobotMap.ENCODER_LEFT_B;
 				encoderLeftDPP = CompetitionRobotMap.ENCODER_LEFT_DPP;
@@ -167,8 +149,6 @@ public class RobotMap {
 				encoderRightDPP = CompetitionRobotMap.ENCODER_RIGHT_DPP;
 				invertJoystickX = CompetitionRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = CompetitionRobotMap.INVERT_JOYSTICK_Y;
-				selectorChannel = CompetitionRobotMap.SELECTOR_CHANNEL;
-				ringLight = CompetitionRobotMap.RING_LIGHT;
 				ballKickerA = CompetitionRobotMap.BALL_KICKER_A;
 				ballKickerB = CompetitionRobotMap.BALL_KICKER_B;
 				armA = CompetitionRobotMap.ARM_A;
@@ -189,8 +169,6 @@ public class RobotMap {
 				canAddrPneumatic = PracticeRobotMap.CAN_ADDR_PNEUMATIC;
 				canIntakeLeft = PracticeRobotMap.CAN_INTAKE_LEFT;
 				canIntakeRight = PracticeRobotMap.CAN_INTAKE_RIGHT;
-				motorCameraPan = PracticeRobotMap.MOTOR_CAMERA_PAN;
-				motorCameraTilt = PracticeRobotMap.MOTOR_CAMERA_TILT;
 				encoderLeftA = PracticeRobotMap.ENCODER_LEFT_A;
 				encoderLeftB = PracticeRobotMap.ENCODER_LEFT_B;
 				encoderLeftDPP = PracticeRobotMap.ENCODER_LEFT_DPP;
@@ -199,8 +177,6 @@ public class RobotMap {
 				encoderRightDPP = PracticeRobotMap.ENCODER_RIGHT_DPP;
 				invertJoystickX = PracticeRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = PracticeRobotMap.INVERT_JOYSTICK_Y;
-				selectorChannel = PracticeRobotMap.SELECTOR_CHANNEL;
-				ringLight = PracticeRobotMap.RING_LIGHT;
 				ballKickerA = PracticeRobotMap.BALL_KICKER_A;
 				ballKickerB = PracticeRobotMap.BALL_KICKER_B;
 				armA = PracticeRobotMap.ARM_A;
@@ -221,8 +197,6 @@ public class RobotMap {
 				canAddrPneumatic = SimulationRobotMap.CAN_ADDR_PNEUMATIC;
 				canIntakeLeft = SimulationRobotMap.CAN_INTAKE_LEFT;
 				canIntakeRight = SimulationRobotMap.CAN_INTAKE_RIGHT;
-				motorCameraPan = SimulationRobotMap.MOTOR_CAMERA_PAN;
-				motorCameraTilt = SimulationRobotMap.MOTOR_CAMERA_TILT;
 				encoderLeftA = SimulationRobotMap.ENCODER_LEFT_A;
 				encoderLeftB = SimulationRobotMap.ENCODER_LEFT_B;
 				encoderLeftDPP = SimulationRobotMap.ENCODER_LEFT_DPP;
@@ -231,8 +205,6 @@ public class RobotMap {
 				encoderRightDPP = SimulationRobotMap.ENCODER_RIGHT_DPP;
 				invertJoystickX = SimulationRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = SimulationRobotMap.INVERT_JOYSTICK_Y;
-				selectorChannel = SimulationRobotMap.SELECTOR_CHANNEL;
-				ringLight = SimulationRobotMap.RING_LIGHT;
 				ballKickerA = SimulationRobotMap.BALL_KICKER_A;
 				ballKickerB = SimulationRobotMap.BALL_KICKER_B;
 				armA = SimulationRobotMap.ARM_A;
@@ -252,8 +224,6 @@ public class RobotMap {
 				canAddrPneumatic = CompetitionRobotMap.CAN_ADDR_PNEUMATIC;
 				canIntakeLeft = CompetitionRobotMap.CAN_INTAKE_LEFT;
 				canIntakeRight = CompetitionRobotMap.CAN_INTAKE_RIGHT;
-				motorCameraPan = CompetitionRobotMap.MOTOR_CAMERA_PAN;
-				motorCameraTilt = CompetitionRobotMap.MOTOR_CAMERA_TILT;
 				encoderLeftA = CompetitionRobotMap.ENCODER_LEFT_A;
 				encoderLeftB = CompetitionRobotMap.ENCODER_LEFT_B;
 				encoderLeftDPP = CompetitionRobotMap.ENCODER_LEFT_DPP;
@@ -262,8 +232,6 @@ public class RobotMap {
 				encoderRightDPP = CompetitionRobotMap.ENCODER_RIGHT_DPP;
 				invertJoystickX = CompetitionRobotMap.INVERT_JOYSTICK_X;
 				invertJoystickY = CompetitionRobotMap.INVERT_JOYSTICK_Y;
-				selectorChannel = CompetitionRobotMap.SELECTOR_CHANNEL;
-				ringLight = CompetitionRobotMap.RING_LIGHT;
 				ballKickerA = CompetitionRobotMap.BALL_KICKER_A;
 				ballKickerB = CompetitionRobotMap.BALL_KICKER_B;
 				armA = CompetitionRobotMap.ARM_A;
@@ -293,9 +261,6 @@ public class RobotMap {
 		CAN_INTAKE_LEFT = canIntakeLeft;
 		CAN_INTAKE_RIGHT = canIntakeRight;
 		
-		MOTOR_CAMERA_PAN = motorCameraPan;
-		MOTOR_CAMERA_TILT = motorCameraTilt;
-		
 		ENCODER_LEFT_A = encoderLeftA;
 		ENCODER_LEFT_B = encoderLeftB;
 		ENCODER_LEFT_DPP = encoderLeftDPP;
@@ -307,10 +272,6 @@ public class RobotMap {
 		INVERT_JOYSTICK_X = invertJoystickX;
 		INVERT_JOYSTICK_Y = invertJoystickY;
 		
-		SELECTOR_CHANNEL = selectorChannel;
-		
-		RING_LIGHT = ringLight;
-		
 		BALL_KICKER_A = ballKickerA;
 		BALL_KICKER_B = ballKickerB;
 		ARM_A = armA;
@@ -320,32 +281,26 @@ public class RobotMap {
 	}
 
 	private class CompetitionRobotMap extends RobotMap {
-
-		
+	
 		// Left gearbox
-		public static final int MOTOR_FRONT_LEFT = 2;
+		public static final int MOTOR_FRONT_LEFT = 0;
 		public static final boolean MOTOR_FRONT_LEFT_INVERTED = true;
 				
 		// Right gearbox
-		public static final int MOTOR_FRONT_RIGHT = 5;
+		public static final int MOTOR_FRONT_RIGHT = 2;
 		public static final boolean MOTOR_FRONT_RIGHT_INVERTED = true;
 				
 		// Right gearbox
-		public static final int MOTOR_REAR_LEFT = 3;
+		public static final int MOTOR_REAR_LEFT = 1;
 		public static final boolean MOTOR_REAR_LEFT_INVERTED = true;
 				
 		// Left gearbox
-		public static final int MOTOR_REAR_RIGHT = 6;
+		public static final int MOTOR_REAR_RIGHT = 3;
 		public static final boolean MOTOR_REAR_RIGHT_INVERTED = true;
 
 		public static final int CAN_INTAKE_LEFT = 2;
 		public static final int CAN_INTAKE_RIGHT = 1;
 				
-		// Motor for panning camera
-		public static final int MOTOR_CAMERA_PAN = 8;
-		// Motor for tilting camera
-		public static final int MOTOR_CAMERA_TILT = 9;
-
 		// XXX: Encoders got flipped
 		public static final int ENCODER_LEFT_A = 8;
 		public static final int ENCODER_LEFT_B = 7;
@@ -357,14 +312,12 @@ public class RobotMap {
 
 		public static final boolean INVERT_JOYSTICK_X = false;
 		public static final boolean INVERT_JOYSTICK_Y = false;
-				
-		public static final int SELECTOR_CHANNEL = 0;
-		
-		public static final int RING_LIGHT = 6;
+
 		// @TODO: Get Gyro channel, and rangefinder channel11
 	}
 
 	private class PracticeRobotMap extends RobotMap {
+		
 		// Left gearbox
 		public static final int MOTOR_FRONT_LEFT = 2;
 		public static final boolean MOTOR_FRONT_LEFT_INVERTED = true;
@@ -386,11 +339,6 @@ public class RobotMap {
 		public static final int CAN_INTAKE_LEFT = 2;
 		public static final int CAN_INTAKE_RIGHT = 1;
 		
-		// Motor for panning camera
-		public static final int MOTOR_CAMERA_PAN = 8;
-		// Motor for tilting camera
-		public static final int MOTOR_CAMERA_TILT = 9;
-
 		// XXX: Encoders got flipped
 		public static final int ENCODER_LEFT_A = 3;
 		public static final int ENCODER_LEFT_B = 2;
@@ -402,14 +350,12 @@ public class RobotMap {
 
 		public static final boolean INVERT_JOYSTICK_X = false;
 		public static final boolean INVERT_JOYSTICK_Y = false;
-		
-		public static final int SELECTOR_CHANNEL = 0;
-		
-		public static final int RING_LIGHT = 6;
+
 		// @TODO: Get Gyro channel, and rangefinder channel11
 	}
 
 	private class SimulationRobotMap extends RobotMap {
+		
 		// Left gearbox
 		public static final int MOTOR_FRONT_LEFT = 3;
 		public static final boolean MOTOR_FRONT_LEFT_INVERTED = false;
@@ -431,11 +377,6 @@ public class RobotMap {
 		public static final int CAN_INTAKE_LEFT = 2;
 		public static final int CAN_INTAKE_RIGHT = 1;
 		
-		// Motor for panning camera
-		public static final int MOTOR_CAMERA_PAN = 8;
-		// Motor for tilting camera
-		public static final int MOTOR_CAMERA_TILT = 9;
-
 		// XXX: Encoders got flipped
 		public static final int ENCODER_LEFT_A = 2;
 		public static final int ENCODER_LEFT_B = 3;
@@ -447,10 +388,7 @@ public class RobotMap {
 
 		public static final boolean INVERT_JOYSTICK_X = false;
 		public static final boolean INVERT_JOYSTICK_Y = false;
-		
-		public static final int SELECTOR_CHANNEL = 0;
-		
-		public static final int RING_LIGHT = 6;
+
 		// @TODO: Get Gyro channel, and rangefinder channel11
 	}
 }

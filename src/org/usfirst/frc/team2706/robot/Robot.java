@@ -1,17 +1,7 @@
 
 package org.usfirst.frc.team2706.robot;
 
-import org.usfirst.frc.team2706.robot.commands.ArcadeDriveWithJoystick;
-import org.usfirst.frc.team2706.robot.commands.AutomaticCameraControl;
-import org.usfirst.frc.team2706.robot.commands.StraightDriveWithEncoders;
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
-import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootGyroAutonomous;
-import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomous;
-import org.usfirst.frc.team2706.robot.commands.autonomous.BreachGoToTargetShootHybridAutonomousHighGoal;
-import org.usfirst.frc.team2706.robot.commands.autonomous.ChevalDeFriseBreachPlay;
-import org.usfirst.frc.team2706.robot.commands.autonomous.PortCullisBreachPlay;
-import org.usfirst.frc.team2706.robot.subsystems.AutonomousSelector;
-import org.usfirst.frc.team2706.robot.subsystems.Camera;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 
 import com.ctre.CANTalon;
@@ -19,8 +9,6 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -33,16 +21,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot {
 
-	public static Camera camera;
 	public static DriveTrain driveTrain;
-	public static AutonomousSelector hardwareChooser;
 	public static OI oi;
 
-	Command autonomousCommand;
-	AutomaticCameraControl cameraCommand;
     TeleopPneumaticControl teleopControl;
 	
-    public static Solenoid ringLightPower;
     public static DoubleSolenoid ballKicker;
     public static DoubleSolenoid armCylinder1;
     public static DoubleSolenoid armCylinder2;
@@ -58,24 +41,6 @@ public class Robot extends IterativeRobot {
 		
 		// Instantiate the robot subsystems
         driveTrain = new DriveTrain();      
-        camera = new Camera(Camera.CAMERA_IP);
-        
-        // Set up our autonomous modes with the hardware selector switch
-        // holy long class names batman
-        hardwareChooser = new AutonomousSelector(
-        	/*  no switch: do nothing      */	 new ArcadeDriveWithJoystick(), 
-        	/* position 1: do nothing      */	 new ArcadeDriveWithJoystick(),
-        	/* position 2: low goal gyro   */	 new BreachGoToTargetShootGyroAutonomous(),
-        	/* position 3: low goal camera */	 new StraightDriveWithEncoders(0.5,6,25),
-        	/* position 4: low goal hybrid */	 new BreachGoToTargetShootHybridAutonomous(),
-        	/* position 5: reach anything  */	 new StraightDriveWithEncoders(0.5,6,25),
-        	/* position 6: breach slow     */	 new StraightDriveWithEncoders(0.7,15,25),
-        	/* position 7: breach fast     */	 new StraightDriveWithEncoders(0.85,15,25),
-        	/* position 8: portcullis      */	 new PortCullisBreachPlay(),
-        	/* position 9: cheval de frise */	 new ChevalDeFriseBreachPlay(),
-        	/* position 10: high goal      */	 new BreachGoToTargetShootHybridAutonomousHighGoal()
-        										);
-        	/* position 11 - 12 currently unused */
         
         // TODO: we should move these to subsystem classes
         // and also use the RobotMap values
@@ -87,13 +52,7 @@ public class Robot extends IterativeRobot {
         intakeRight = new CANTalon(RobotMap.CAN_INTAKE_RIGHT);
 
 		// Set up the Microsoft LifeCam and start streaming it to the Driver Station
-		CameraServer.getInstance().startAutomaticCapture();
-		
-		// Turn on the ring light for vision tracking
-		ringLightPower = new Solenoid(RobotMap.RING_LIGHT);	
-		ringLightPower.set(true);		
-    
-		cameraCommand = new AutomaticCameraControl();
+		CameraServer.getInstance().startAutomaticCapture();	
     }
 	
 	/**
@@ -114,14 +73,6 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
     	driveTrain.reset();
-        cameraCommand.start();
-    	driveTrain.resetGyro();
-    	
-    	System.out.println(hardwareChooser.getSelected());
-        autonomousCommand = hardwareChooser.getSelected();
-        
-    	// schedule the autonomous command (example)
-        if (autonomousCommand != null) autonomousCommand.start();
     }
 
     /**
@@ -133,24 +84,13 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-        if (autonomousCommand != null) autonomousCommand.cancel();
-       // cameraCommand.start();
-        //cameraCommand.cancel(); // Uncomment/comment to disable/enable camera movement
-        Robot.camera.ResetCamera();
         teleopControl.start();
-
-        
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	Robot.camera.RobotTurnDegrees();
         Scheduler.getInstance().run();
         log();
     }
