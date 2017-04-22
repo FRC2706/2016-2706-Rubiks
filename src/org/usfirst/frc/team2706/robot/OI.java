@@ -39,11 +39,19 @@ public class OI {
 	
 	// @TODO: Arcade drive joystick (Backwards)
 	Joystick driverStick = new Joystick(0);
+	Joystick operatorStick = new Joystick(1);
 	
 	// buttonUp = new JoystickButton(stick, 5);
 	
-    public Joystick getJoystick() {
+    public Joystick getDriverJoystick() {
         return driverStick;
+    }
+    
+    public Joystick getOperatorJoystick() {
+        if(operatorStick.getName().equals(""))
+        	return driverStick;
+        else
+        	return operatorStick;
     }
 }
 

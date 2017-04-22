@@ -3,6 +3,7 @@ package org.usfirst.frc.team2706.robot;
 
 import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2706.robot.subsystems.SpeedSelector;
 
 import com.ctre.CANTalon;
 
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	public static DriveTrain driveTrain;
+	public static SpeedSelector speedSelector;
 	public static OI oi;
 
     TeleopPneumaticControl teleopControl;
@@ -40,7 +42,8 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		
 		// Instantiate the robot subsystems
-        driveTrain = new DriveTrain();      
+        driveTrain = new DriveTrain(); 
+        speedSelector = new SpeedSelector();
         
         // TODO: we should move these to subsystem classes
         // and also use the RobotMap values
@@ -91,8 +94,10 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-        log();
+    	if(oi.getDriverJoystick().getRawButton(7) && oi.getOperatorJoystick().getRawButton(7)) {
+    		Scheduler.getInstance().run();
+        	log();
+    	}
     }
     
     /**
@@ -107,5 +112,6 @@ public class Robot extends IterativeRobot {
 	 */
     private void log() {
         driveTrain.log();
+        
     }
 }

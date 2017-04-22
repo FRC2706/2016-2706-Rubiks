@@ -26,13 +26,13 @@ public class TeleopPneumaticControl extends Command {
 	}
 	@Override
 	protected void execute() {
-		boolean controlButtonA = Robot.oi.getJoystick().getRawButton(2);
-		boolean controlButtonB = Robot.oi.getJoystick().getRawButton(3);
-		boolean controlButtonX = Robot.oi.getJoystick().getRawButton(1);
-		boolean controlButtonY = Robot.oi.getJoystick().getRawButton(4);
-		boolean controlButtonLB = Robot.oi.getJoystick().getRawButton(5);
-		boolean controlButtonRB = Robot.oi.getJoystick().getRawButton(6);
-		boolean controlButtonRT = Robot.oi.getJoystick().getRawButton(8);
+		boolean controlButtonA = Robot.oi.getOperatorJoystick().getRawButton(2);
+		boolean controlButtonB = Robot.oi.getOperatorJoystick().getRawButton(3);
+		boolean controlButtonX = Robot.oi.getOperatorJoystick().getRawButton(1);
+		boolean controlButtonY = Robot.oi.getOperatorJoystick().getRawButton(4);
+		boolean controlButtonLB = Robot.oi.getOperatorJoystick().getRawButton(5);
+		boolean controlButtonRB = Robot.oi.getOperatorJoystick().getRawButton(6);
+		boolean controlButtonRT = Robot.oi.getOperatorJoystick().getRawButton(8);
 		if(controlButtonLB) {
 			getBall = new GetBall(INTAKE_SPEED);
 			getBall.start();

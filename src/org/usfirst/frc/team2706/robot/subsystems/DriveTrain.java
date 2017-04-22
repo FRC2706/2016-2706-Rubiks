@@ -146,4 +146,11 @@ public class DriveTrain extends Subsystem {
 		// Really meters in simulation since it's a rangefinder...
 		return rangefinder.getAverageVoltage();
 	}
+	
+	/**
+	 * Sets the top speed the robot can drive at
+	 */
+	public void setTopSpeed(double topSpeed) {
+		drive.setMaxOutput(Math.abs(topSpeed));
+	}
 }
