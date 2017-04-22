@@ -35,10 +35,8 @@ public class SpeedSelector extends Subsystem {
     public double getSpeedSelected() {
         int idx = getVoltageAsIndex();
 
-//        if(idx == 0)
-//        	return 1.0;
-        
-        idx = 12;
+        if(idx == 0)
+        	return 1.0;
         
         int flipped = 12 - idx;
         return 1.0 / 3.0 + (flipped * 2.0 / 33.0);
