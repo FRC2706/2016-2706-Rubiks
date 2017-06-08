@@ -31,7 +31,8 @@ public class GetBall extends Command {
 
 	@Override
 	protected void end() {
-/*		Robot.intakeLeft.set(0.0);
+		/*
+		Robot.intakeLeft.set(0.0);
 		Robot.intakeRight.set(0.0);
 		Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);*/
 		

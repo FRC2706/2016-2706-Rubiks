@@ -26,13 +26,29 @@ public class TeleopPneumaticControl extends Command {
 	}
 	@Override
 	protected void execute() {
-		boolean controlButtonA = Robot.oi.getOperatorJoystick().getRawButton(2);
-		boolean controlButtonB = Robot.oi.getOperatorJoystick().getRawButton(3);
-		boolean controlButtonX = Robot.oi.getOperatorJoystick().getRawButton(1);
+		boolean controlButtonA = Robot.oi.getOperatorJoystick().getRawButton(1);
+		boolean controlButtonB = Robot.oi.getOperatorJoystick().getRawButton(2);
+		boolean controlButtonX = Robot.oi.getOperatorJoystick().getRawButton(3);
 		boolean controlButtonY = Robot.oi.getOperatorJoystick().getRawButton(4);
 		boolean controlButtonLB = Robot.oi.getOperatorJoystick().getRawButton(5);
 		boolean controlButtonRB = Robot.oi.getOperatorJoystick().getRawButton(6);
-		boolean controlButtonRT = Robot.oi.getOperatorJoystick().getRawButton(8);
+		// XBOX 'Back' button 7
+		boolean controlButtonRT = Robot.oi.getOperatorJoystick().getRawAxis(3) >= 0.9;
+		
+		// This line of code is for safety; both left triggers need to be held down, so we have a
+		// "kill switch"
+		if(!(Robot.oi.getDriverJoystick().getRawButton(7) && Robot.oi.getOperatorJoystick().getRawButton(7))){
+			Robot.intakeLeft.set(0.0);
+			Robot.intakeRight.set(0.0);
+
+			if(ballShot) {
+				Robot.ballKicker.set(DoubleSolenoid.Value.kReverse);
+				ballShot = false;
+			}
+			return;
+		}
+		
+		
 		if(controlButtonLB) {
 			getBall = new GetBall(INTAKE_SPEED);
 			getBall.start();

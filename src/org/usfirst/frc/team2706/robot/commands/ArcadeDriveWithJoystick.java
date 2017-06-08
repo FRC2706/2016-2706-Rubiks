@@ -19,8 +19,15 @@ public class ArcadeDriveWithJoystick extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.setTopSpeed(Robot.speedSelector.getSpeedSelected());
-        Robot.driveTrain.drive(Robot.oi.getDriverJoystick());
+    	// This line of code is for safety; both left triggers need to be held down, so we have a
+		// "kill switch"
+		if(!(Robot.oi.getDriverJoystick().getRawButton(7) && Robot.oi.getOperatorJoystick().getRawButton(7))){
+			Robot.driveTrain.drive(0,0);
+		}else{
+			Robot.driveTrain.setTopSpeed(Robot.speedSelector.getSpeedSelected());
+			Robot.driveTrain.drive(Robot.oi.getDriverJoystick());
+		}
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

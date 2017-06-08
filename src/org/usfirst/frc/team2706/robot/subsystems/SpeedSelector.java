@@ -34,6 +34,7 @@ public class SpeedSelector extends Subsystem {
      */
     public double getSpeedSelected() {
         int idx = getVoltageAsIndex();
+    	//int idx = 12;
 
         if(idx == 0)
         	return 1.0;

@@ -107,9 +107,11 @@ public class DriveTrain extends Subsystem {
 	/**
 	 * @param joy The Xbox style joystick to use to drive arcade style.
 	 */
+	
+	// Logitech controllers use Axis 2,3 instead of those written below
 	public void drive(Joystick joy) {
-		drive.arcadeDrive(RobotMap.INVERT_JOYSTICK_Y ? -joy.getRawAxis(3) : joy.getRawAxis(3), 
-				RobotMap.INVERT_JOYSTICK_X ? -joy.getRawAxis(2) : joy.getRawAxis(2), true);
+		drive.arcadeDrive(RobotMap.INVERT_JOYSTICK_Y ? -joy.getRawAxis(5) : joy.getRawAxis(5), 
+				RobotMap.INVERT_JOYSTICK_X ? -joy.getRawAxis(4) : joy.getRawAxis(4), true);
 	}
 
 	/**

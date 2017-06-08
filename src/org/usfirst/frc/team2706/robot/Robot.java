@@ -94,10 +94,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	if(oi.getDriverJoystick().getRawButton(7) && oi.getOperatorJoystick().getRawButton(7)) {
-    		Scheduler.getInstance().run();
-        	log();
-    	}
+		Scheduler.getInstance().run();
+    	log();
     }
     
     /**
