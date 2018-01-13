@@ -310,7 +310,7 @@ public class RobotMap {
 		public static final int ENCODER_RIGHT_B = 1;
 		public static final double ENCODER_RIGHT_DPP = 1.0 / 1075;
 
-		public static final boolean INVERT_JOYSTICK_X = false;
+		public static final boolean INVERT_JOYSTICK_X = true;
 		public static final boolean INVERT_JOYSTICK_Y = false;
 
 		// @TODO: Get Gyro channel, and rangefinder channel11

@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain extends Subsystem {
 	private Victor front_left_motor, back_left_motor,
 							front_right_motor, back_right_motor;
-	private RobotDrive drive;
+	private DifferentialDrive drive;
 	private Encoder left_encoder, right_encoder;
 	private AnalogInput rangefinder;
 	
@@ -40,8 +40,8 @@ public class DriveTrain extends Subsystem {
 		front_right_motor.setInverted(RobotMap.MOTOR_FRONT_RIGHT_INVERTED);
 		back_right_motor.setInverted(RobotMap.MOTOR_REAR_RIGHT_INVERTED);
 		
-		drive = new RobotDrive(front_left_motor, back_left_motor,
-							   front_right_motor, back_right_motor);
+		drive = new DifferentialDrive(new SpeedControllerGroup(front_left_motor, back_left_motor),
+							   new SpeedControllerGroup(front_right_motor, back_right_motor));
 		
 		left_encoder = new Encoder(8, 7);
 		right_encoder = new Encoder(0,1);
@@ -68,13 +68,13 @@ public class DriveTrain extends Subsystem {
 
 		
 		// Let's show everything on the LiveWindow
-		LiveWindow.addActuator("Drive Train", "Front Left Motor", front_left_motor);
-		LiveWindow.addActuator("Drive Train", "Back Left Motor",  back_left_motor);
-		LiveWindow.addActuator("Drive Train", "Front Right Motor",  front_right_motor);
-		LiveWindow.addActuator("Drive Train", "Back Right Motor", back_right_motor);
-		LiveWindow.addSensor("Drive Train", "Left Encoder", left_encoder);
-		LiveWindow.addSensor("Drive Train", "Right Encoder", right_encoder);
-		LiveWindow.addSensor("Drive Train", "Rangefinder", rangefinder);
+        front_left_motor.setName("DriveTrain", "Front Left Motor");
+        back_left_motor.setName("DriveTrain", "Back Left Motor");
+        front_right_motor.setName("DriveTrain", "Front Right Motor");
+        back_right_motor.setName("DriveTrain", "Back Right Motor");
+        left_encoder.setName("Drive Train", "Left Encoder");
+        right_encoder.setName("Drive Train", "Right Encoder");
+		rangefinder.setName("Drive Train", "Rangefinder");
 	}
 
 	/**

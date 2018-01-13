@@ -5,13 +5,12 @@ import org.usfirst.frc.team2706.robot.commands.TeleopPneumaticControl;
 import org.usfirst.frc.team2706.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2706.robot.subsystems.SpeedSelector;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,8 +30,8 @@ public class Robot extends IterativeRobot {
     public static DoubleSolenoid ballKicker;
     public static DoubleSolenoid armCylinder1;
     public static DoubleSolenoid armCylinder2;
-    public static CANTalon intakeLeft;
-    public static CANTalon intakeRight;
+    public static WPI_TalonSRX intakeLeft;
+    public static WPI_TalonSRX intakeRight;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -51,8 +50,8 @@ public class Robot extends IterativeRobot {
         armCylinder1 = new DoubleSolenoid(2,3);
         armCylinder2 = new DoubleSolenoid(4,5);
         teleopControl = new TeleopPneumaticControl();
-        intakeLeft = new CANTalon(RobotMap.CAN_INTAKE_LEFT);
-        intakeRight = new CANTalon(RobotMap.CAN_INTAKE_RIGHT);
+        intakeLeft = new WPI_TalonSRX(RobotMap.CAN_INTAKE_LEFT);
+        intakeRight = new WPI_TalonSRX(RobotMap.CAN_INTAKE_RIGHT);
 
 		// Set up the Microsoft LifeCam and start streaming it to the Driver Station
 		CameraServer.getInstance().startAutomaticCapture();	
@@ -101,9 +100,7 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during test mode
      */
-    public void testPeriodic() {
-        LiveWindow.run();
-    }
+    public void testPeriodic() {}
 
 	/**
 	 * The log method puts interesting information to the SmartDashboard.
