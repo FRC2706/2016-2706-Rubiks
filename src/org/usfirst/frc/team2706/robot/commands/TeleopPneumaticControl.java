@@ -4,6 +4,7 @@ import org.usfirst.frc.team2706.robot.Robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TeleopPneumaticControl extends Command {
 
@@ -37,7 +38,8 @@ public class TeleopPneumaticControl extends Command {
 		
 		// This line of code is for safety; both left triggers need to be held down, so we have a
 		// "kill switch"
-		if(!(Robot.oi.getDriverJoystick().getRawButton(7) && Robot.oi.getOperatorJoystick().getRawButton(7))){
+		if(!(Robot.oi.getDriverJoystick().getRawButton(7) && Robot.oi.getOperatorJoystick().getRawButton(7))
+				&& !SmartDashboard.getBoolean("Override Safety Switch", false)){
 			Robot.intakeLeft.set(0.0);
 			Robot.intakeRight.set(0.0);
 

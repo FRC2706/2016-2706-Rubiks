@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -93,6 +94,9 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	if(!SmartDashboard.containsKey("Override Safety Switch"))
+    		SmartDashboard.putBoolean("Override Safety Switch", false);
+    	
 		Scheduler.getInstance().run();
     	log();
     }
